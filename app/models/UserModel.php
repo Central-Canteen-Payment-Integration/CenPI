@@ -13,13 +13,13 @@ class UserModel extends Model {
     }
 
     public function login($username, $password) {
-        $sql = "SELECT * FROM users WHERE username = :username";
+        $sql = "SELECT * FROM USERS WHERE USERNAME = :username";
         $this->db->query($sql);
         $this->db->bind(':username', $username);
         
         $user = $this->db->single();
         
-        if ($user && password_verify($password, $user['password'])) {
+        if ($user && password_verify($password, $user['PASS_USER'])) {
             return $user;
         }
         

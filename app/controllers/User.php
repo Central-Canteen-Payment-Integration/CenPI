@@ -3,6 +3,10 @@
 class User extends Controller {
     private $userModel;
 
+    public function __construct() {
+        $this->userModel = $this->model('UserModel');
+    }
+
     public function login() {
         $data = [];
 
@@ -13,8 +17,11 @@ class User extends Controller {
             $user = $this->userModel->login($username, $password);
 
             if ($user) {
-                $_SESSION['user_id'] = $user['id'];
-                header('Location: /home'); 
+                $_SESSION['user_id'] = $user['ID_USER'];
+                $_SESSION['username'] = $user['USERNAME'];
+                header('Location: /home');
+                exit;
+            } else {
                 $data['error'] = 'Invalid username or password';
             }
         }

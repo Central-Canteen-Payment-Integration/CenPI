@@ -13,7 +13,7 @@
             </div>
             <div class="inner-box">
                 <div class="forms-wrap">
-                <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php echo BASE_URL; ?>/home/login">
+                <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php echo BASE_URL; ?>/User/login">
                     <div class="logo">
                         <img src="<?php echo BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                     </div>
