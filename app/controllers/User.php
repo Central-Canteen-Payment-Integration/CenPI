@@ -19,7 +19,7 @@ class User extends Controller {
             if ($user) {
                 $_SESSION['user_id'] = $user['ID_USER'];
                 $_SESSION['username'] = $user['USERNAME'];
-                header('Location: /home');
+                header('Location: /CenPI/home');
                 exit;
             } else {
                 $data['error'] = 'Invalid username or password';
@@ -31,18 +31,28 @@ class User extends Controller {
 
     public function register() {
         $data = [];
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
-
-            if ($this->userModel->register($username, $password)) {
-                header('Location: /user/login');
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    
+            if (empty($username) || empty($password) || empty($email)) {
+                $data['error'] = 'All fields must be filled.';
             } else {
-                $data['error'] = 'Registration failed';
+                if ($this->userModel->register($username, $password, $email)) {
+                    header('Location: /CenPI/home');
+                    exit;
+                } else {
+                    $data['error'] = 'Registration failed. Please try again.';
+                }
             }
         }
-
+        
         $this->view('home/login_register', $data);
     }
+    
+    
+    
+    
 }

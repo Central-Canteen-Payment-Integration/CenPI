@@ -1,6 +1,6 @@
 <div id="dialog" class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/global.css">
-<link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     <main class="flex justify-center">
         <div class="box">
             <div class="top w-full flex ms-[-1.5rem] mt-7 lg:mb-0 lg:ms-1 lg:mt-[-40px]">
@@ -13,30 +13,30 @@
             </div>
             <div class="inner-box">
                 <div class="forms-wrap">
-                <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php echo BASE_URL; ?>/User/login">
-                    <div class="logo">
-                        <img src="<?php echo BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
-                    </div>
-                    <div class="heading_login">
-                        <h2>Welcome Back</h2>
-                        <h6>Not registered yet?</h6>
-                        <a href="#" class="toggle_login">Sign up</a>
-                    </div>
-                    <div class="actual-form">
-                        <div class="input-wrap">
-                            <input type="username" name="username" id="username" class="input-field" autocomplete="off" required />
-                            <label>Username</label>
+                    <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php echo BASE_URL; ?>/User/login">
+                        <div class="logo">
+                            <img src="<?php echo BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                         </div>
-                        <div class="input-wrap">
-                            <input type="password" name="password" id="password" class="input-field" autocomplete="off" required />
-                            <label>Password</label>
+                        <div class="heading_login">
+                            <h2>Welcome Back</h2>
+                            <h6>Not registered yet?</h6>
+                            <a href="#" class="toggle_login">Sign up</a>
                         </div>
-                        <button id="submit" type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">Sign In</button>
-                        <p class="text"> Forgotten your password or your login details? <a href="#">Get help</a> signing in </p>
-                    </div>
-                </form>
-                    <!-- REGISTERR -->
-                    <form onsubmit="handleRegister(event)" class="form_sign sign-up-form">
+                        <div class="actual-form">
+                            <div class="input-wrap">
+                                <input type="username" name="username" id="username" class="input-field" autocomplete="off" required />
+                                <label>Username</label>
+                            </div>
+                            <div class="input-wrap">
+                                <input type="password" name="password" id="password" class="input-field" autocomplete="off" required />
+                                <label>Password</label>
+                            </div>
+                            <button id="submit" type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">Sign In</button>
+                            <p class="text"> Forgotten your password or your login details? <a href="#">Get help</a> signing in </p>
+                        </div>
+                    </form>
+                    <!-- REGISTER -->
+                    <form action="<?php echo BASE_URL; ?>/User/register" method="POST" class="form_sign sign-up-form">
                         <div class="logo">
                             <img src="<?php echo BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                         </div>
@@ -47,22 +47,22 @@
                         </div>
                         <div class="actual-form">
                             <div class="input-wrap">
-                                <input type="username" name="username" id="username-register" minlength="4" class="input-field" autocomplete="off" required />
+                                <input type="text" name="username" id="username-register" minlength="4" class="input-field" autocomplete="off" required />
                                 <label>Username</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="email" id="email-register" class="input-field" autocomplete="off" required />
+                                <input type="email" name="email" id="email-register" class="input-field" autocomplete="off" required />
                                 <label>Email</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" id="password-register" minlength="4" class="input-field" autocomplete="off" required />
+                                <input type="password" name="password" id="password-register" minlength="4" class="input-field" autocomplete="off" required />
                                 <label>Password</label>
                             </div>
                             <button id="submit" type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">Register</button>
-                            <p class="text"> By signing up, I agree to the <a href="#">Terms of Services</a> and <a href="#">Privacy Policy</a>
-                            </p>
+                            <p class="text"> By signing up, I agree to the <a href="#">Terms of Services</a> and <a href="#">Privacy Policy</a></p>
                         </div>
                     </form>
+
                 </div>
                 <div class="carousel_login">
                     <div class="images-wrapper">
@@ -91,7 +91,6 @@
 </div>
 
 <script>
-
     const inputs = document.querySelectorAll(".input-field");
     const toggle_login_btn = document.querySelectorAll(".toggle_login");
     const mainEle = document.querySelector("main");
@@ -151,6 +150,4 @@
             dropdownUser.classList.remove("hidden");
         });
     });
-
-    loginDialog();
 </script>
