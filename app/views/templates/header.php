@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>CenPI</title>
-		<link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/global.css">
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/header.css">
 	</head>
@@ -34,7 +33,3 @@
 				</div>
 			</nav>
 		</header>
-		<main></main>
-		<footer></footer>
-	</body>
-</html>
