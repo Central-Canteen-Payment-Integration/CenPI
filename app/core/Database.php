@@ -74,10 +74,6 @@ class Database {
         return $this->pdo->rollBack();
     }
 
-    public function errorInfo() {
-        return $this->stmt->errorInfo();
-    }
-
     public function __destruct() {
         $this->pdo = null;
     }

@@ -8,7 +8,10 @@ class User extends Controller {
     }
 
     public function login() {
-        $data = [];
+        $data = [
+            'page' => 'login',
+            'error' => ''
+        ];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
@@ -19,7 +22,7 @@ class User extends Controller {
             if ($user) {
                 $_SESSION['user_id'] = $user['ID_USER'];
                 $_SESSION['username'] = $user['USERNAME'];
-                header('Location: /CenPI/home');
+                header('Location: /Home');
                 exit;
             } else {
                 $data['error'] = 'Invalid username or password';
@@ -30,29 +33,28 @@ class User extends Controller {
     }
 
     public function register() {
-        $data = [];
-        
+        $data = [
+            'page' => 'register',
+            'error' => ''
+        ];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    
+
             if (empty($username) || empty($password) || empty($email)) {
                 $data['error'] = 'All fields must be filled.';
             } else {
                 if ($this->userModel->register($username, $password, $email)) {
-                    header('Location: /CenPI/home');
+                    header('Location: /Home');
                     exit;
                 } else {
                     $data['error'] = 'Registration failed. Please try again.';
                 }
             }
         }
-        
+
         $this->view('home/login_register', $data);
     }
-    
-    
-    
-    
 }

@@ -1,16 +1,8 @@
-<div id="dialog" class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
+<div class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/global.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
-    <main class="flex justify-center">
+    <main class="flex justify-center <?php echo ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
         <div class="box">
-            <div class="top w-full flex ms-[-1.5rem] mt-7 lg:mb-0 lg:ms-1 lg:mt-[-40px]">
-                <button id="close" class="lg:end-2.5 text-gray-300 lg:text-white bg-transparentrounded-lg text-sm w-5 h-5 lg:w-8 lg:h-8 ms-auto inline-flex justify-center items-center">
-                    <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
             <div class="inner-box">
                 <div class="forms-wrap">
                     <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php echo BASE_URL; ?>/User/login">
@@ -24,19 +16,21 @@
                         </div>
                         <div class="actual-form">
                             <div class="input-wrap">
-                                <input type="username" name="username" id="username" class="input-field" autocomplete="off" required />
+                                <input type="text" name="username" class="input-field" autocomplete="off" required />
                                 <label>Username</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" name="password" id="password" class="input-field" autocomplete="off" required />
+                                <input type="password" name="password" class="input-field" autocomplete="off" required />
                                 <label>Password</label>
                             </div>
-                            <button id="submit" type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">Sign In</button>
-                            <p class="text"> Forgotten your password or your login details? <a href="#">Get help</a> signing in </p>
+                            <button type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">
+                                Sign In
+                            </button>
+                            <p>Forgotten your password? <a href="#">Get help</a></p>
                         </div>
                     </form>
                     <!-- REGISTER -->
-                    <form action="<?php echo BASE_URL; ?>/User/register" method="POST" class="form_sign sign-up-form">
+                    <form id="register_form" class="form_sign sign-up-form" method="POST" action="<?php echo BASE_URL; ?>/User/register">
                         <div class="logo">
                             <img src="<?php echo BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                         </div>
@@ -47,22 +41,23 @@
                         </div>
                         <div class="actual-form">
                             <div class="input-wrap">
-                                <input type="text" name="username" id="username-register" minlength="4" class="input-field" autocomplete="off" required />
+                                <input type="text" name="username" class="input-field" autocomplete="off" required />
                                 <label>Username</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="email" name="email" id="email-register" class="input-field" autocomplete="off" required />
+                                <input type="email" name="email" class="input-field" autocomplete="off" required />
                                 <label>Email</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" name="password" id="password-register" minlength="4" class="input-field" autocomplete="off" required />
+                                <input type="password" name="password" class="input-field" autocomplete="off" required />
                                 <label>Password</label>
                             </div>
-                            <button id="submit" type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">Register</button>
-                            <p class="text"> By signing up, I agree to the <a href="#">Terms of Services</a> and <a href="#">Privacy Policy</a></p>
+                            <button type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">
+                                Register
+                            </button>
+                            <p>By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
                         </div>
                     </form>
-
                 </div>
                 <div class="carousel_login">
                     <div class="images-wrapper">
@@ -73,9 +68,9 @@
                     <div class="text-slider">
                         <div class="text-wrap">
                             <div class="text-group">
-                                <h2>Create your own courses</h2>
-                                <h2>Customize as you like</h2>
-                                <h2>Invite students to your class</h2>
+                                <h2>Bayar dengan Mudah dan Cepat</h2>
+                                <h2>Pesan Makanan Praktis Online</h2>
+                                <h2>Transaksi Kantin Tanpa Tunai</h2>
                             </div>
                         </div>
                         <div class="bullets">
@@ -105,14 +100,6 @@
             inp.classList.remove("active");
         });
     });
-    toggle_login_btn.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            mainEle.classList.toggle("sign-up-mode");
-            inputs.forEach((cb) => {
-                cb.value = "";
-            });
-        });
-    });
 
     function moveSlider() {
         let index = this.dataset.value;
@@ -127,27 +114,31 @@
             cb.value = "";
         });
     }
+
     bullets.forEach((bullet) => {
         bullet.addEventListener("click", moveSlider);
     });
-    document.addEventListener("DOMContentLoaded", function() {
-        const dropdownUserBtn = document.getElementById("dropdownUserBtn");
-        const dropdownUser = document.getElementById("dropdownUser");
-        dropdownUserBtn.addEventListener("mouseenter", () => {
-            dropdownUser.classList.remove("hidden");
-        });
-        dropdownUserBtn.addEventListener("mouseleave", () => {
-            setTimeout(() => {
-                if (!dropdownUser.matches(":hover")) {
-                    dropdownUser.classList.add("hidden");
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const mainEle = document.querySelector("main");
+        const toggleLoginBtns = document.querySelectorAll(".toggle_login");
+
+        toggleLoginBtns.forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                const currentURL = window.location.href;
+                const isRegisterMode = mainEle.classList.contains("sign-up-mode");
+
+                if (isRegisterMode) {
+                    mainEle.classList.remove("sign-up-mode");
+                    const newURL = currentURL.replace(/\/register/, "/login");
+                    history.pushState(null, null, newURL);
+                } else {
+                    mainEle.classList.add("sign-up-mode");
+                    const newURL = currentURL.replace(/\/login/, "/register");
+                    history.pushState(null, null, newURL);
                 }
-            }, 100);
-        });
-        dropdownUser.addEventListener("mouseleave", () => {
-            dropdownUser.classList.add("hidden");
-        });
-        dropdownUser.addEventListener("mouseenter", () => {
-            dropdownUser.classList.remove("hidden");
+            });
         });
     });
 </script>

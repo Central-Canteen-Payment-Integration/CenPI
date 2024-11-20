@@ -1,6 +1,6 @@
 <?php 
 
-define('BASE_URL', 'http://localhost:8080/CenPI');
+define('BASE_URL', 'http://cenpi.test');
 
 define('DB_HOST', '100.64.15.1');
 define('DB_USER', 'C##CENPI');
