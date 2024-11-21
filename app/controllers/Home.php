@@ -1,19 +1,20 @@
 <?php
 
 class Home extends Controller {
+    private $menuModel;
 
-    public function index() {
-        if (isset($_SESSION['user_id'])) {
-            $username = $_SESSION['username'];
-            $data['username'] = $username;
-            $this->view('templates/header');
-            $this->view('home/index', $data);
-        } else {
-            $this->view('templates/header');
-            $this->view('home/index');
-        }
+    public function __construct() {
+        $this->menuModel = $this->model('MenuModel');
     }
 
+    public function index() {
+        $data = [
+            'menus' => $this->menuModel->getAllMenus()
+        ];
+        $this->view('templates/header');
+        $this->view('Home/index', $data);
+    }
+    
     public function logout() {
         session_destroy();
         header("Location: /Home");

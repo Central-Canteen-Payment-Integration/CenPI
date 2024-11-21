@@ -27,9 +27,17 @@
 							</li>
 						</ul>
 					</div>
-					<div id="login_div">
+					<?php 
+						if (isset($_SESSION['user_id'])) {
+					?>
+					<div class="font-medium gap-6">
+						<a href="<?php echo BASE_URL; ?>/User/profile" class="block py-2 mx-2 text-white"><?php echo "Hi, " . $_SESSION['username'] ?></a>
+					</div>
+					<?php } else { ?>
+					<div class="font-medium gap-6">
 						<a href="<?php echo BASE_URL; ?>/User/login" class="block py-2 mx-2 text-white">Sign In</a>
 					</div>
+					<?php } ?>
 				</div>
 			</nav>
 		</header>

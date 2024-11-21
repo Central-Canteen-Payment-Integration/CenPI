@@ -5,6 +5,11 @@ class User extends Controller {
 
     public function __construct() {
         $this->userModel = $this->model('UserModel');
+
+        if (isset($_SESSION['user_id'])) {
+            header('Location: /Home');
+            exit;
+        }
     }
 
     public function login() {
@@ -29,7 +34,7 @@ class User extends Controller {
             }
         }
 
-        $this->view('home/login_register', $data);
+        $this->view('user/login_register', $data);
     }
 
     public function register() {
@@ -47,7 +52,7 @@ class User extends Controller {
                 $data['error'] = 'All fields must be filled.';
             } else {
                 if ($this->userModel->register($username, $password, $email)) {
-                    header('Location: /Home');
+                    header('Location: /User/login');
                     exit;
                 } else {
                     $data['error'] = 'Registration failed. Please try again.';
@@ -55,6 +60,6 @@ class User extends Controller {
             }
         }
 
-        $this->view('home/login_register', $data);
+        $this->view('user/login_register', $data);
     }
 }
