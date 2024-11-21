@@ -5,14 +5,13 @@ class User extends Controller {
 
     public function __construct() {
         $this->userModel = $this->model('UserModel');
+    }
 
+    public function login() {
         if (isset($_SESSION['user_id'])) {
             header('Location: /Home');
             exit;
         }
-    }
-
-    public function login() {
         $data = [
             'page' => 'login',
             'error' => ''
@@ -38,6 +37,10 @@ class User extends Controller {
     }
 
     public function register() {
+        if (isset($_SESSION['user_id'])) {
+            header('Location: /Home');
+            exit;
+        }
         $data = [
             'page' => 'register',
             'error' => ''
@@ -61,5 +64,10 @@ class User extends Controller {
         }
 
         $this->view('user/login_register', $data);
+    }
+    public function logout() {
+        session_destroy();
+        header("Location: /Home");
+        exit();
     }
 }

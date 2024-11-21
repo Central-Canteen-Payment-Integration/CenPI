@@ -14,10 +14,4 @@ class Home extends Controller {
         $this->view('templates/header');
         $this->view('Home/index', $data);
     }
-    
-    public function logout() {
-        session_destroy();
-        header("Location: /Home");
-        exit();
-    }
 }
