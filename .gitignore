@@ -2,3 +2,7 @@ node_modules/
 
 assets/css/style.css
 app/config/
+
+vendor/
+
+app/vendor/
