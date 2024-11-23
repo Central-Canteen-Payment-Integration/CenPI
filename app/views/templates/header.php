@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<header class="mb-16">
+	<header class="mb-10">
 		<div class="navbar bg-base-100 px-6">
 			<div class="navbar-start">
 				<a href="<?php BASE_URL ?>"><button class="btn btn-glass text-xl"">Cenπ</button></a>

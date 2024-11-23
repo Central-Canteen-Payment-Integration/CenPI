@@ -14,4 +14,8 @@ class Home extends Controller {
         $this->view('templates/header');
         $this->view('Home/index', $data);
     }
+    public function checkout(){
+        $this->view('templates/header');
+        $this->view('Home/checkout');   
+    }
 }
