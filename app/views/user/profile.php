@@ -45,11 +45,13 @@
             <!-- Feedback Messages -->
             <?php if (isset($_SESSION['success'])): ?>
                 <div class="p-4 mb-6 text-sm text-white bg-[var(--accent)] rounded-lg">
-                    <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
+                    <?php echo $_SESSION['success'];
+                    unset($_SESSION['success']); ?>
                 </div>
             <?php elseif (isset($_SESSION['error'])): ?>
                 <div class="p-4 mb-6 text-sm text-white bg-[var(--primary)] rounded-lg">
-                    <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                    <?php echo $_SESSION['error'];
+                    unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
@@ -58,42 +60,75 @@
                 <div>
                     <label for="name" class="block text-sm font-semibold text-[var(--secondary)]">Name</label>
                     <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
-                        value="<?php echo htmlspecialchars($data['user']['USERNAME']); ?>" required>
+                        value="<?php echo htmlspecialchars($data['user']['USERNAME']); ?>" readonly>
                 </div>
                 <div>
                     <label for="birthdate" class="block text-sm font-semibold text-[var(--secondary)]">Birthdate</label>
                     <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
-                        value="<?php echo htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" required>
+                        value="<?php echo htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="phone" class="block text-sm font-semibold text-[var(--secondary)]">Phone</label>
                     <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
-                        value="<?php echo htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" required>
+                        value="<?php echo htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-semibold text-[var(--secondary)]">Email</label>
                     <input type="email" id="email" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg bg-gray-100 focus:outline-none" value="<?php echo htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
                 </div>
+                <div id="editFields" class="hidden">
                 <div>
                     <label for="currentPassword" class="block text-sm font-semibold text-[var(--secondary)]">Current Password</label>
-                    <input type="password" id="currentPassword" name="currentPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]" required>
+                    <input type="password" id="currentPassword" name="currentPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
                 </div>
-                <div>
-                    <label for="newPassword" class="block text-sm font-semibold text-[var(--secondary)]">New Password</label>
-                    <input type="password" id="newPassword" name="newPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]" required>
-                </div>
-                <div>
-                    <label for="confirmNewPassword" class="block text-sm font-semibold text-[var(--secondary)]">Confirm New Password</label>
-                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]" required>
+                    <div>
+                        <label for="newPassword" class="block text-sm font-semibold text-[var(--secondary)]">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
+                    </div>
+                    <div>
+                        <label for="confirmNewPassword" class="block text-sm font-semibold text-[var(--secondary)]">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-4">
-                    <a href="/home" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-[var(--neutral)]">Cancel</a>
-                    <button type="submit" class="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--secondary)]">Save Changes</button>
+                    <button id="editButton" type="button" class="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--secondary)]" onclick="toggleEdit()">Edit Profile</button>
+                    <button id="saveButton" type="submit" class="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--secondary)] hidden">Save Changes</button>
+                    <a href="/home" class="w-full px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-[var(--neutral)] text-center block">
+                        Back To Home
+                    </a>
                 </div>
             </form>
+
+            <script>
+                function toggleEdit() {
+                    const inputs = document.querySelectorAll('#profileForm input');
+                    const editFields = document.getElementById('editFields');
+                    const editButton = document.getElementById('editButton');
+                    const saveButton = document.getElementById('saveButton');
+
+                    inputs.forEach(input => {
+                        if (input.id !== 'email') { 
+                            input.readOnly = !input.readOnly;
+                        }
+                    });
+
+                    if (editFields.classList.contains('hidden')) {
+                        editFields.classList.remove('hidden');
+                        saveButton.classList.remove('hidden');
+                        editButton.textContent = 'Cancel';
+                    } else {
+                        editFields.classList.add('hidden');
+                        saveButton.classList.add('hidden');
+                        editButton.textContent = 'Edit Profile';
+                    }
+                }
+            </script>
         </div>
     </div>
+
 </body>
+
+
 
 
 </html>
