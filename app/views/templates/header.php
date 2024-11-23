@@ -92,7 +92,7 @@
 							<?php } ?>
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-						<li><a>Profile</a></li>
+						<li><a href="<?php echo BASE_URL ?>/ProfileUser/showProfile">Profile</a></li>
 						<li><a>My Orders</a></li>
 						<li><a>Settings</a></li>
 						<li><a href="<?php BASE_URL ?>/User/logout">Logout</a></li>
