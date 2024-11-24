@@ -1,7 +1,7 @@
 <div class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
     <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/global.css">
     <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/style.css">
-    <main class="flex justify-center <?php ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
+    <main class="flex justify-center <?php echo ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
         <div class="box">
             <div class="inner-box">
                 <div class="forms-wrap">

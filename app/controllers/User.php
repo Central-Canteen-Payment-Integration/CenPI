@@ -65,6 +65,55 @@ class User extends Controller {
 
         $this->view('user/login_register', $data);
     }
+
+    public function profile() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /User/login');
+            exit;
+        } else {
+            $userId = $_SESSION['user_id'];
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $username = htmlspecialchars($_POST['username']);
+                $birthdate = $_POST['birthdate'];
+                $phone_number = $_POST['phone_number'];
+                $currentPassword = $_POST['currentPassword'];
+                $newPassword = $_POST['newPassword'];
+                $confirmNewPassword = $_POST['confirmNewPassword'];
+    
+                if (!$this->userModel->verifyPassword($userId, $currentPassword)) {
+                    $_SESSION['error'] = 'Current password is incorrect.';
+                    header('Location: /User/profile');
+                    exit;
+                }
+    
+                $hashedNewPassword = null;
+                if (!empty($newPassword)) {
+                    if ($newPassword !== $confirmNewPassword) {
+                        $_SESSION['error'] = 'New password and confirmation do not match.';
+                        header('Location: /User/profile');
+                        exit;
+                    }
+                    $hashedNewPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+                }
+    
+                $isUpdated = $this->userModel->updateUserProfile($userId, $username, $birthdate, $phone_number, $hashedNewPassword);
+    
+                if ($isUpdated) {
+                    $_SESSION['success'] = 'Profile updated successfully.';
+                    header('Location: /User/profile');
+                } else {
+                    $_SESSION['error'] = 'Failed to update profile.';
+                    header('Location: /User/profile');
+                }
+    
+                exit;
+            }
+            $user = $this->userModel->getUserById($userId);
+            $data = ['user' => $user];
+            $this->view('User/profile', $data);
+        }
+    }
+
     public function logout() {
         session_destroy();
         header("Location: /Home");

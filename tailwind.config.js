@@ -1,8 +1,18 @@
 module.exports = {
   content: ['./app/*.{php,js}', './app/**/*.{php,js}'],
   daisyui: {
-    themes: ["autumn", "dim"]
-  },
+    themes: [
+      {
+        def: {        
+          "primary": "#F54D2F",
+          "secondary": "#0B3C33",
+          "accent": "#B2E6C2",
+          "neutral": "#E6D3C5",
+          "base-100": "#FFF1F0",
+          },
+        },
+      ],
+    },
   plugins: [
     require('daisyui')
   ]

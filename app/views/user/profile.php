@@ -6,29 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/global.css">
-    <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/style.css">
-    <style>
-        :root {
-            --primary: #F54D2F;
-            --secondary: #0B3C33;
-            --background: #FFF1F0;
-            --accent: #B2E6C2;
-            --neutral: #E6D3C5;
-        }
-    </style>
+    <link rel="stylesheet" href="<?php BASE_URL ?>/assets/css/global.css">
+    <link rel="stylesheet" href="<?php BASE_URL ?>/assets/css/style.css">
 </head>
 
-<body class="bg-[var(--background)] min-h-screen flex items-center justify-center p-4">
-    <div class="font-std w-full max-w-4xl rounded-xl bg-white p-10 shadow-2xl border-2 border-[var(--neutral)]">
+<body class="bg-base-100 min-h-screen flex items-center justify-center p-4">
+    <div class="font-std w-full max-w-4xl rounded-xl bg-white p-10 shadow-2xl border-2 border-neutral">
         <div class="flex flex-col">
             <!-- Title and Profile Picture -->
             <div class="flex flex-col md:flex-row justify-between mb-8 items-start">
-                <h2 class="mb-5 text-4xl font-extrabold text-[var(--primary)] md:mb-0">My Profile</h2>
+                <h2 class="mb-5 text-4xl font-extrabold text-primary md:mb-0">My Profile</h2>
                 <div class="text-center">
                     <img src="https://i.pravatar.cc/300" alt="Profile Picture"
-                        class="rounded-full w-32 h-32 mx-auto border-4 border-[var(--secondary)] mb-4 transition-transform duration-300 hover:scale-110 shadow-lg">
-                    <label for="upload_profile" class="cursor-pointer inline-flex items-center bg-[var(--accent)] px-3 py-1 rounded-lg text-[var(--secondary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all">
+                        class="rounded-full w-32 h-32 mx-auto border-4 border-secondary mb-4 transition-transform duration-300 hover:scale-110 shadow-lg">
+                    <label for="upload_profile" class="cursor-pointer inline-flex items-center bg-accent px-3 py-1 rounded-lg text-secondary text-sm font-semibold hover:bg-primary hover:text-white transition-all">
                         <input type="file" name="profile" id="upload_profile" hidden required>
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -44,56 +35,56 @@
 
             <!-- Feedback Messages -->
             <?php if (isset($_SESSION['success'])): ?>
-                <div class="p-4 mb-6 text-sm text-white bg-[var(--accent)] rounded-lg">
+                <div class="p-4 mb-6 text-sm text-white bg-accent rounded-lg">
                     <?php echo $_SESSION['success'];
                     unset($_SESSION['success']); ?>
                 </div>
             <?php elseif (isset($_SESSION['error'])): ?>
-                <div class="p-4 mb-6 text-sm text-white bg-[var(--primary)] rounded-lg">
+                <div class="p-4 mb-6 text-sm text-white bg-primary rounded-lg">
                     <?php echo $_SESSION['error'];
                     unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
             <!-- Form -->
-            <form id="profileForm" class="space-y-6" onsubmit="return confirmPassword(event);" method="POST" action="<?php echo BASE_URL; ?>/ProfileUser/updateProfile">
+            <form id="profileForm" class="space-y-6" method="POST" action="<?php BASE_URL ?>/User/profile">
                 <div>
-                    <label for="name" class="block text-sm font-semibold text-[var(--secondary)]">Name</label>
-                    <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
+                    <label for="name" class="block text-sm font-semibold text-secondary">Name</label>
+                    <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
                         value="<?php echo htmlspecialchars($data['user']['USERNAME']); ?>" readonly>
                 </div>
                 <div>
-                    <label for="birthdate" class="block text-sm font-semibold text-[var(--secondary)]">Birthdate</label>
-                    <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
+                    <label for="birthdate" class="block text-sm font-semibold text-secondary">Birthdate</label>
+                    <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
                         value="<?php echo htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" readonly>
                 </div>
                 <div>
-                    <label for="phone" class="block text-sm font-semibold text-[var(--secondary)]">Phone</label>
-                    <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"
+                    <label for="phone" class="block text-sm font-semibold text-secondary">Phone</label>
+                    <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
                         value="<?php echo htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" readonly>
                 </div>
                 <div>
-                    <label for="email" class="block text-sm font-semibold text-[var(--secondary)]">Email</label>
-                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg bg-gray-100 focus:outline-none" value="<?php echo htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
+                    <label for="email" class="block text-sm font-semibold text-secondary">Email</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-neutral rounded-lg bg-gray-100 focus:outline-none" value="<?php echo htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
                 </div>
                 <div id="editFields" class="hidden">
                 <div>
-                    <label for="currentPassword" class="block text-sm font-semibold text-[var(--secondary)]">Current Password</label>
-                    <input type="password" id="currentPassword" name="currentPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
+                    <label for="currentPassword" class="block text-sm font-semibold text-secondary">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"readonly>
                 </div>
                     <div>
-                        <label for="newPassword" class="block text-sm font-semibold text-[var(--secondary)]">New Password</label>
-                        <input type="password" id="newPassword" name="newPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
+                        <label for="newPassword" class="block text-sm font-semibold text-secondary">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"readonly>
                     </div>
                     <div>
-                        <label for="confirmNewPassword" class="block text-sm font-semibold text-[var(--secondary)]">Confirm New Password</label>
-                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full px-4 py-2 border-2 border-[var(--neutral)] rounded-lg focus:outline-none focus:ring focus:ring-[var(--accent)]"readonly>
+                        <label for="confirmNewPassword" class="block text-sm font-semibold text-secondary">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"readonly>
                     </div>
                 </div>
                 <div class="flex justify-end space-x-4">
-                    <button id="editButton" type="button" class="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--secondary)]" onclick="toggleEdit()">Edit Profile</button>
-                    <button id="saveButton" type="submit" class="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--secondary)] hidden">Save Changes</button>
-                    <a href="/home" class="w-full px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-[var(--neutral)] text-center block">
+                    <button id="editButton" type="button" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary" onclick="toggleEdit()">Edit Profile</button>
+                    <button id="saveButton" type="submit" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary hidden">Save Changes</button>
+                    <a href="/home" class="w-full px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-neutral text-center block">
                         Back To Home
                     </a>
                 </div>
@@ -125,10 +116,3 @@
             </script>
         </div>
     </div>
-
-</body>
-
-
-
-
-</html>
