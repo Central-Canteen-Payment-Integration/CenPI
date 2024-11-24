@@ -1,6 +1,7 @@
 {
     "require": {
         "phpmailer/phpmailer": "^6.9",
-        "textalk/websocket": "^1.6"
+        "textalk/websocket": "^1.6",
+        "ramsey/uuid": "^4.7"
     }
 }

@@ -1,18 +1,20 @@
 <?php
+use Ramsey\Uuid\Uuid;
 
-class UserModel extends Model
-{
-    public function register($username, $password, $email)
-    {
+class UserModel extends Model {
+    public function register($username, $password, $email) {
         try {
             $this->db->beginTransaction();
 
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            $sql = "INSERT INTO USERS (username, pass_user, email) 
-                    VALUES (:username, :password, :email)";
+            $sql = "INSERT INTO USERS (id_user, username, password, email, active)
+                                VALUES (:id_user, :username, :password, :email, 0)";
+
+            $id_user = Uuid::uuid4()->toString();
 
             $this->db->query($sql);
+            $this->db->bind(':id_user', $id_user);
             $this->db->bind(':username', $username);
             $this->db->bind(':password', $hashedPassword);
             $this->db->bind(':email', $email);
@@ -27,16 +29,15 @@ class UserModel extends Model
         }
     }
 
-    public function login($username, $password)
-    {
+    public function login($username, $password) {
         try {
-            $sql = "SELECT * FROM USERS WHERE USERNAME = :username";
+            $sql = "SELECT * FROM USERS WHERE username = :username";
             $this->db->query($sql);
             $this->db->bind(':username', $username);
 
             $user = $this->db->single();
 
-            if ($user && password_verify($password, $user['PASS_USER'])) {
+            if ($user && password_verify($password, $user['PASSWORD'])) {
                 return $user;
             }
 
@@ -47,19 +48,15 @@ class UserModel extends Model
         }
     }
 
-    public function getUserById($userId)
-    {
-        $sql = "SELECT * FROM USERS WHERE ID_USER = :id_user";
+    public function getUserById($userId) {
+        $sql = "SELECT * FROM USERS WHERE id_user = :id_user";
         $this->db->query($sql);
         $this->db->bind(':id_user', $userId);
 
         return $this->db->single();
     }
 
-
-
-    public function updateUserProfile($userId, $username, $birthdate, $phone_number, $hashedNewPassword = null)
-    {
+    public function updateUserProfile($userId, $username, $birthdate, $phone_number, $hashedNewPassword = null) {
         $this->db->beginTransaction();
 
         try {
@@ -97,10 +94,7 @@ class UserModel extends Model
         }
     }
 
-
-
-    public function verifyPassword($userId, $password)
-    {
+    public function verifyPassword($userId, $password) {
         $sql = "SELECT PASS_USER FROM USERS WHERE id_user = :id_user";
         $this->db->query($sql);
         $this->db->bind(':id_user', $userId);

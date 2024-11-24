@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['./app/*.{php,js}', './app/**/*.{php,js}'],
+  content: ['./app/*.{php,js}', './app/**/*.{php,js}', , './app/**/**/*.{php,js}'],
   daisyui: {
     themes: [
       {
@@ -8,7 +8,7 @@ module.exports = {
           "secondary": "#0B3C33",
           "accent": "#B2E6C2",
           "neutral": "#E6D3C5",
-          "base-100": "#FFF1F0",
+          "base-100": "#FFFFFF",
           },
         },
       ],

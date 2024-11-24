@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header class="mb-10">
-		<div class="navbar bg-base-100 px-6">
+		<div class="navbar px-6">
 			<div class="navbar-start">
 				<a href="<?php BASE_URL ?>"><button class="btn btn-glass text-xl"">Cenπ</button></a>
 			</div>
@@ -30,9 +30,9 @@
 						</div>
 						<div class="drawer-side z-50">
 							<label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
-							<div class="bg-white text-base-content min-h-full w-3/12 p-4 pr-12">
+							<div class="bg-white text-base-content min-h-full w-3/12 p-4 pr-6">
 								<div class="flex justify-between items-center">
-									<h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Food cart</h2>
+									<h2 class="text-lg font-medium text-secondary" id="slide-over-title">Food cart</h2>
 									<button type="button" class="text-gray-500 hover:text-gray-700" onclick="document.getElementById('my-drawer-4').checked = false;">
 										<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -42,46 +42,23 @@
 								<div class="mt-2">
 									<div class="flow-root">
 										<ul role="list" class="divide-y divide-gray-200 cart-list">
-											<li class="flex py-6">
-												<div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-													<img src="https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="size-full object-cover">
-												</div>
-
-												<div class="ml-4 flex flex-1 flex-col">
-													<div>
-														<div class="flex justify-between text-base font-medium text-gray-900">
-															<h3>
-																<a href="#">Throwback Hip Bag</a>
-															</h3>
-															<p class="ml-4">$90.00</p>
-														</div>
-														<p class="mt-1 text-sm text-gray-500">Salmon</p>
-													</div>
-													<div class="flex flex-1 items-end justify-between text-sm">
-														<p class="text-gray-500">Qty 1</p>
-														<div class="flex">
-															<button type="button" class="font-medium text-primary hover:text-indigo-500">Remove</button>
-														</div>
-													</div>
-												</div>
-											</li>
 										</ul>
 									</div>
 								</div>
 
-								<div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-									<div class="flex justify-between text-base font-medium text-gray-900">
+								<div class="border-t border-gray-200 px-4 py-6">
+									<div class="flex justify-between text-base font-medium text-secondary">
 										<p>Subtotal</p>
-										<p>$262.00</p>
+										<p>Rp. 0</p>
 									</div>
-									<p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+									<p class="mt-0.5 text-sm text-gray-500">Packaging calculated at checkout.</p>
 									<div class="mt-6">
-										<a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+										<a href="#" class="disabled flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-accent">Checkout</a>
 									</div>
 									<div class="mt-6 flex justify-center text-center text-sm text-gray-500">
 										<p>
 											or
-											<button type="button"  class="font-medium text-indigo-600 hover:text-indigo-500" onclick="document.getElementById('my-drawer-4').checked = false;">
+											<button type="button"  class="font-medium text-secondary hover:text-accent" onclick="document.getElementById('my-drawer-4').checked = false;">
 												Continue Shopping
 												<span aria-hidden="true"> &rarr;</span>
 											</button>
@@ -138,7 +115,7 @@
 							<?php } ?>
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-						<li><a href="<?php echo BASE_URL ?>/ProfileUser/showProfile">Profile</a></li>
+						<li><a href="<?php echo BASE_URL ?>/User/profile">Profile</a></li>
 						<li><a>My Orders</a></li>
 						<li><a>Settings</a></li>
 						<li><a href="<?php BASE_URL ?>/User/logout" onclick="localStorage.clear();">Logout</a></li>
