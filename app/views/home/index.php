@@ -4,20 +4,25 @@
             <?php foreach ($data['menus'] as $menu): ?>
                 <div class="card card-compact bg-base-100 w-64 shadow-xl">
                     <figure>
-                        <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="FnBImages" />
+                        <?php
+                        $menuImage = strtolower(str_replace(' ', '', $menu['NAMA_MENU'])); // namamenu jadi namafile
+                        $imageExtension = in_array($menuImage, ['eskopisusu', 'nasigoreng']) ? 'jpeg' : 'jpg'; // buat kalo ada ekstensi lain
+                        ?>
+                        <img class="w-full h-40 fill-cover"
+                            src="<?php echo BASE_URL . "/assets/img/" . $menuImage . "." . $imageExtension; ?>"
+                            alt="<?php echo htmlspecialchars($menu['NAMA_MENU']); ?>" />
                     </figure>
                     <div class="card-body">
                         <h2 class="card-title"><?php echo htmlspecialchars($menu['NAMA_MENU']); ?></h2>
                         <div class="flex justify-between items-center">
                             <div class="text-lg font-bold">
-                                $<?php echo number_format($menu['HARGA'], 2); ?>
+                                Rp<?php echo number_format($menu['HARGA'], 0, ',', '.'); ?>
                             </div>
-                             <button class="btn btn-primary add-to-cart"
-                                    data-id="<?php echo $menu['ID_MENU']; ?>" 
-                                    data-name="<?php echo htmlspecialchars($menu['NAMA_MENU']); ?>" 
-                                    data-price="<?php echo $menu['HARGA']; ?>">
+                            <button class="btn btn-primary add-to-cart" 
+                                data-id="<?php echo $menu['ID_MENU']; ?>"
+                                data-name="<?php echo htmlspecialchars($menu['NAMA_MENU']); ?>"
+                                data-price="<?php echo $menu['HARGA']; ?>"
+                                data-image="<?php echo BASE_URL . "/assets/img/" . $menuImage . "." . $imageExtension; ?>">
                                 Add
                             </button>
                         </div>
@@ -29,17 +34,18 @@
         <?php endif; ?>
     </div>
     <ul id="cart-list">
-        <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) { 
+        <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
             foreach ($_SESSION['cart'] as $item) {
                 echo '<li>';
                 echo '<strong>' . htmlspecialchars($item['name']) . '</strong> - ';
-                echo '$' . number_format($item['price'], 2);
+                echo 'Rp' . number_format($item['price'], 0, ',', '.');
                 echo ' (ID: ' . htmlspecialchars($item['id']) . ')';
                 echo '</li>';
             }
         } ?>
     </ul>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -86,6 +92,7 @@
                 id: menu.id,
                 name: menu.name,
                 price: menu.price,
+                image: menu.image || 'placeholder.jpg',
                 qty: 1,
             });
         }
