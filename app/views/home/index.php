@@ -14,11 +14,7 @@
                             <div class="text-lg font-bold">
                                 Rp. <?php echo number_format($menu['PRICE'], 0, ',', '.'); ?>
                             </div>
-                            <button class="btn btn-primary text-white add-to-cart" 
-                                data-id="<?php echo $menu['ID_MENU']; ?>"
-                                data-name="<?php echo htmlspecialchars($menu['NAME']); ?>"
-                                data-price="<?php echo $menu['PRICE']; ?>"
-                                data-image="<?php echo $menu['IMAGE']; ?>">
+                            <button class="btn btn-primary text-white add-to-cart" data-id="<?php echo $menu['ID_MENU']; ?>">
                                 Add
                             </button>
                         </div>
@@ -34,72 +30,92 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        function updateCartDisplay() {
+        function updateCartDisplay(cartItems) {
             $('.cart-list').empty();
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-            cartItems.forEach((item, index) => {
+            if (cartItems.length > 0) {
+                cartItems.forEach((item) => {
                 const listItem = document.createElement('li');
-                listItem.className = `flex py-6 cart-list-${index}`;
+                listItem.className = `flex py-6`;
                 listItem.innerHTML = `
                     <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img src="<?php BASE_URL ?>${item.image}" alt="${item.name}" class="size-full object-cover">
+                        <img src="<?php BASE_URL ?>${item.IMAGE}" alt="${item.NAME}" class="size-full object-cover">
                     </div>
                     <div class="ml-4 flex flex-1 flex-col">
                         <div>
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <h3>
-                                    <a href="#">${item.name}</a>
+                                    <a href="#">${item.NAME}</a>
                                 </h3>
-                                <p class="ml-4">Rp. ${item.price.toFixed(2)}</p>
+                                <p class="ml-4">Rp. ${item.PRICE}</p>
                             </div>
                         </div>
                         <div class="flex flex-1 items-end justify-between text-sm">
-                            <p class="text-gray-500">Qty ${item.qty}</p>
+                            <p class="text-gray-500">Qty ${item.QTY}</p>
                             <div class="flex">
-                                <button type="button" class="font-medium text-primary hover:text-indigo-500 remove-btn" data-index="${index}">Remove</button>
+                                <button type="button" class="font-medium text-primary hover:text-indigo-500 remove-btn" data-id="${item.ID_CART}">Remove</button>
                             </div>
                         </div>
                     </div>
                 `;
                 $('.cart-list').append(listItem);
             });
+            } else {
+                const emptyMessage = $('<p class="text-center text-gray-500 dark:text-gray-400">Your cart is empty.</p>');
+                $('.cart-list').append(emptyMessage);
+            }
 
             $('.qty-cart').text(cartItems.length);
 
             if (cartItems.length > 0) {
                 $('.dropdown.dropdown-end').addClass('md:inline');
-                $('.checkout-btn').removeClass('disabled')
             }
         }
 
-        function updateCartItem(cartItems, menu) {
-            cartItems.push({
-                id: menu.id,
-                name: menu.name,
-                price: menu.price,
-                image: menu.image || 'placeholder.jpg',
-                qty: 1,
-            });
-        }
-
         $(document).on('click', '.remove-btn', function () {
-            const index = $(this).data('index');
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            cartItems.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            updateCartDisplay();
+            const cart = $(this).data();
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>/Cart/delete',
+                type: 'POST',
+                data: {
+                    id_cart: cart.id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error removing item: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
         });
 
         $('.add-to-cart').click(function () {
             const menu = $(this).data();
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-            updateCartItem(cartItems, menu);
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            updateCartDisplay();
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>/Cart/add',
+                type: 'POST',
+                data: {
+                    id_menu: menu.id,
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error updating cart: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
         });
-
-        updateCartDisplay();
+        const cart = <?php echo json_encode($data['cart']); ?>;
+        updateCartDisplay(cart);
     });
 </script>

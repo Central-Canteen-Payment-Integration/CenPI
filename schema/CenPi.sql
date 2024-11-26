@@ -36,6 +36,7 @@ CREATE TABLE TRANSACTION (
     id_user VARCHAR2(36) NOT NULL,
     trx_price INT NOT NULL,
     trx_date DATE NOT NULL,
+    NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
 
@@ -45,9 +46,21 @@ CREATE TABLE TRANSACTION_DETAIL (
     qty INT NOT NULL,
     qty_price INT NOT NULL,
     pkg_price INT,
+    notes VARCHAR2(100),
+    status NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );
+
+CREATE TABLE CART (
+    id_cart VARCHAR2(36) PRIMARY KEY,
+    id_user VARCHAR2(36) NOT NULL,
+    id_menu VARCHAR2(36) NOT NULL,
+    qty INT NOT NULL,
+    notes VARCHAR2(100),
+    FOREIGN KEY (id_user) REFERENCES USERS(id_user),
+    FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
+)
 
 INSERT INTO TENANT (id_tenant, tenant_name, email, username, password) 
 VALUES ('1', 'Warung Mas Budi', 'warungbudi@example.com', 'warungbudi', 'password123');
