@@ -73,5 +73,28 @@ class Cart extends Controller {
         ]);
         exit;
     }
+
+    public function clear() {
+        $id_user = $_SESSION['user_id'];
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $result = $this->cartModel->clearCart($id_user);
+    
+            if ($result) {
+                $cart = $this->cartModel->getCartUser($id_user);
+                echo json_encode([
+                    'status' => 'success',
+                    'cart' => $cart
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Failed to clear the cart.'
+                ]);
+            }
+            exit;
+        }
+    }
+    
     
 }

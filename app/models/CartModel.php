@@ -1,17 +1,20 @@
 <?php
+
 use Ramsey\Uuid\Uuid;
 
-class CartModel extends Model {
-    public function getCartUser ($id_user) {
+class CartModel extends Model
+{
+    public function getCartUser($id_user)
+    {
         try {
             $sql = "SELECT CART.*, MENU.*
                     FROM CART
                     INNER JOIN MENU ON CART.id_menu = MENU.id_menu
                     WHERE CART.id_user = :id_user";
-            
+
             $this->db->query($sql);
             $this->db->bind(':id_user', $id_user);
-    
+
             return $this->db->resultSet();
         } catch (Exception $e) {
             error_log("Get Cart by User Error: " . $e->getMessage());
@@ -78,6 +81,21 @@ class CartModel extends Model {
             return true;
         } catch (Exception $e) {
             error_log("Delete Cart Error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function clearCart($id_user)
+    {
+        try {
+            $sql = "DELETE FROM CART WHERE id_user = :id_user";
+            $this->db->query($sql);
+            $this->db->bind(':id_user', $id_user);
+
+            $this->db->execute();
+            return true;
+        } catch (Exception $e) {
+            error_log("Clear Cart Error: " . $e->getMessage());
             return false;
         }
     }

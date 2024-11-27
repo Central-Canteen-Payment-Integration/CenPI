@@ -27,16 +27,104 @@
     </div>
 </div>
 
+
+<!-- Tombol buat mobel -->
+<div class="fixed bottom-5 right-5 z-10 md:hidden">
+    <button
+        class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
+        onclick="document.getElementById('mobile-cart-modal').checked = true"
+        id="mobile-cart-button">
+        <div class="indicator">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span class="badge badge-sm indicator-item qty-cart"></span>
+        </div>
+    </button>
+</div>
+
+<!-- Mobel Modal -->
+<div class="drawer drawer-bottom md:hidden z-30">
+    <input id="mobile-cart-modal" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="mobile-cart-modal" class="drawer-overlay z-20"></label>
+        <div class="modal-content">
+            <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-medium text-secondary">Food Cart</h2>
+                    <button
+                        type="button"
+                        class="text-gray-500 hover:text-gray-700"
+                        onclick="document.getElementById('mobile-cart-modal').checked = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-2">
+                    <div class="flow-root">
+                        <ul role="list" class="divide-y divide-gray-200 cart-list">
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-6">
+                    <div class="flex justify-between text-base font-medium text-secondary">
+                        <p>Subtotal</p>
+                        <p>Rp. 0</p>
+                    </div>
+                    <p class="mt-0.5 text-sm text-gray-500">Packaging calculated at checkout.</p>
+                    <div class="mt-6">
+                        <a href="#" class="disabled flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-accent mb-2">Checkout</a>
+                        <button id="clear-cart-btn-mobile" class="flex items-center justify-center w-full rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-700">
+                            Clear Cart
+                        </button>
+                    </div>
+
+                    <div class="mt-6 flex flex-col items-center text-center text-sm text-gray-500">
+                        <p>or</p>
+                        <button type="button" class="font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('mobile-cart-modal').checked = false;">
+                            Continue Shopping
+                            <span aria-hidden="true"> &rarr;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- buat modal -->
+<style>
+    @media (min-width: 768px) {
+        .fixed {
+            display: none;
+        }
+    }
+
+    .modal-content {
+        position: relative;
+        z-index: 40;
+    }
+
+    .drawer-side .bg-white {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+</style>
+
+
+
+<!-- logic buat cart -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         function updateCartDisplay(cartItems) {
             $('.cart-list').empty();
             if (cartItems.length > 0) {
                 cartItems.forEach((item) => {
-                const listItem = document.createElement('li');
-                listItem.className = `flex py-6`;
-                listItem.innerHTML = `
+                    const listItem = document.createElement('li');
+                    listItem.className = `flex py-6`;
+                    listItem.innerHTML = `
                     <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img src="<?php BASE_URL ?>${item.IMAGE}" alt="${item.NAME}" class="size-full object-cover">
                     </div>
@@ -57,8 +145,8 @@
                         </div>
                     </div>
                 `;
-                $('.cart-list').append(listItem);
-            });
+                    $('.cart-list').append(listItem);
+                });
             } else {
                 const emptyMessage = $('<p class="text-center text-gray-500 dark:text-gray-400">Your cart is empty.</p>');
                 $('.cart-list').append(emptyMessage);
@@ -71,7 +159,7 @@
             }
         }
 
-        $(document).on('click', '.remove-btn', function () {
+        $(document).on('click', '.remove-btn', function() {
             const cart = $(this).data();
 
             $.ajax({
@@ -94,7 +182,7 @@
             });
         });
 
-        $('.add-to-cart').click(function () {
+        $('.add-to-cart').click(function() {
             const menu = $(this).data();
             $.ajax({
                 url: '<?php echo BASE_URL; ?>/Cart/add',
@@ -115,6 +203,33 @@
                 }
             });
         });
+
+        function clearCart() {
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>/Cart/clear',
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error clearing cart: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        }
+
+        $('#clear-cart-btn').click(function() {
+            clearCart();
+        });
+
+        $('#clear-cart-btn-mobile').click(function() {
+            clearCart();
+        });
+
         const cart = <?php echo json_encode($data['cart']); ?>;
         updateCartDisplay(cart);
     });
