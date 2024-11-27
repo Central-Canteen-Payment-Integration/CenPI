@@ -4,7 +4,7 @@
             <?php foreach ($data['menus'] as $menu): ?>
                 <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
                     <figure class="h-40 overflow-hidden">
-                        <img class="w-full h-full object-cover border-b-2 border-neutral"
+                        <img class="w-full h-full fill-cover border-b-2 border-neutral"
                             src="<?php echo BASE_URL . (!empty($menu['IMAGE']) ? $menu['IMAGE'] : '/assets/img/placeholder.jpg'); ?>"
                             alt="<?php echo htmlspecialchars($menu['NAME']); ?>" />
                     </figure>
