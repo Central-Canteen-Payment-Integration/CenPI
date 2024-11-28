@@ -20,7 +20,7 @@
 					<div class="drawer drawer-end hidden md:block">
 						<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
 						<div class="drawer-content">
-							<label for="my-drawer-4" class="drawer-button btn btn-ghost btn-circle hidden md:inline">
+							<label for="my-drawer-4" class="drawer-button btn btn-ghost btn-circle">
 								<div class="indicator">
 									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -47,49 +47,13 @@
 										</ul>
 									</div>
 								</div>
-								<div class="border-t border-gray-200 px-4 py-6">
-									<div class="flex justify-between text-base font-medium text-secondary">
-										<p>Subtotal</p>
-										<p>Rp. 0</p>
-									</div>
-									<p class="mt-0.5 text-sm text-gray-500">Packaging calculated at checkout.</p>
-									<div class="mt-6">
-										<a href="#" class="disabled flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-accent mb-2">Checkout</a>
-										<button id="clear-cart-btn" class="flex items-center justify-center w-full rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-700">
-											Clear Cart
-										</button>
-									</div>
-									<div class="mt-6 flex flex-col items-center text-center text-sm text-gray-500">
-										<p>or</p>
-										<button type="button" class="font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('my-drawer-4').checked = false;">
-											Continue Shopping
-											<span aria-hidden="true"> &rarr;</span>
-										</button>
-									</div>
-
+								<div class="border-t border-gray-200 px-4 py-6 cart-btn">
 								</div>
 							</div>
 						</div>
 					</div>
-
-
 				</div>
-				<style>
-					@media (max-width: 768px) {
-						.drawer-end {
-							display: none;
-						}
-					}
-
-					@media (min-width: 769px) {
-						.drawer-bottom {
-							display: none;
-						}
-					}
-				</style>
 			</div>
-
-
 			<?php
 			if (!isset($_SESSION['user_id'])) {
 			?>
@@ -139,7 +103,7 @@
 						<li><a href="<?php echo BASE_URL ?>/User/profile">Profile</a></li>
 						<li><a>My Orders</a></li>
 						<li><a>Settings</a></li>
-						<li><a href="<?php BASE_URL ?>/User/logout" onclick="localStorage.clear();">Logout</a></li>
+						<li><a href="<?php BASE_URL ?>/User/logout">Logout</a></li>
 					</ul>
 				</div>
 			<?php } ?>

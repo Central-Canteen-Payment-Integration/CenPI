@@ -1,7 +1,7 @@
 node_modules/
 
 assets/css/style.css
-app/config/
+app/config/config.php
 
 vendor/
 

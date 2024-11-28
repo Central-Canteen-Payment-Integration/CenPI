@@ -10,18 +10,21 @@ class Home extends Controller {
     }
 
     public function index() {
-        $id_user = $_SESSION['user_id'];
-        
         $data = [
             'menus' => $this->menuModel->getAllMenus(),
-            'cart' => $this->cartModel->getCartUser($id_user)
         ];
+    
+        if (isset($_SESSION['user_id'])) {
+            $id_user = $_SESSION['user_id'];
+            $data['cart'] = $this->cartModel->getCartUser ($id_user);
+        }
+    
         $this->view('templates/header');
-        $this->view('Home/index', $data);
+        $this->view('home/index', $data);
     }
 
     public function checkout() {
         $this->view('templates/header');
-        $this->view('Home/checkout');   
+        $this->view('home/checkout');   
     }
 }
