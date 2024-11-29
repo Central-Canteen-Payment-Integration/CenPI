@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch",
     "socket": "php ./websocket/ws-server.php",
-    "start": "concurrently \"npm run dev\" \"npm run socket\""
+    "start": "concurrently \"npm run dev\" \"npm run socket\"",
+    "install:all": "npm install && composer install && (cd app && composer install || echo 'No composer.json found in app directory')"
   },
   "author": "",
   "license": "ISC",
