@@ -1,13 +1,13 @@
 <div class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
-    <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/global.css">
-    <link rel="stylesheet" href="<?php BASE_URL; ?>/assets/css/style.css">
-    <main class="flex justify-center <?php echo ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>/assets/css/global.css">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>/assets/css/style.css">
+    <main class="flex justify-center <?= ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
         <div class="box">
             <div class="inner-box">
                 <div class="forms-wrap">
-                    <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?php BASE_URL; ?>/User/login">
+                    <form id="login_form" class="form_sign sign-in-form" method="POST" action="<?= BASE_URL; ?>/User/login">
                         <div class="logo">
-                            <img src="<?php BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
+                            <img src="<?= BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                         </div>
                         <div class="heading_login">
                             <h2>Welcome Back</h2>
@@ -30,9 +30,9 @@
                         </div>
                     </form>
                     <!-- REGISTER -->
-                    <form id="register_form" class="form_sign sign-up-form" method="POST" action="<?php BASE_URL; ?>/User/register">
+                    <form id="register_form" class="form_sign sign-up-form" method="POST" action="<?= BASE_URL; ?>/User/register">
                         <div class="logo">
-                            <img src="<?php BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
+                            <img src="<?= BASE_URL; ?>/assets/svg/logo_blue.png" alt="" />
                         </div>
                         <div class="heading_login">
                             <h2>Get Started</h2>

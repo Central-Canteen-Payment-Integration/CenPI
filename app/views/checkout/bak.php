@@ -15,9 +15,9 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
             <div class="mb-4">
                 <h2 class="text-base font-semibold mb-2">Profil Pembeli</h2>
                 <div class="border p-3 rounded-lg">
-                    <p class="font-medium"><?php echo htmlspecialchars($buyerName); ?></p>
-                    <p>Email: <?php echo htmlspecialchars($buyerEmail); ?></p>
-                    <p>No Telp: <?php echo htmlspecialchars($buyerPhone); ?></p>
+                    <p class="font-medium"><?= htmlspecialchars($buyerName); ?></p>
+                    <p>Email: <?= htmlspecialchars($buyerEmail); ?></p>
+                    <p>No Telp: <?= htmlspecialchars($buyerPhone); ?></p>
                 </div>
             </div>
 
@@ -29,25 +29,25 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
                     <div class="border p-3 rounded-lg mb-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <img src="<?php echo htmlspecialchars($item['IMAGE']); ?>" alt="Product Image" class="rounded-lg w-12 h-12">
+                                <img src="<?= htmlspecialchars($item['IMAGE']); ?>" alt="Product Image" class="rounded-lg w-12 h-12">
                                 <div class="ml-3">
-                                    <p class="font-medium"><?php echo htmlspecialchars($item['NAME']); ?></p>
-                                    <p class="text-xs text-gray-500"><?php echo htmlspecialchars($item['TENANT_NAME']); ?></p>
+                                    <p class="font-medium"><?= htmlspecialchars($item['NAME']); ?></p>
+                                    <p class="text-xs text-gray-500"><?= htmlspecialchars($item['TENANT_NAME']); ?></p>
                                 </div>
                             </div>
                             <div class="flex items-center">
-                                <button class="btn btn-outline btn-xs" onclick="updateQuantity('decrease', <?php echo $index + 1; ?>)">-</button>
-                                <input type="text" id="quantity-<?php echo $index + 1; ?>" value="1" class="input input-bordered input-xs mx-2 w-12 text-center" readonly>
-                                <button class="btn btn-outline btn-xs" onclick="updateQuantity('increase', <?php echo $index + 1; ?>)">+</button>
+                                <button class="btn btn-outline btn-xs" onclick="updateQuantity('decrease', <?= $index + 1; ?>)">-</button>
+                                <input type="text" id="quantity-<?= $index + 1; ?>" value="1" class="input input-bordered input-xs mx-2 w-12 text-center" readonly>
+                                <button class="btn btn-outline btn-xs" onclick="updateQuantity('increase', <?= $index + 1; ?>)">+</button>
                             </div>
-                            <p class="font-medium ml-4 text-sm">Rp <?php echo htmlspecialchars($item['PRICE']); ?></p>
+                            <p class="font-medium ml-4 text-sm">Rp <?= htmlspecialchars($item['PRICE']); ?></p>
                         </div>
                         <!-- Pilihan Jenis Pesanan -->
                         <div class="mt-3">
                             <label class="block font-medium text-xs mb-1">Jenis Pesanan</label>
                             <div class="flex gap-2">
-                                <button id="type-dinein-<?php echo $index + 1; ?>" class="btn btn-outline btn-xs" onclick="selectOrderType(<?php echo $index + 1; ?>, 'Dine In')">Dine In</button>
-                                <button id="type-takeaway-<?php echo $index + 1; ?>" class="btn btn-outline btn-xs" onclick="selectOrderType(<?php echo $index + 1; ?>, 'Takeaway')">Takeaway</button>
+                                <button id="type-dinein-<?= $index + 1; ?>" class="btn btn-outline btn-xs" onclick="selectOrderType(<?= $index + 1; ?>, 'Dine In')">Dine In</button>
+                                <button id="type-takeaway-<?= $index + 1; ?>" class="btn btn-outline btn-xs" onclick="selectOrderType(<?= $index + 1; ?>, 'Takeaway')">Takeaway</button>
                             </div>
                         </div>
                         <!-- Catatan -->

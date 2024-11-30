@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CenPI - PNJ</title>
-	<link rel="stylesheet" href="<?php BASE_URL ?>/assets/css/style.css">
+	<link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 </head>
 
@@ -13,14 +13,14 @@
 	<header class="mb-10">
 		<div class="navbar px-6">
 			<div class="navbar-start">
-				<a href="<?php BASE_URL ?>"><button class="btn btn-glass text-xl">Cenπ</button></a>
+				<a href="<?= BASE_URL ?>"><button class="btn btn-glass text-xl">Cenπ</button></a>
 			</div>
 			<div class="navbar-end gap-3">
 			<?php
 			if (!isset($_SESSION['user'])) {
 			?>
-				<a href="<?php BASE_URL ?>/User/login"><button class="btn btn-active btn-neutral">Login</button></a>
-				<a href="<?php BASE_URL ?>/User/register" class="hidden md:inline"><button class="btn btn-active btn-primary">Register</button></a>
+				<a href="<?= BASE_URL ?>/User/login"><button class="btn btn-active btn-neutral">Login</button></a>
+				<a href="<?= BASE_URL ?>/User/register" class="hidden md:inline"><button class="btn btn-active btn-primary">Register</button></a>
 			<?php
 			} else {
 			?>
@@ -82,7 +82,7 @@
 					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 						<?php if (isset($_SESSION['user_image'])) { ?>
 							<div class="w-10 rounded-full flex items-center justify-center">
-								<img src="<?php echo $_SESSION['user_image']; ?>" alt="User  Image" class="rounded-full w-full h-full object-cover">
+								<img src="<?= $_SESSION['user_image']; ?>" alt="User  Image" class="rounded-full w-full h-full object-cover">
 							</div>
 						<?php } else { ?>
 							<svg xmlns="http://www.w3.org/2000/svg"
@@ -99,10 +99,10 @@
 						<?php } ?>
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-						<li><a href="<?php echo BASE_URL ?>/User/profile">Profile</a></li>
+						<li><a href="<?= BASE_URL ?>/User/profile">Profile</a></li>
 						<li><a>My Orders</a></li>
 						<li><a>Settings</a></li>
-						<li><a href="<?php BASE_URL ?>/User/logout">Logout</a></li>
+						<li><a href="<?= BASE_URL ?>/User/logout">Logout</a></li>
 					</ul>
 				</div>
 			<?php } ?>

@@ -5,18 +5,18 @@
                 <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
                     <figure class="h-40 overflow-hidden">
                         <img class="w-full h-full fill-cover border-b-2 border-neutral"
-                            src="<?php echo BASE_URL . (!empty($menu['IMAGE']) ? $menu['IMAGE'] : '/assets/img/placeholder.jpg'); ?>"
-                            alt="<?php echo htmlspecialchars($menu['NAME']); ?>" />
+                            src="<?= BASE_URL . (!empty($menu['IMAGE']) ? $menu['IMAGE'] : '/assets/img/placeholder.jpg'); ?>"
+                            alt="<?= htmlspecialchars($menu['NAME']); ?>" />
                     </figure>
                     <div class="card-body">
-                        <h2 class="card-title text-secondary"><?php echo htmlspecialchars($menu['NAME']); ?></h2>
+                        <h2 class="card-title text-secondary"><?= htmlspecialchars($menu['NAME']); ?></h2>
                         <div class="flex justify-between items-center text-secondary">
                             <div class="text-lg font-bold">
-                                Rp. <?php echo number_format($menu['PRICE'], 0, ',', '.'); ?>
+                                Rp. <?= number_format($menu['PRICE'], 0, ',', '.'); ?>
                             </div>
                             <button 
-                                class="btn btn-primary text-white <?php echo isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>" 
-                                <?php echo isset($_SESSION['user']) ? 'data-id="' . $menu['ID_MENU'] . '"' : 'onclick="document.getElementById(\'login-modal\').checked = true"'; ?>>
+                                class="btn btn-primary text-white <?= isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>" 
+                                <?= isset($_SESSION['user']) ? 'data-id="' . $menu['ID_MENU'] . '"' : 'onclick="document.getElementById(\'login-modal\').checked = true"'; ?>>
                                 Add
                             </button>
 
@@ -40,7 +40,7 @@
 
         <!-- button login -->
         <div class="modal-action flex justify-center w-full">
-            <a href="<?php echo BASE_URL; ?>/User/login" class="relative w-full max-w-[140px] h-[50px] rounded-xl overflow-hidden border-none outline-none flex flex-col group">
+            <a href="<?= BASE_URL; ?>/User/login" class="relative w-full max-w-[140px] h-[50px] rounded-xl overflow-hidden border-none outline-none flex flex-col group">
                 <!-- Login? -->
                 <div class="absolute inset-0 bg-orange-500 flex items-center justify-center transition-all duration-300 ease-in-out">
                     <p class="text-lg font-bold text-white">Login?</p>
@@ -136,7 +136,7 @@
                     listItem.className = `flex py-6`;
                     listItem.innerHTML = `
                         <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                            <img src="<?php BASE_URL ?>${item.IMAGE}" alt="${item.NAME}" class="size-full object-cover">
+                            <img src="<?= BASE_URL ?>${item.IMAGE}" alt="${item.NAME}" class="size-full object-cover">
                         </div>
                         <div class="ml-4 flex flex-1 flex-col">
                             <div>
@@ -172,7 +172,7 @@
                         </button>
                     </div>
                     <div class="mt-2">
-                        <a href="<?=BASE_URL?>/Checkout" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
+                        <a href="<?= BASE_URL; ?>/Checkout" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
                     </div>
                     <div class="mt-2 flex flex-col items-center text-center text-sm text-gray-500">
                         <p>or</p>
@@ -203,7 +203,7 @@
             const cart = $(this).data();
 
             $.ajax({
-                url: '<?php echo BASE_URL; ?>/Cart/delete',
+                url: '<?= BASE_URL; ?>/Cart/delete',
                 type: 'POST',
                 data: {
                     id_cart: cart.id
@@ -227,7 +227,7 @@
             const menu = $(this).data();
 
             $.ajax({
-                url: '<?php echo BASE_URL; ?>/Cart/add',
+                url: '<?= BASE_URL; ?>/Cart/add',
                 type: 'POST',
                 data: {
                     id_menu: menu.id,
@@ -249,7 +249,7 @@
         // Event handler for clearing the cart on desktop and mobile
         $(document).on('click', '#clear-cart-btn', function() {
             $.ajax({
-                url: '<?php echo BASE_URL; ?>/Cart/clear',
+                url: '<?= BASE_URL; ?>/Cart/clear',
                 type: 'POST',
                 dataType: 'json',
                 success: function(res) {
@@ -266,7 +266,7 @@
         });
 
         // Initial cart data to display
-        const cart = <?php echo json_encode($data['cart']); ?>;
+        const cart = <?= json_encode($data['cart']); ?>;
         updateCartDisplay(cart);
     });
 </script>

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="<?php BASE_URL ?>/assets/css/global.css">
-    <link rel="stylesheet" href="<?php BASE_URL ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/global.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 </head>
 
 <body class="bg-base-100 min-h-screen flex items-center justify-center p-4">
@@ -36,36 +36,36 @@
             <!-- Feedback Messages -->
             <?php if (isset($_SESSION['success'])): ?>
                 <div class="p-4 mb-6 text-sm text-white bg-accent rounded-lg">
-                    <?php echo $_SESSION['success'];
+                    <?= $_SESSION['success'];
                     unset($_SESSION['success']); ?>
                 </div>
             <?php elseif (isset($_SESSION['error'])): ?>
                 <div class="p-4 mb-6 text-sm text-white bg-primary rounded-lg">
-                    <?php echo $_SESSION['error'];
+                    <?= $_SESSION['error'];
                     unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
             <!-- Form -->
-            <form id="profileForm" class="space-y-6" method="POST" action="<?php BASE_URL ?>/User/profile">
+            <form id="profileForm" class="space-y-6" method="POST" action="<?= BASE_URL ?>/User/profile">
                 <div>
                     <label for="name" class="block text-sm font-semibold text-secondary">Name</label>
                     <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?php echo htmlspecialchars($data['user']['USERNAME']); ?>" readonly>
+                        value="<?= htmlspecialchars($data['user']['USERNAME']); ?>" readonly>
                 </div>
                 <div>
                     <label for="birthdate" class="block text-sm font-semibold text-secondary">Birthdate</label>
                     <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?php echo htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" readonly>
+                        value="<?= htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="phone" class="block text-sm font-semibold text-secondary">Phone</label>
                     <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?php echo htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" readonly>
+                        value="<?= htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-semibold text-secondary">Email</label>
-                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-neutral rounded-lg bg-gray-100 focus:outline-none" value="<?php echo htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
+                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-neutral rounded-lg bg-gray-100 focus:outline-none" value="<?= htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
                 </div>
                 <div id="editFields" class="hidden">
                 <div>
