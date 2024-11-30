@@ -14,8 +14,7 @@
                             <div class="text-lg font-bold">
                                 Rp. <?= number_format($menu['PRICE'], 0, ',', '.'); ?>
                             </div>
-                            <button 
-                                class="btn btn-primary text-white <?= isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>" 
+                            <button class="btn btn-primary text-white <?= isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>"
                                 <?= isset($_SESSION['user']) ? 'data-id="' . $menu['ID_MENU'] . '"' : 'onclick="document.getElementById(\'login-modal\').checked = true"'; ?>>
                                 Add
                             </button>
@@ -40,13 +39,16 @@
 
         <!-- button login -->
         <div class="modal-action flex justify-center w-full">
-            <a href="<?= BASE_URL; ?>/User/login" class="relative w-full max-w-[140px] h-[50px] rounded-xl overflow-hidden border-none outline-none flex flex-col group">
+            <a href="<?= BASE_URL; ?>/User/login"
+                class="relative w-full max-w-[140px] h-[50px] rounded-xl overflow-hidden border-none outline-none flex flex-col group">
                 <!-- Login? -->
-                <div class="absolute inset-0 bg-orange-500 flex items-center justify-center transition-all duration-300 ease-in-out">
+                <div
+                    class="absolute inset-0 bg-orange-500 flex items-center justify-center transition-all duration-300 ease-in-out">
                     <p class="text-lg font-bold text-white">Login?</p>
                 </div>
                 <!-- Login! -->
-                <div class="absolute inset-0 bg-yellow-500 flex items-center justify-center transition-all duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0">
+                <div
+                    class="absolute inset-0 bg-yellow-500 flex items-center justify-center transition-all duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0">
                     <p class="text-lg font-bold text-white">Login!</p>
                 </div>
             </a>
@@ -59,26 +61,26 @@
 <!-- Tombol buat mobel -->
 <div class="fixed bottom-5 right-5 z-10 block md:hidden">
     <?php if (isset($_SESSION['user'])): ?>
-        <button
-            class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
-            onclick="document.getElementById('mobile-cart-drawer').checked = true"
-            id="mobile-cart-button">
+        <button class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
+            onclick="document.getElementById('mobile-cart-drawer').checked = true" id="mobile-cart-button">
             <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <span class="badge badge-sm indicator-item qty-cart"></span>
             </div>
         </button>
     <?php else: ?>
         <!--  button buat non-logged-in users -->
-        <button
-            class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
-            onclick="document.getElementById('login-modal').checked = true"
-            id="mobile-login-button">
+        <button class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
+            onclick="document.getElementById('login-modal').checked = true" id="mobile-login-button">
             <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
             </div>
         </button>
@@ -95,12 +97,12 @@
             <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto max-h-[80vh]">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-medium text-secondary">Food Cart</h2>
-                    <button
-                        type="button"
-                        class="text-gray-500 hover:text-gray-700"
+                    <button type="button" class="text-gray-500 hover:text-gray-700"
                         onclick="document.getElementById('mobile-cart-drawer').checked = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -120,7 +122,7 @@
 <!-- logic buat cart -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Function to update the cart display with items and total price
         function updateCartDisplay(cartItems) {
             // Clear existing cart items and buttons
@@ -184,89 +186,111 @@
                 `; // HTML for subtotal and action buttons
                 $('.cart-btn').append(cartBtn);
             } else {
-                // If the cart is empty, display a message
-                const emptyMessage = $('<p class="text-center text-gray-500 dark:text-gray-400">Your cart is empty.</p>');
-                $('.cart-list').append(emptyMessage);
+                // Jika keranjang kosong, tampilkan pesan
+                const emptyMessage = `
+                <div class="flex flex-col items-center justify-center h-full py-10 mt-4">
+                    <div class="flex flex-col items-center mt-8">
+                        <div class="w-36 h-36 mb-6">
+                            <img src="<?= BASE_URL; ?>/assets/img/emptycart.jpg" alt="Empty Cart" class="w-full h-full object-contain">
+                        </div>
+                        <!-- Judul -->
+                        <h2 class="text-lg font-medium text-red-600 mb-2">Your cart is empty</h2>
+                        <!-- Deskripsi -->
+                        <p class="text-center text-sm text-gray-500 mb-6">
+                            Looks like you have not added anything to your cart. Go ahead & explore our menu.
+                        </p>
+                        <!-- Tombol -->
+                        <div class="mt-4">
+                                <button type="button" onclick="document.getElementById('cart-drawer').checked = false;document.getElementById('mobile-cart-drawer').checked = false;" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
+                                    Go to Menu
+                                </button>
+                        </div>
+                    </div>
+                </div>
+
+                `;
+                $('.cart-list').html(emptyMessage);
             }
 
-            // Update the cart item quantity display
-            $('.qty-cart').text(cartItems.length);
 
-            // Show dropdown if there are items in the cart
-            if (cartItems.length > 0) {
-                $('.dropdown.dropdown-end').addClass('md:inline');
+                // Update the cart item quantity display
+                $('.qty-cart').text(cartItems.length);
+
+                // Show dropdown if there are items in the cart
+                if (cartItems.length > 0) {
+                    $('.dropdown.dropdown-end').addClass('md:inline');
+                }
             }
-        }
 
-        // Event handler for removing an item from the cart
-        $(document).on('click', '.remove-btn', function() {
-            const cart = $(this).data();
+            // Event handler for removing an item from the cart
+            $(document).on('click', '.remove-btn', function () {
+                const cart = $(this).data();
 
-            $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/delete',
-                type: 'POST',
-                data: {
-                    id_cart: cart.id
-                },
-                dataType: 'json',
-                success: function(res) {
-                    if (res.status === 'success') {
-                        updateCartDisplay(res.cart);
-                    } else {
-                        alert('Error removing item: ' + res.message);
+                $.ajax({
+                    url: '<?= BASE_URL; ?>/Cart/delete',
+                    type: 'POST',
+                    data: {
+                        id_cart: cart.id
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === 'success') {
+                            updateCartDisplay(res.cart);
+                        } else {
+                            alert('Error removing item: ' + res.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error: ' + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error: ' + error);
-                }
+                });
             });
-        });
 
-        // Event handler for adding an item to the cart
-        $('.add-to-cart').click(function() {
-            const menu = $(this).data();
+            // Event handler for adding an item to the cart
+            $('.add-to-cart').click(function () {
+                const menu = $(this).data();
 
-            $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/add',
-                type: 'POST',
-                data: {
-                    id_menu: menu.id,
-                },
-                dataType: 'json',
-                success: function(res) {
-                    if (res.status === 'success') {
-                        updateCartDisplay(res.cart);
-                    } else {
-                        alert('Error updating cart: ' + res.message);
+                $.ajax({
+                    url: '<?= BASE_URL; ?>/Cart/add',
+                    type: 'POST',
+                    data: {
+                        id_menu: menu.id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === 'success') {
+                            updateCartDisplay(res.cart);
+                        } else {
+                            alert('Error updating cart: ' + res.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error: ' + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error: ' + error);
-                }
+                });
             });
-        });
 
-        // Event handler for clearing the cart on desktop and mobile
-        $(document).on('click', '#clear-cart-btn', function() {
-            $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/clear',
-                type: 'POST',
-                dataType: 'json',
-                success: function(res) {
-                    if (res.status === 'success') {
-                        updateCartDisplay(res.cart);
-                    } else {
-                        alert('Error clearing cart: ' + res.message);
+            // Event handler for clearing the cart on desktop and mobile
+            $(document).on('click', '#clear-cart-btn', function () {
+                $.ajax({
+                    url: '<?= BASE_URL; ?>/Cart/clear',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === 'success') {
+                            updateCartDisplay(res.cart);
+                        } else {
+                            alert('Error clearing cart: ' + res.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error: ' + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error: ' + error);
-                }
+                });
             });
-        });
 
-        // Initial cart data to display
-        const cart = <?= json_encode($data['cart']); ?>;
-        updateCartDisplay(cart);
-    });
+            // Initial cart data to display
+            const cart = <?= json_encode($data['cart']); ?>;
+            updateCartDisplay(cart);
+        });
 </script>
