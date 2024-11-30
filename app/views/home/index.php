@@ -14,9 +14,18 @@
                             <div class="text-lg font-bold">
                                 Rp. <?php echo number_format($menu['PRICE'], 0, ',', '.'); ?>
                             </div>
-                            <button class="btn btn-primary text-white add-to-cart" data-id="<?php echo $menu['ID_MENU']; ?>">
-                                Add
-                            </button>
+                            <?php if (isset($data['id_user'])): ?>
+                                <!-- Button buat yang login ajah -->
+                                <button class="btn btn-primary text-white add-to-cart" data-id="<?php echo $menu['ID_MENU']; ?>">
+                                    Add
+                                </button>
+                            <?php else: ?>
+                                <!-- Button buat kalo ga login -->
+                                <button class="btn btn-primary text-white" onclick="document.getElementById('login-modal').checked = true">
+                                    Add
+                                </button>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
@@ -27,20 +36,61 @@
     </div>
 </div>
 
+<!-- Please Login Modal -->
+<input type="checkbox" id="login-modal" class="modal-toggle" hidden>
+<div class="modal">
+    <div class="modal-box relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+        <label for="login-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <h3 class="text-lg font-bold text-center">Please Login Dulu.</h3>
+        <p class="py-4 text-center">Login Dulu Kalau Ingin Beli Makanan!</p>
+
+        <!-- button login -->
+        <div class="modal-action flex justify-center w-full">
+            <a href="<?php echo BASE_URL; ?>/User/login" class="relative w-full max-w-[140px] h-[50px] rounded-xl overflow-hidden border-none outline-none flex flex-col group">
+                <!-- Login? -->
+                <div class="absolute inset-0 bg-orange-500 flex items-center justify-center transition-all duration-300 ease-in-out">
+                    <p class="text-lg font-bold text-white">Login?</p>
+                </div>
+                <!-- Login! -->
+                <div class="absolute inset-0 bg-yellow-500 flex items-center justify-center transition-all duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0">
+                    <p class="text-lg font-bold text-white">Login!</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Tombol buat mobel -->
 <div class="fixed bottom-5 right-5 z-10 block md:hidden">
-    <button
-        class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
-        onclick="document.getElementById('mobile-cart-modal').checked = true"
-        id="mobile-cart-button">
-        <div class="indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <span class="badge badge-sm indicator-item qty-cart"></span>
-        </div>
-    </button>
+    <?php if (isset($data['id_user'])): ?>
+        <button
+            class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
+            onclick="document.getElementById('mobile-cart-modal').checked = true"
+            id="mobile-cart-button">
+            <div class="indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="badge badge-sm indicator-item qty-cart"></span>
+            </div>
+        </button>
+    <?php else: ?>
+        <!--  button buat non-logged-in users -->
+        <button
+            class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
+            onclick="document.getElementById('login-modal').checked = true"
+            id="mobile-login-button">
+            <div class="indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            </div>
+        </button>
+    <?php endif; ?>
 </div>
+
 
 <!-- Mobel Modal -->
 <div class="drawer drawer-bottom block md:hidden z-30">
@@ -145,7 +195,7 @@
                             Clear Cart
                         </button>
                     </div>
-                    <form id="checkoutForm" action="<?=BASE_URL?>/Checkout/processPayment" method="POST">
+                    <form id="checkoutForm" action="<?= BASE_URL ?>/Checkout/processPayment" method="POST">
                         <input type="hidden" name="amount" value="${totalPrice}"> <!-- Hidden input for amount -->
                         <div class="mt-2">
                             <button type="submit" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</button>
@@ -202,7 +252,7 @@
         // Event handler for adding an item to the cart
         $('.add-to-cart').click(function() {
             const menu = $(this).data();
-            
+
             $.ajax({
                 url: '<?php echo BASE_URL; ?>/Cart/add',
                 type: 'POST',
