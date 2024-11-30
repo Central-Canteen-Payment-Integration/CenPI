@@ -8,15 +8,15 @@ class Cart extends Controller {
     }
 
     public function add() {
-        $id_user = $_SESSION['user_id'];
+        $user = $_SESSION['user'];
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id_menu = isset($_POST['id_menu']) ? $_POST['id_menu'] : 0;
 
             if ($id_menu) {
-                $result = $this->cartModel->addCart($id_user, $id_menu);
+                $result = $this->cartModel->addCart($user['id'], $id_menu);
                 if ($result) {
-                    $cart = $this->cartModel->getCartUser($id_user);
+                    $cart = $this->cartModel->getCartUser($user['id']);
                     echo json_encode([
                         'status' => 'success',
                         'cart' => $cart
@@ -40,13 +40,13 @@ class Cart extends Controller {
     public function delete() {
         if (isset($_POST['id_cart'])) {
             $id_cart = $_POST['id_cart'];
-            $id_user = $_SESSION['user_id'];
+            $user = $_SESSION['user'];
 
             if ($id_cart) {
                 $result = $this->cartModel->updateCart($id_cart, -1);
     
                 if ($result) {
-                    $cart = $this->cartModel->getCartUser($id_user);
+                    $cart = $this->cartModel->getCartUser($user['id']);
     
                     echo json_encode([
                         'status' => 'success',
@@ -75,13 +75,13 @@ class Cart extends Controller {
     }
 
     public function clear() {
-        $id_user = $_SESSION['user_id'];
+        $user = $_SESSION['user'];
     
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $result = $this->cartModel->clearCart($id_user);
+            $result = $this->cartModel->clearCart($user['id']);
     
             if ($result) {
-                $cart = $this->cartModel->getCartUser($id_user);
+                $cart = $this->cartModel->getCartUser($user['id']);
                 echo json_encode([
                     'status' => 'success',
                     'cart' => $cart

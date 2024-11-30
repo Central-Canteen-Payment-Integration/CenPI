@@ -4,17 +4,17 @@ use Ramsey\Uuid\Uuid;
 
 class CartModel extends Model
 {
-    public function getCartUser($id_user)
-    {
+    public function getCartUser ($id_user) {
         try {
-            $sql = "SELECT CART.*, MENU.*
+            $sql = "SELECT CART.*, MENU.*, TENANT.tenant_name AS tenant_name
                     FROM CART
                     INNER JOIN MENU ON CART.id_menu = MENU.id_menu
+                    INNER JOIN TENANT ON MENU.id_tenant = TENANT.id_tenant
                     WHERE CART.id_user = :id_user";
-
+    
             $this->db->query($sql);
             $this->db->bind(':id_user', $id_user);
-
+    
             return $this->db->resultSet();
         } catch (Exception $e) {
             error_log("Get Cart by User Error: " . $e->getMessage());

@@ -14,17 +14,11 @@
                             <div class="text-lg font-bold">
                                 Rp. <?php echo number_format($menu['PRICE'], 0, ',', '.'); ?>
                             </div>
-                            <?php if (isset($data['id_user'])): ?>
-                                <!-- Button buat yang login ajah -->
-                                <button class="btn btn-primary text-white add-to-cart" data-id="<?php echo $menu['ID_MENU']; ?>">
-                                    Add
-                                </button>
-                            <?php else: ?>
-                                <!-- Button buat kalo ga login -->
-                                <button class="btn btn-primary text-white" onclick="document.getElementById('login-modal').checked = true">
-                                    Add
-                                </button>
-                            <?php endif; ?>
+                            <button 
+                                class="btn btn-primary text-white <?php echo isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>" 
+                                <?php echo isset($_SESSION['user']) ? 'data-id="' . $menu['ID_MENU'] . '"' : 'onclick="document.getElementById(\'login-modal\').checked = true"'; ?>>
+                                Add
+                            </button>
 
                         </div>
                     </div>
@@ -64,10 +58,10 @@
 
 <!-- Tombol buat mobel -->
 <div class="fixed bottom-5 right-5 z-10 block md:hidden">
-    <?php if (isset($data['id_user'])): ?>
+    <?php if (isset($_SESSION['user'])): ?>
         <button
             class="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-accent"
-            onclick="document.getElementById('mobile-cart-modal').checked = true"
+            onclick="document.getElementById('mobile-cart-drawer').checked = true"
             id="mobile-cart-button">
             <div class="indicator">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,9 +88,9 @@
 
 <!-- Mobel Modal -->
 <div class="drawer drawer-bottom block md:hidden z-30">
-    <input id="mobile-cart-modal" type="checkbox" class="drawer-toggle" />
+    <input id="mobile-cart-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-side">
-        <label for="mobile-cart-modal" class="drawer-overlay z-20"></label>
+        <label for="mobile-cart-drawer" class="drawer-overlay z-20"></label>
         <div class="relative z-40">
             <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto max-h-[80vh]">
                 <div class="flex justify-between items-center">
@@ -104,7 +98,7 @@
                     <button
                         type="button"
                         class="text-gray-500 hover:text-gray-700"
-                        onclick="document.getElementById('mobile-cart-modal').checked = false">
+                        onclick="document.getElementById('mobile-cart-drawer').checked = false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -116,31 +110,13 @@
                         </ul>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 px-4 py-6">
-                    <div class="flex justify-between text-base font-medium text-secondary">
-                        <p>Subtotal</p>
-                        <p>Rp. 0</p>
-                    </div>
-                    <p class="mt-0.5 text-sm text-gray-500">Packaging calculated at checkout.</p>
-                    <div class="mt-6">
-                        <a href="#" class="disabled flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-accent mb-2">Checkout</a>
-                        <button id="clear-cart-btn" class="flex items-center justify-center w-full rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-700">
-                            Clear Cart
-                        </button>
-                    </div>
-
-                    <div class="mt-6 flex flex-col items-center text-center text-sm text-gray-500">
-                        <p>or</p>
-                        <button type="button" class="font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('mobile-cart-modal').checked = false;">
-                            Continue Shopping
-                            <span aria-hidden="true"> &rarr;</span>
-                        </button>
-                    </div>
+                <div class="border-t border-gray-200 px-4 py-6 cart-btn">
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- logic buat cart -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -195,15 +171,12 @@
                             Clear Cart
                         </button>
                     </div>
-                    <form id="checkoutForm" action="<?= BASE_URL ?>/Checkout/processPayment" method="POST">
-                        <input type="hidden" name="amount" value="${totalPrice}"> <!-- Hidden input for amount -->
-                        <div class="mt-2">
-                            <button type="submit" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</button>
-                        </div>
-                    </form>
+                    <div class="mt-2">
+                        <a href="<?=BASE_URL?>/Checkout" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
+                    </div>
                     <div class="mt-2 flex flex-col items-center text-center text-sm text-gray-500">
                         <p>or</p>
-                        <button type="button" class="clear-cart-btn font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('my-drawer-4').checked = false;">
+                        <button type="button" class="clear-cart-btn font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('cart-drawer').checked = false;document.getElementById('mobile-cart-drawer').checked = false;">
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
                         </button>

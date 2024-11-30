@@ -11,60 +11,56 @@
 
 <body>
 	<header class="mb-10">
-		<div class="navbar px-6 gap-3">
+		<div class="navbar px-6">
 			<div class="navbar-start">
 				<a href="<?php BASE_URL ?>"><button class="btn btn-glass text-xl">Cenπ</button></a>
 			</div>
 			<div class="navbar-end gap-3">
-				<div class="dropdown dropdown-end hidden md:inline">
-					<?php if (isset($_SESSION['user_id'])): ?>
-						<!-- button cart cuma muncul kalo login -->
-						<div class="drawer drawer-end hidden md:block">
-							<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-							<div class="drawer-content">
-								<label for="my-drawer-4" class="drawer-button btn btn-ghost btn-circle">
-									<div class="indicator">
-										<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-										</svg>
-										<span class="badge badge-sm indicator-item qty-cart"></span>
-									</div>
-								</label>
-							</div>
-							<div class="drawer-side z-50">
-								<label for="my-drawer-4" class="drawer-overlay"></label>
-								<div class="bg-white text-base-content min-h-full w-3/12 p-4 pr-6">
-									<div class="flex justify-between items-center">
-										<h2 class="text-lg font-medium text-secondary">Food Cart</h2>
-										<button type="button" class="text-gray-500 hover:text-gray-700" onclick="document.getElementById('my-drawer-4').checked = false;">
-											<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-											</svg>
-										</button>
-									</div>
-									<div class="mt-2">
-										<div class="flow-root">
-											<ul role="list" class="divide-y divide-gray-200 cart-list">
-											</ul>
-										</div>
-									</div>
-									<div class="border-t border-gray-200 px-4 py-6 cart-btn">
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
-
-			</div>
 			<?php
-			if (!isset($_SESSION['user_id'])) {
+			if (!isset($_SESSION['user'])) {
 			?>
 				<a href="<?php BASE_URL ?>/User/login"><button class="btn btn-active btn-neutral">Login</button></a>
 				<a href="<?php BASE_URL ?>/User/register" class="hidden md:inline"><button class="btn btn-active btn-primary">Register</button></a>
 			<?php
 			} else {
 			?>
+				<div class="dropdown dropdown-end hidden md:inline">
+					<div class="drawer drawer-end hidden md:block">
+						<input id="cart-drawer" type="checkbox" class="drawer-toggle" />
+						<div class="drawer-content">
+							<label for="cart-drawer" class="drawer-button btn btn-ghost btn-circle">
+								<div class="indicator">
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+									</svg>
+									<span class="badge badge-sm indicator-item qty-cart"></span>
+								</div>
+							</label>
+						</div>
+
+						<div class="drawer-side z-50">
+							<label for="cart-drawer" class="drawer-overlay"></label>
+							<div class="bg-white text-base-content min-h-full w-3/12 p-4 pr-6">
+								<div class="flex justify-between items-center">
+									<h2 class="text-lg font-medium text-secondary">Food Cart</h2>
+									<button type="button" class="text-gray-500 hover:text-gray-700" onclick="document.getElementById('cart-drawer').checked = false;">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								</div>
+								<div class="mt-2">
+									<div class="flow-root">
+										<ul role="list" class="divide-y divide-gray-200 cart-list">
+										</ul>
+									</div>
+								</div>
+								<div class="border-t border-gray-200 px-4 py-6 cart-btn">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<button class="btn btn-ghost btn-circle">
 					<div class="indicator">
 						<svg
@@ -110,6 +106,6 @@
 					</ul>
 				</div>
 			<?php } ?>
-		</div>
+			</div>
 		</div>
 	</header>

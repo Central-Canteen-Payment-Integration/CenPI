@@ -8,13 +8,13 @@ class User extends Controller {
     }
 
     public function login() {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['user'])) {
             header('Location: /Home');
             exit;
         }
+
         $data = [
-            'page' => 'login',
-            'error' => ''
+            'page' => 'login'
         ];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -24,8 +24,11 @@ class User extends Controller {
             $user = $this->userModel->login($username, $password);
 
             if ($user) {
-                $_SESSION['user_id'] = $user['ID_USER'];
-                $_SESSION['username'] = $user['USERNAME'];
+                $_SESSION['user'] = [
+                    'id' => $user['ID_USER'],
+                    'email' => $user['EMAIL'],
+                    'username' => $user['USERNAME'],
+                ];
                 header('Location: /Home');
                 exit;
             } else {
@@ -37,10 +40,11 @@ class User extends Controller {
     }
 
     public function register() {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['user'])) {
             header('Location: /Home');
             exit;
         }
+
         $data = [
             'page' => 'register',
             'error' => ''
