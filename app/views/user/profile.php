@@ -51,21 +51,21 @@
                 <div>
                     <label for="name" class="block text-sm font-semibold text-secondary">Name</label>
                     <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?= htmlspecialchars($data['user']['USERNAME']); ?>" readonly>
+                        value="<?= htmlspecialchars($data['username']); ?>" readonly>
                 </div>
                 <div>
                     <label for="birthdate" class="block text-sm font-semibold text-secondary">Birthdate</label>
                     <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?= htmlspecialchars($data['user']['BIRTHDATE'] ?? ''); ?>" readonly>
+                        value="<?= htmlspecialchars($data['birthday'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="phone" class="block text-sm font-semibold text-secondary">Phone</label>
                     <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?= htmlspecialchars($data['user']['PHONE_NUMBER'] ?? ''); ?>" readonly>
+                        value="<?= htmlspecialchars($data['phone_number'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-semibold text-secondary">Email</label>
-                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-neutral rounded-lg bg-gray-100 focus:outline-none" value="<?= htmlspecialchars($data['user']['EMAIL']); ?>" readonly>
+                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-neutral rounded-lg bg-gray-100 focus:outline-none" value="<?= htmlspecialchars($data['email']); ?>" readonly>
                 </div>
                 <div id="editFields" class="hidden">
                 <div>
