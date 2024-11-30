@@ -71,11 +71,11 @@ class User extends Controller {
     }
 
     public function profile() {
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['user'])) {
             header('Location: /User/login');
             exit;
         } else {
-            $userId = $_SESSION['user_id'];
+            $user = $_SESSION['user'];
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $username = htmlspecialchars($_POST['username']);
                 $birthdate = $_POST['birthdate'];
@@ -84,7 +84,7 @@ class User extends Controller {
                 $newPassword = $_POST['newPassword'];
                 $confirmNewPassword = $_POST['confirmNewPassword'];
     
-                if (!$this->userModel->verifyPassword($userId, $currentPassword)) {
+                if (!$this->userModel->verifyPassword($user, $currentPassword)) {
                     $_SESSION['error'] = 'Current password is incorrect.';
                     header('Location: /User/profile');
                     exit;
@@ -100,7 +100,7 @@ class User extends Controller {
                     $hashedNewPassword = password_hash($newPassword, PASSWORD_BCRYPT);
                 }
     
-                $isUpdated = $this->userModel->updateUserProfile($userId, $username, $birthdate, $phone_number, $hashedNewPassword);
+                $isUpdated = $this->userModel->updateUserProfile($user, $username, $birthdate, $phone_number, $hashedNewPassword);
     
                 if ($isUpdated) {
                     $_SESSION['success'] = 'Profile updated successfully.';
@@ -112,9 +112,8 @@ class User extends Controller {
     
                 exit;
             }
-            $user = $this->userModel->getUserById($userId);
             $data = ['user' => $user];
-            $this->view('User/profile', $data);
+            $this->view('User/profile', $user);
         }
     }
 
