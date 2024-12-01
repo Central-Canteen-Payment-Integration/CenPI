@@ -9,7 +9,7 @@ class User extends Controller {
 
     public function login() {
         if (isset($_SESSION['user'])) {
-            header('Location: /Home');
+            header('Location: /Menu');
             exit;
         }
 
@@ -29,7 +29,7 @@ class User extends Controller {
                     'email' => $user['EMAIL'],
                     'username' => $user['USERNAME'],
                 ];
-                header('Location: /Home');
+                header('Location: /Menu');
                 exit;
             } else {
                 $data['error'] = 'Invalid username or password';
@@ -41,7 +41,7 @@ class User extends Controller {
 
     public function register() {
         if (isset($_SESSION['user'])) {
-            header('Location: /Home');
+            header('Location: /Menu');
             exit;
         }
 
@@ -119,7 +119,7 @@ class User extends Controller {
 
     public function logout() {
         session_destroy();
-        header("Location: /Home");
+        header("Location: /Menu");
         exit();
     }
 }
