@@ -18,6 +18,54 @@
       opacity: 1;
       transform: translateY(0);
     }
+.btn-donate {
+  --clr-font-main: hsla(0, 0%, 20%, 1);
+  --btn-bg-1: hsla(0, 100%, 50%, 1); /* Merah terang */
+  --btn-bg-2: hsla(0, 100%, 40%, 1); /* Warna bg-red-500 */
+  --btn-bg-color: hsla(0, 100%, 95%, 1); /* Warna teks */
+  --radii: 0.5em;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-size: var(--size, 1rem);
+  font-weight: 500;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0px 0px 20px rgba(255, 71, 71, 0.5),
+    0px 5px 5px -1px rgba(233, 58, 58, 0.25),
+    inset 4px 4px 8px rgba(255, 175, 175, 0.5),
+    inset -4px -4px 8px rgba(216, 19, 19, 0.35);
+}
+
+.btn-donate:hover {
+  background-position: right top;
+}
+
+.btn-donate:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--btn-bg-color),
+    0 0 0 6px var(--btn-bg-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-donate {
+    transition: linear;
+  }
+}
+
+
   </style>
 </head>
 
@@ -30,7 +78,7 @@
       <p id="slider3" class="slider-text text-lg text-white">Pesan Makanan Praktis Online</p>
       <p id="slider4" class="slider-text text-lg text-white">Transaksi Kantin Tanpa Tunai</p>
     </div>
-    <button id="orderButton" class="mt-6 py-2 px-6 bg-white text-red-500 font-semibold rounded-lg hover:bg-gray-200 transition">
+    <button id="orderButton" class="btn-donate mt-6 py-2 px-6 bg-white text-red-500 font-semibold rounded-lg hover:bg-gray-200 transition">
       Lets Make an Order
     </button>
   </div>
