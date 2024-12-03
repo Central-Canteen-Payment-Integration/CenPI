@@ -36,12 +36,6 @@
                         <a href="<?= BASE_URL; ?>/Admin/orderList" class="flex-1">Order List</a>
                     </li>
 
-                    <!-- Order Queue -->
-                    <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
-                        <i class="ti ti-clock text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/orderQueue" class="flex-1">Order Queue</a>
-                    </li>
-
                     <!-- Menu -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-list text-gray-500"></i>

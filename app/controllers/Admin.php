@@ -10,11 +10,6 @@ class Admin extends Controller {
         $this->view('admin/orderlist');
     }
 
-    public function orderqueue() {
-        $this->view('templates/admin_header');
-        $this->view('admin/orderqueue');
-    }
-
     public function menu() {
         $this->view('templates/admin_header');
         $this->view('admin/crudmenu');

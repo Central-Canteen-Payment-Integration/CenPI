@@ -88,20 +88,9 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
                     <option>QRIS</option>
                 </select>
             </div>
+            
 
-            <button class="btn btn-primary mt-4 w-full bg-red-600 hover:bg-red-700 text-sm" onclick="my_modal_3.showModal()">Bayar Sekarang</button>
-            <dialog id="my_modal_3" class="modal">
-                <div class="modal-box">
-                    <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <h3 class="text-base font-semibold mb-4 text-center">Pilih Metode Pembayaran</h3>
-                    <div class="flex justify-between gap-3">
-                        <button class="btn btn-outline flex-1 text-sm">Cash</button>
-                        <button class="btn btn-outline flex-1 text-sm">QRIS</button>
-                    </div>
-                </div>
-            </dialog>
+            <button class="btn btn-primary mt-4 w-full text-white bg-red-600 hover:bg-red-700 text-sm" >Bayar Sekarang</button>
         </div>
     </div>
 </div>
