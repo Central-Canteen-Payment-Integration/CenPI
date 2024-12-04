@@ -1,33 +1,15 @@
-<div class="flex flex-wrap gap-5 justify-center px-4">
-    <div class="flex flex-wrap justify-center gap-5">
-        <?php if (!empty($data['menus'])): ?>
-            <?php foreach ($data['menus'] as $menu): ?>
-                <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                    <figure class="h-40 overflow-hidden">
-                        <img class="w-full h-full fill-cover border-b-2 border-neutral"
-                            src="<?= BASE_URL . (!empty($menu['IMAGE']) ? $menu['IMAGE'] : '/assets/img/placeholder.jpg'); ?>"
-                            alt="<?= htmlspecialchars($menu['NAME']); ?>" />
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="card-title text-secondary"><?= htmlspecialchars($menu['NAME']); ?></h2>
-                        <div class="flex justify-between items-center text-secondary">
-                            <div class="text-lg font-bold">
-                                Rp. <?= number_format($menu['PRICE'], 0, ',', '.'); ?>
-                            </div>
-                            <button class="btn btn-primary text-white <?= isset($_SESSION['user']) ? 'add-to-cart' : ''; ?>"
-                                <?= isset($_SESSION['user']) ? 'data-id="' . $menu['ID_MENU'] . '"' : 'onclick="document.getElementById(\'login-modal\').checked = true"'; ?>>
-                                Add
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>
-        <?php endif; ?>
-    </div>
+<div class="flex justify-center gap-4 mb-4">
+    <!-- Filter  -->
+    <button class="btn btn-secondary text-white" onclick="filterMenus('kantek')">Kantek</button>
+    <button class="btn btn-secondary text-white" onclick="filterMenus('kawah')">Kawah</button>
+    <button class="btn btn-secondary text-white" onclick="filterMenus()">All Menus</button>
 </div>
+
+<div class="flex flex-wrap gap-5 justify-center px-4" id="menu-container">
+    <!-- Menus di didsplay -->
+</div>
+
+
 
 <!-- Please Login Modal -->
 <input type="checkbox" id="login-modal" class="modal-toggle" hidden>
@@ -119,21 +101,63 @@
     </div>
 </div>
 
-<!-- logic buat cart -->
+<!-- logic buat cart & menu & filter -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        // Function to update the cart display with items and total price
+    const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+    const allMenus = <?php echo json_encode($data['menus']); ?>;
+
+    function filterMenus(location = '') {
+        console.log('Filtering menus for location: ', location); 
+
+        const filteredMenus = location ?
+            allMenus.filter(menu => menu.LOCATION.toLowerCase() === location.toLowerCase()) :
+            allMenus;
+
+        const menuContainer = document.getElementById('menu-container');
+        menuContainer.innerHTML = '';
+
+        if (filteredMenus.length > 0) {
+            filteredMenus.forEach(menu => {
+                const menuCard = `
+                    <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
+                        <figure class="h-40 overflow-hidden">
+                            <img class="w-full h-full fill-cover border-b-2 border-neutral"
+                                src="<?= BASE_URL . '/'; ?>${menu.IMAGE || 'assets/img/placeholder.jpg'}"
+                                alt="${menu.NAME}" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title text-secondary">${menu.NAME}</h2>
+                            <div class="flex justify-between items-center text-secondary">
+                                <div class="text-lg font-bold">
+                                    Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                                </div>
+                                <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                                    ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                menuContainer.innerHTML += menuCard;
+            });
+        } else {
+            menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+        }
+    }
+
+    // nampilin all menus
+    filterMenus();
+
+    $(document).ready(function() {
         function updateCartDisplay(cartItems) {
-            // Clear existing cart items and buttons
             $('.cart-list').empty();
             $('.cart-btn').empty();
             let totalPrice = 0;
 
-            // If there are items in the cart, display them
             if (cartItems.length > 0) {
                 cartItems.forEach((item) => {
-                    // Create and append each cart item to the cart list
                     const listItem = document.createElement('li');
                     listItem.className = `flex py-6`;
                     listItem.innerHTML = `
@@ -156,18 +180,16 @@
                                 </div>
                             </div>
                         </div>
-                    `; // HTML structure for each item
-                    totalPrice += parseFloat(item.PRICE); // Calculate total price
+                    `;
+                    totalPrice += parseFloat(item.PRICE);
                     $('.cart-list').append(listItem);
                 });
 
-                // Create and append the cart summary and action buttons
                 const cartBtn = `
                     <div class="flex justify-between text-base font-medium text-secondary">
                         <p>Subtotal</p>
                         <p>Rp. ${totalPrice}</p>
                     </div>
-                    <p class="mt-0.5 text-sm text-gray-500">Packaging calculated at checkout.</p>
                     <div class="mt-4">
                         <button type="button" id="clear-cart-btn" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
                             Clear Cart
@@ -176,121 +198,99 @@
                     <div class="mt-2">
                         <a href="<?= BASE_URL; ?>/Checkout" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
                     </div>
-                    <div class="mt-2 flex flex-col items-center text-center text-sm text-gray-500">
-                        <p>or</p>
-                        <button type="button" class="clear-cart-btn font-medium text-secondary hover:text-accent mt-2" onclick="document.getElementById('cart-drawer').checked = false;document.getElementById('mobile-cart-drawer').checked = false;">
-                            Continue Shopping
-                            <span aria-hidden="true"> &rarr;</span>
-                        </button>
-                    </div>
-                `; // HTML for subtotal and action buttons
+                `;
                 $('.cart-btn').append(cartBtn);
             } else {
-                // Jika keranjang kosong, tampilkan pesan
                 const emptyMessage = `
                 <div class="flex flex-col items-center justify-center h-full py-10 mt-4">
-                    <div class="flex flex-col items-center mt-8">
-                        <div class="w-36 h-36 mb-6">
-                            <img src="<?= BASE_URL; ?>/assets/img/emptycart.jpg" alt="Empty Cart" class="w-full h-full object-contain">
-                        </div>
-                        <!-- Judul -->
-                        <h2 class="text-lg font-medium text-red-600 mb-2">Your cart is empty</h2>
-                        <!-- Deskripsi -->
-                        <p class="text-center text-sm text-gray-500 mb-6">
-                            Looks like you have not added anything to your cart. Go ahead & explore our menu.
-                        </p>
-                        <!-- Tombol -->
-                        <div class="mt-4">
-                                <button type="button" onclick="document.getElementById('cart-drawer').checked = false;document.getElementById('mobile-cart-drawer').checked = false;" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
-                                    Go to Menu
-                                </button>
-                        </div>
+                    <div class="w-36 h-36 mb-6">
+                        <img src="<?= BASE_URL; ?>/assets/img/emptycart.jpg" alt="Empty Cart" class="w-full h-full object-contain">
+                    </div>
+                    <h2 class="text-lg font-medium text-red-600 mb-2">Your cart is empty</h2>
+                    <p class="text-center text-sm text-gray-500 mb-6">Looks like you have not added anything to your cart. Go ahead & explore our menu.</p>
+                    <div class="mt-4">
+                        <button type="button" onclick="document.getElementById('cart-drawer').checked = false;document.getElementById('mobile-cart-drawer').checked = false;" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
+                            Go to Menu
+                        </button>
                     </div>
                 </div>
-
                 `;
                 $('.cart-list').html(emptyMessage);
             }
 
+            $('.qty-cart').text(cartItems.length);
 
-                // Update the cart item quantity display
-                $('.qty-cart').text(cartItems.length);
-
-                // Show dropdown if there are items in the cart
-                if (cartItems.length > 0) {
-                    $('.dropdown.dropdown-end').addClass('md:inline');
-                }
+            if (cartItems.length > 0) {
+                $('.dropdown.dropdown-end').addClass('md:inline');
             }
+        }
 
-            // Event handler for removing an item from the cart
-            $(document).on('click', '.remove-btn', function () {
-                const cart = $(this).data();
+        $(document).on('click', '.remove-btn', function() {
+            const cart = $(this).data();
 
-                $.ajax({
-                    url: '<?= BASE_URL; ?>/Cart/delete',
-                    type: 'POST',
-                    data: {
-                        id_cart: cart.id
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === 'success') {
-                            updateCartDisplay(res.cart);
-                        } else {
-                            alert('Error removing item: ' + res.message);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX Error: ' + error);
+            $.ajax({
+                url: '<?= BASE_URL; ?>/Cart/delete',
+                type: 'POST',
+                data: {
+                    id_cart: cart.id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error removing item: ' + res.message);
                     }
-                });
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
             });
-
-            // Event handler for adding an item to the cart
-            $('.add-to-cart').click(function () {
-                const menu = $(this).data();
-
-                $.ajax({
-                    url: '<?= BASE_URL; ?>/Cart/add',
-                    type: 'POST',
-                    data: {
-                        id_menu: menu.id,
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === 'success') {
-                            updateCartDisplay(res.cart);
-                        } else {
-                            alert('Error updating cart: ' + res.message);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX Error: ' + error);
-                    }
-                });
-            });
-
-            // Event handler for clearing the cart on desktop and mobile
-            $(document).on('click', '#clear-cart-btn', function () {
-                $.ajax({
-                    url: '<?= BASE_URL; ?>/Cart/clear',
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === 'success') {
-                            updateCartDisplay(res.cart);
-                        } else {
-                            alert('Error clearing cart: ' + res.message);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX Error: ' + error);
-                    }
-                });
-            });
-
-            // Initial cart data to display
-            const cart = <?= json_encode($data['cart']); ?>;
-            updateCartDisplay(cart);
         });
+
+        $(document).on('click', '.add-to-cart', function() {
+            const menu = $(this).data();
+
+            $.ajax({
+                url: '<?= BASE_URL; ?>/Cart/add',
+                type: 'POST',
+                data: {
+                    id_menu: menu.id,
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error updating cart: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+
+
+        $(document).on('click', '#clear-cart-btn', function() {
+            $.ajax({
+                url: '<?= BASE_URL; ?>/Cart/clear',
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                    } else {
+                        alert('Error clearing cart: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+
+        const cart = <?= json_encode($data['cart']); ?>;
+        updateCartDisplay(cart);
+    });
 </script>
