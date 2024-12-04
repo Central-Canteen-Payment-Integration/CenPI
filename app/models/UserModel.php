@@ -65,11 +65,11 @@ class UserModel extends Model {
                         SET username = :username, 
                             birthdate = TO_DATE(:birthdate, 'YYYY-MM-DD'), 
                             phone_number = :phone_number, 
-                            pass_user = :pass_user 
+                            PASSWORD = :PASSWORD 
                         WHERE id_user = :id_user";
 
                 $this->db->query($sql);
-                $this->db->bind(':pass_user', $hashedNewPassword);
+                $this->db->bind(':PASSWORD', $hashedNewPassword);
             } else {
                 $sql = "UPDATE USERS 
                         SET username = :username, 
@@ -95,13 +95,13 @@ class UserModel extends Model {
     }
 
     public function verifyPassword($userId, $password) {
-        $sql = "SELECT PASS_USER FROM USERS WHERE id_user = :id_user";
+        $sql = "SELECT PASSWORD FROM USERS WHERE id_user = :id_user";
         $this->db->query($sql);
         $this->db->bind(':id_user', $userId);
 
         $storedPassword = $this->db->single();
 
-        if (password_verify($password, $storedPassword['PASS_USER'])) {
+        if (password_verify($password, $storedPassword['password'])) {
             return true;
         } else {
             return false;
