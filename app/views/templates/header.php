@@ -11,9 +11,11 @@
 
 <body>
 	<header class="mb-10">
-		<div class="navbar px-6">
+		<div class="navbar px-8 mt-2">
 			<div class="navbar-start">
-				<a href="<?= BASE_URL ?>"><button class="btn btn-glass text-xl">Cenπ</button></a>
+			<a href="<?= BASE_URL ?>/menu">
+				<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="h-16">
+			</a>
 			</div>
 			<div class="navbar-end gap-3">
 			<?php
