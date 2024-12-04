@@ -7,7 +7,7 @@
     </div>
     <div class="flex space-x-4">
       <!-- Search Bar -->
-      <div class="relative" >
+      <div class="relative">
         <input
           type="text"
           placeholder="Search orders..."
@@ -15,7 +15,6 @@
           id="search-bar"
           onkeyup="filterOrders()"
         />
-
       </div>
       <!-- Filter Date -->
       <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2">
@@ -37,6 +36,7 @@
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Order Details</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Amount</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Actions</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -48,13 +48,13 @@
           <td class="px-6 py-4 text-sm text-gray-900 font-medium">2x Coffee, 1x Sandwich</td>
           <td class="px-6 py-4 text-sm text-gray-900 font-medium">$164.52</td>
           <td class="px-6 py-4 text-sm">
-            <!-- Action Button -->
             <button
-              class="bg-primary text-white px-3 py-2 rounded-lg shadow hover:bg-red-600"
-              onclick="showActionPopup('(id transaksi)')">
-              Actions
+              class="bg-primary text-white px-3 py-2 rounded-lg shadow hover:bg-blue-600"
+              onclick="acceptOrder(this)">
+              Accept Order
             </button>
           </td>
+          <td class="px-6 py-4 text-sm text-gray-900 font-medium status">-</td>
         </tr>
       </tbody>
     </table>
@@ -63,21 +63,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function showActionPopup(orderId) {
+  function acceptOrder(button) {
+    const row = button.closest('tr');
+    const statusCell = row.querySelector('.status');
+
+    // Show SweetAlert confirmation and update status
     Swal.fire({
-      title: `Actions for Order ${orderId}`,
+      title: 'Order Accepted!',
+      text: 'This order is now on delivery.',
+      icon: 'success',
+      confirmButtonColor: '#38a169',
+    }).then(() => {
+      // Change status to "On Delivery"
+      statusCell.innerHTML = `<button class="bg-yellow-500 text-white px-3 py-2 rounded-lg shadow hover:bg-yellow-600" onclick="completeOrder(this)">Completed order</button>`;
+      button.remove(); // Remove the "Accept Order" button
+    });
+  }
+
+  function completeOrder(button) {
+    const row = button.closest('tr');
+    const statusCell = row.querySelector('.status');
+
+    Swal.fire({
+      title: 'Complete this order?',
+      text: 'Are you sure the order is completed?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Accept Order',
-      cancelButtonText: 'Reject Order',
+      confirmButtonText: 'Complete',
       confirmButtonColor: '#38a169',
-      cancelButtonColor: '#e53e3e',
-      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Order Accepted', `Order ${orderId} has been accepted.`, 'success');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Order Rejected', `Order ${orderId} has been rejected.`, 'error');
+        // Change status to "Completed"
+        statusCell.textContent = 'Completed';
+        Swal.fire('Order Completed', 'This order has been completed.', 'success');
       }
     });
   }

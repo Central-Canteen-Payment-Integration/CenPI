@@ -27,37 +27,37 @@
                     <!-- Dashboard -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-home text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/dashboard" class="flex-1">Dashboard</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/dashboard" class="flex-1">Dashboard</a>
                     </li>
 
                     <!-- Order List -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-shopping-cart text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/orderList" class="flex-1">Order List</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/orderList" class="flex-1">Order List</a>
                     </li>
 
                     <!-- Menu -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-list text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/menu" class="flex-1">Menu</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/menu" class="flex-1">Menu</a>
                     </li>
 
                     <!-- History Transaksi -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-history text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/transactionHistory" class="flex-1">History Transaksi</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/historytransaction" class="flex-1">History Transaksi</a>
                     </li>
 
                     <!-- Report -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-report text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/report" class="flex-1">Report</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/report" class="flex-1">Report</a>
                     </li>
 
                     <!-- Settings -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
                         <i class="ti ti-settings text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/settings" class="flex-1">Settings</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/settings" class="flex-1">Settings</a>
                     </li>
                 </ul>
             </nav>
