@@ -23,6 +23,8 @@
                                 <input type="password" name="password" class="input-field" autocomplete="off" required />
                                 <label>Password</label>
                             </div>
+                            <div class="cf-turnstile" data-sitekey="0x4AAAAAAA1fPhlo9NVYdMtn" data-callback="onTurnstileComplete"></div>
+                            <input type="hidden" name="turnstile_response" id="turnstile_response">
                             <button type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">
                                 Sign In
                             </button>
@@ -52,6 +54,8 @@
                                 <input type="password" name="password" class="input-field" autocomplete="off" required />
                                 <label>Password</label>
                             </div>
+                            <div class="cf-turnstile" data-sitekey="0x4AAAAAAA1fPhlo9NVYdMtn"></div>
+                            <input type="hidden" name="turnstile_response" id="turnstile_response">
                             <button type="submit" class="w-full text-white bg-gray-900 hover:bg-[#37B7C3] font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4">
                                 Register
                             </button>
@@ -84,6 +88,11 @@
         </div>
     </main>
 </div>
+
+<script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"
+  defer
+></script>
 
 <script>
     const inputs = document.querySelectorAll(".input-field");
@@ -120,6 +129,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         const mainEle = document.querySelector("main");
         const toggleLoginBtns = document.querySelectorAll(".toggle_login");
+        const loginForm = document.getElementById("login_form");
+        const registerForm = document.getElementById("register_form");
 
         toggleLoginBtns.forEach((btn) => {
             btn.addEventListener("click", (event) => {
@@ -138,5 +149,28 @@
                 }
             });
         });
+
+        function checkTurnstileResponse(form) {
+            const turnstileResponse = document.getElementById('turnstile_response').value;
+            return turnstileResponse !== "";
+        }
+
+        loginForm.addEventListener("submit", (event) => {
+            if (!checkTurnstileResponse(loginForm)) {
+                event.preventDefault();
+                alert("Please complete the Turnstile verification.");
+            }
+        });
+
+        registerForm.addEventListener("submit", (event) => {
+            if (!checkTurnstileResponse(registerForm)) {
+                event.preventDefault();
+                alert("Please complete the Turnstile verification.");
+            }
+        });
     });
+
+    function onTurnstileComplete(token) {
+        document.getElementById('turnstile_response').value = token;
+    }
 </script>
