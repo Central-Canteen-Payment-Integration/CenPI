@@ -13,9 +13,9 @@ class Menu extends Controller
 
     public function index()
     {
-        // Get all menus (no need to filter by location here)
         $data = [
             'menus' => $this->menuModel->getAllMenus(),
+            'cart' => ''
         ];
 
         if (isset($_SESSION['user'])) {
