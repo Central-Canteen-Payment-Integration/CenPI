@@ -36,7 +36,7 @@ class User extends Controller {
             }
         }
 
-        $this->view('user/login_register', $data);
+        $this->view('user/login', $data);
     }
 
     public function register() {

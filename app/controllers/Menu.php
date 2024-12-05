@@ -23,8 +23,7 @@ class Menu extends Controller
             $data['cart'] = $this->cartModel->getCartUser($user['id']);
         }
 
-        // Pass the menus to the view
         $this->view('templates/header');
-        $this->view('menu/menu', $data);
+        $this->view('home/menu', $data);
     }
 }
