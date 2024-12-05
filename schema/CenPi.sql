@@ -30,7 +30,7 @@ CREATE TABLE MENU (
     id_tenant VARCHAR2(36) NOT NULL,
     name VARCHAR2(100) NOT NULL,
     price INT NOT NULL CHECK (price >= 0),
-    pkg_price INT CHECK (pkg_price >= 0),
+    pkg_price INT,
     image_path VARCHAR2(36),
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     FOREIGN KEY (id_tenant) REFERENCES TENANT(id_tenant)
@@ -41,23 +41,26 @@ CREATE TABLE TRANSACTION (
     id_user VARCHAR2(36) NOT NULL,
     trx_price INT NOT NULL CHECK (trx_price >= 0),
     trx_date DATE NOT NULL,
-    trx_status VARCHAR2(50) CHECK (trx_status IN ('pending', 'completed', 'failed')),
+    trx_status VARCHAR2(50) CHECK (trx_status IN ('pending', 'completed')),
     trx_expiry TIMESTAMP DEFAULT NULL,
-    FOREIGN KEY (id_user) REFERENCES USERS(id_user),
-    FOREIGN KEY (id_status) REFERENCES STATUS_DETAIL(id_status)
+    FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
 
 CREATE TABLE TRANSACTION_DETAIL (
-    id_detail VARCHAR2(36) PRIMARY KEY,
     id_transaction VARCHAR2(36),
     id_menu VARCHAR2(36),
-    qty INT NOT NULL,
-    qty_price INT NOT NULL,
+    qty INT,
+    qty_price INT,
     pkg_price INT,
     notes VARCHAR2(100),
-    status VARCHAR2(50) CHECK (status IN ('cart', 'pending', 'completed', 'failed')),
+    status VARCHAR2(50) CHECK (status IN ('waiting' ,'pending', 'completed')),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
-    FOREIGN KEY (id_menu) REFERENCES MENU(id_menu),
+    FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
+);
+
+CREATE TABLE CATEGORY (
+    id_category VARCHAR2(36) PRIMARY KEY,
+    category_name VARCHAR2(20) NOT NULL
 );
 
 CREATE TABLE MENU_CATEGORY (
@@ -65,12 +68,17 @@ CREATE TABLE MENU_CATEGORY (
     id_category VARCHAR2(36),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu),
     FOREIGN KEY (id_category) REFERENCES CATEGORY(id_category)
-)
+);
 
-CREATE TABLE CATEGORY (
-    id_category VARCHAR2(36) PRIMARY KEY,
-    category_name VARCHAR2(20) NOT NULL
-)
+CREATE TABLE CART (
+    id_cart VARCHAR2(36) PRIMARY KEY,
+    id_user VARCHAR2(36) NOT NULL,
+    id_menu VARCHAR2(36) NOT NULL,
+    qty INT NOT NULL CHECK (qty >= 0),
+    notes VARCHAR2(100),
+    FOREIGN KEY (id_user) REFERENCES USERS(id_user),
+    FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
+);
 
 INSERT INTO TENANT (
     id_tenant, tenant_name, email, username, password, active, forgot_password_token, token_expiry, image_path, location_name, location_booth

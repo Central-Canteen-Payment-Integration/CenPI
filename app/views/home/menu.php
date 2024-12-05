@@ -1,7 +1,7 @@
 <div class="flex justify-center gap-4 mb-4">
     <!-- Filter  -->
-    <button class="btn btn-secondary text-white" onclick="filterMenus('kantek')">Kantek</button>
-    <button class="btn btn-secondary text-white" onclick="filterMenus('kawah')">Kawah</button>
+    <button class="btn btn-secondary text-white" onclick="filterMenus('Kantin Teknik')">Kantek</button>
+    <button class="btn btn-secondary text-white" onclick="filterMenus('Kantin Bawah')">Kawah</button>
     <button class="btn btn-secondary text-white" onclick="filterMenus()">All Menus</button>
 </div>
 
@@ -108,10 +108,8 @@
     const allMenus = <?php echo json_encode($data['menus']); ?>;
 
     function filterMenus(location = '') {
-        console.log('Filtering menus for location: ', location); 
-
         const filteredMenus = location ?
-            allMenus.filter(menu => menu.LOCATION.toLowerCase() === location.toLowerCase()) :
+            allMenus.filter(menu => menu.LOCATION_NAME.toLowerCase() === location.toLowerCase()) :
             allMenus;
 
         const menuContainer = document.getElementById('menu-container');
@@ -123,7 +121,7 @@
                     <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
                         <figure class="h-40 overflow-hidden">
                             <img class="w-full h-full fill-cover border-b-2 border-neutral"
-                                src="<?= BASE_URL . '/'; ?>${menu.IMAGE || 'assets/img/placeholder.jpg'}"
+                                src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
                                 alt="${menu.NAME}" />
                         </figure>
                         <div class="card-body">
@@ -162,7 +160,7 @@
                     listItem.className = `flex py-6`;
                     listItem.innerHTML = `
                         <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                            <img src="<?= BASE_URL ?>${item.IMAGE}" alt="${item.NAME}" class="size-full object-cover">
+                            <img src="<?= MENU_URL ?>${item.IMAGE_PATH || 'placeholder.jpg'}" alt="${item.NAME}" class="size-full object-cover">
                         </div>
                         <div class="ml-4 flex flex-1 flex-col">
                             <div>
