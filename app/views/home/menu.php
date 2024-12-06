@@ -1,10 +1,39 @@
-<div class="flex justify-center gap-4 mb-4">
-    <!-- Filter  -->
-    <button class="btn btn-secondary text-white" onclick="filterMenus('Kantin Teknik')">Kantek</button>
-    <button class="btn btn-secondary text-white" onclick="filterMenus('Kantin Bawah')">Kawah</button>
-    <button class="btn btn-secondary text-white" onclick="filterMenus()">All Menus</button>
+<!-- search bar -->
+<div class="join flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4">
+    <div class="flex-1">
+        <input id="search-input" 
+               class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+               placeholder="Search" />
+    </div>
+    <div class="flex-1">
+        <div class="relative">
+            <select id="filter-select" 
+                    class="select select-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                <option value="" class="text-gray-500">All Menus</option>
+                <option value="Kantin Teknik">Kantek</option>
+                <option value="Kantin Bawah">Kawah</option>
+            </select>
+            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="indicator flex items-center space-x-2">
+        <span id="filter-indicator" 
+              class="indicator-item badge badge-secondary bg-blue-500 text-white rounded-full py-1 px-2 text-xs">
+            All Menus
+        </span>
+        <button id="search-btn" 
+                class="btn join-item bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+            Search
+        </button>
+    </div>
 </div>
 
+
+<!-- buat taro menu -->
 <div class="flex flex-wrap gap-5 justify-center px-4" id="menu-container">
     <!-- Menus di didsplay -->
 </div>
@@ -103,50 +132,112 @@
 
 <!-- logic buat cart & menu & filter -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
 <script>
     const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-    const allMenus = <?php echo json_encode($data['menus']); ?>;
+const allMenus = <?php echo json_encode($data['menus']); ?>;
 
-    function filterMenus(location = '') {
-        const filteredMenus = location ?
-            allMenus.filter(menu => menu.LOCATION_NAME.toLowerCase() === location.toLowerCase()) :
-            allMenus;
+// Fuse.js configuration
+const fuse = new Fuse(allMenus, {
+    keys: ['NAME'], 
+    threshold: 0.4, 
+    minMatchCharLength: 1, 
+    useExtendedSearch: true, 
+});
 
-        const menuContainer = document.getElementById('menu-container');
-        menuContainer.innerHTML = '';
+const filterIndicator = document.getElementById('filter-indicator');
+const filterSelect = document.getElementById('filter-select');
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-btn');
 
-        if (filteredMenus.length > 0) {
-            filteredMenus.forEach(menu => {
-                const menuCard = `
-                    <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                        <figure class="h-40 overflow-hidden">
-                            <img class="w-full h-full fill-cover border-b-2 border-neutral"
-                                src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                                alt="${menu.NAME}" />
-                        </figure>
-                        <div class="card-body">
-                            <h2 class="card-title text-secondary">${menu.NAME}</h2>
-                            <div class="flex justify-between items-center text-secondary">
-                                <div class="text-lg font-bold">
-                                    Rp. ${menu.PRICE.toLocaleString('id-ID')}
-                                </div>
-                                <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                                    ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                                    Add
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                menuContainer.innerHTML += menuCard;
-            });
-        } else {
-            menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
-        }
+// Event listeners
+filterSelect.addEventListener('change', () => {
+    const selectedFilter = filterSelect.value;
+    const searchTerm = searchInput.value.trim();
+    updateFilterIndicator(selectedFilter);
+    filterMenus(selectedFilter, searchTerm);
+});
+
+searchButton.addEventListener('click', () => {
+    const selectedFilter = filterSelect.value;
+    const searchTerm = searchInput.value.trim();
+    filterMenus(selectedFilter, searchTerm);
+});
+
+// Update filter indicator
+function updateFilterIndicator(selectedFilter) {
+    if (selectedFilter) {
+        filterIndicator.textContent = `Filter: ${selectedFilter}`;
+        filterIndicator.classList.remove('badge-secondary');
+        filterIndicator.classList.add('badge-primary');
+    } else {
+        filterIndicator.textContent = 'New';
+        filterIndicator.classList.remove('badge-primary');
+        filterIndicator.classList.add('badge-secondary');
+    }
+}
+
+// Filter menus
+function filterMenus(location = '', searchTerm = '') {
+    console.log('Filtering menus for location:', location, 'and search term:', searchTerm);
+
+    let filteredMenus = allMenus;
+
+    //  location filter
+    if (location) {
+        filteredMenus = filteredMenus.filter(menu =>
+            (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')
+        );
     }
 
-    // nampilin all menus
-    filterMenus();
+    // Apply Fuse.js
+    if (searchTerm) {
+        const searchResults = new Fuse(filteredMenus, { keys: ['NAME'], threshold: 0.4 }).search(searchTerm);
+        filteredMenus = searchResults.map(result => result.item);
+    }
+
+    renderMenus(filteredMenus);
+}
+
+
+// Render menus
+function renderMenus(menus) {
+    const menuContainer = document.getElementById('menu-container');
+    menuContainer.innerHTML = '';
+
+    if (menus.length > 0) {
+        menus.forEach(menu => {
+            const menuCard = `
+            <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
+                <figure class="h-40 overflow-hidden">
+                    <img class="w-full h-full object-cover border-b-2 border-neutral"
+                        src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                        alt="${menu.NAME}" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title text-secondary">${menu.NAME}</h2>
+                    <div class="flex justify-between items-center text-secondary">
+                        <div class="text-lg font-bold">
+                            Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                        </div>
+                        <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                            ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            `;
+            menuContainer.innerHTML += menuCard;
+        });
+    } else {
+        menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+    }
+}
+
+filterMenus();
+
+
 
     $(document).ready(function() {
         function updateCartDisplay(cartItems) {
