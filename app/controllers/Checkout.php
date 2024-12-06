@@ -9,18 +9,25 @@ class Checkout extends Controller {
     }
 
     public function index() {
-        if (isset($_SESSION['user'])) {
-            $user = $_SESSION['user'];
-            $data['cart'] = $this->cartModel->getCartUser($user['id']);
-        } else {
-            
+        $data = [
+            'page' => 'Checkout - CenPI',
+            'cart' => []
+        ];
+
+        // Check if the user is logged in
+        if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
+            $userId = $_SESSION['user']['id'];
+            $data['cart'] = $this->cartModel->getCartUser($userId);
         }
+
+        // Load the views
+        $this->view('templates/init');
         $this->view('templates/focus_header');
         $this->view('checkout/bak', $data);
     }
 
     public function processPayment() {
-        $orderId = Uuid::uuid4()->toString();;
+        $orderId = Uuid::uuid7()->toString();;
         $amount = $_POST['amount'];
 
         $params = [
