@@ -10,23 +10,8 @@
                 </h1>
                 <p class="text-lg text-gray-500 mt-2">Hi, Admin</p>
             </div>
-            <!-- Toggle Section -->
-            <div class="p-6">
-                <div class="flex items-center justify-between">
-                    <span class="text-gray-800 text-lg font-medium">Tenant Status</span>
-                    <div id="tenantToggle"
-                        class="relative w-12 h-6 bg-red-500 rounded-full cursor-pointer transition-all duration-300">
-                        <div
-                            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300">
-                        </div>
-                    </div>
-                </div>
-                <p id="statusText" class="text-sm text-red-500 mt-2 font-medium">Status: <span>Closed</span></p>
-            </div>
-
-
             <!-- Navigasi Sidebar -->
-            <nav class="mt-6">
+            <nav class="mt-4">
                 <ul>
                     <!-- Dashboard -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-gray-100">
@@ -65,6 +50,18 @@
                     </li>
                 </ul>
             </nav>
+            <div class="p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-800 text-lg font-medium">Tenant Status</span>
+                    <div id="tenantToggle"
+                        class="relative w-12 h-6 bg-red-500 rounded-full cursor-pointer transition-all duration-300">
+                        <div
+                            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+                <p id="statusText" class="text-sm text-red-500 mt-2 font-medium">Status: <span>Closed</span></p>
+            </div>
             <script>
                 // DOM Elements
                 const toggle = document.getElementById('tenantToggle');
@@ -112,4 +109,3 @@
         </aside>
 
         <div class="flex-1 p-6">
-            <!-- Header -->

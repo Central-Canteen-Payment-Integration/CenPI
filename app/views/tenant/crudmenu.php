@@ -38,7 +38,7 @@
     <!-- Card Item -->
     <div class="bg-white shadow-lg rounded-lg p-4 w-[23%]">
       <img
-        src="<?= BASE_URL; ?>/assets/img/ayamgeprekkeju.jpg"
+        src="<?= BASE_URL; ?>/assets/img/menu/ayamgeprekkeju.jpg"
         alt="Food Image"
         class="rounded-lg w-full h-36 fill-cover"
       />
@@ -64,7 +64,7 @@
     <!-- Repeat other cards -->
     <div class="bg-white shadow-lg rounded-lg p-4 w-[23%]">
       <img
-        src="<?= BASE_URL; ?>/assets/img/ayamgeprekkeju.jpg"
+        src="<?= BASE_URL; ?>/assets/img/menu/ayamgeprekkeju.jpg"
         alt="Food Image"
         class="rounded-lg w-full h-36 fill-cover"
       />

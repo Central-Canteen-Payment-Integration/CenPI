@@ -3,8 +3,12 @@
 class Tenant extends Controller {
     public function index() {
         $this->view('templates/init');
-        $this->view('templates/tenant_header');
         $this->view('tenant/index');
+    }
+    public function dashboard() {
+        $this->view('templates/init');
+        $this->view('templates/tenant_header');
+        $this->view('tenant/dashboard');
     }
     public function orderlist() {
         $this->view('templates/init');
