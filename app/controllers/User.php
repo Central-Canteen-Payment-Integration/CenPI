@@ -14,7 +14,8 @@ class User extends Controller {
         }
 
         $data = [
-            'page' => 'login'
+            'page' => 'Login - CenPI',
+            'error' => ''
         ];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -35,7 +36,7 @@ class User extends Controller {
                 $data['error'] = 'Invalid username or password';
             }
         }
-
+        $this->view('templates/init', $data);
         $this->view('user/login', $data);
     }
 
@@ -46,7 +47,7 @@ class User extends Controller {
         }
 
         $data = [
-            'page' => 'register',
+            'page' => 'Register - CenPI',
             'error' => ''
         ];
 
@@ -66,7 +67,7 @@ class User extends Controller {
                 }
             }
         }
-
+        $this->view('templates/init', $data);
         $this->view('user/login_register', $data);
     }
 
@@ -112,7 +113,11 @@ class User extends Controller {
     
                 exit;
             }
-            $data = ['user' => $user];
+            $data = [
+                'page' => 'Profile - CenPI',
+                'error' => ''
+            ];
+            $this->view('templates/init', $data);
             $this->view('User/profile', $user);
         }
     }

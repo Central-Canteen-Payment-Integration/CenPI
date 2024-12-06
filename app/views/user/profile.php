@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/global.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
-</head>
-
 <body class="bg-base-100 min-h-screen flex items-center justify-center p-4">
     <div class="font-std w-full max-w-4xl rounded-xl bg-white p-10 shadow-2xl border-2 border-neutral">
         <div class="flex flex-col">

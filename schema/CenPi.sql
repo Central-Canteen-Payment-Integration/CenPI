@@ -41,6 +41,7 @@ CREATE TABLE TRANSACTION (
     id_user VARCHAR2(36) NOT NULL,
     trx_price INT NOT NULL CHECK (trx_price >= 0),
     trx_date DATE NOT NULL,
+    takeaway NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     trx_status VARCHAR2(50) CHECK (trx_status IN ('pending', 'completed')),
     trx_expiry TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (id_user) REFERENCES USERS(id_user)

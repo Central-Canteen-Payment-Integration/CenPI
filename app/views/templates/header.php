@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html data-theme="def" lang="en" class="scroll-smooth">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>CenPI - PNJ</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
-</head>
-
 <body>
 	<header class="mb-10">
 		<div class="navbar px-8 mt-2">

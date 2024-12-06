@@ -236,12 +236,14 @@
                 success: function(res) {
                     if (res.status === 'success') {
                         updateCartDisplay(res.cart);
+                        swallert('success', 'Item removed from cart.');
                     } else {
-                        alert('Error removing item: ' + res.message);
+                        swallert('error', 'Error removing item: ' + res.message);
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + error);
+                    swallert('error', 'An error occurred while removing the item.');
                 }
             });
         });
@@ -259,12 +261,14 @@
                 success: function(res) {
                     if (res.status === 'success') {
                         updateCartDisplay(res.cart);
+                        swallert('success', 'Item added to cart.');
                     } else {
-                        alert('Error updating cart: ' + res.message);
+                        swallert('error', 'Error updating cart: ' + res.message);
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + error);
+                    swallert('error', 'An error occurred while adding the item.');
                 }
             });
         });
@@ -278,12 +282,14 @@
                 success: function(res) {
                     if (res.status === 'success') {
                         updateCartDisplay(res.cart);
+                        swallert('success', 'Cart cleared successfully.');
                     } else {
-                        alert('Error clearing cart: ' + res.message);
+                        swallert('error', 'Error clearing cart: ' + res.message);
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + error);
+                    swallert('error', 'An error occurred while clearing the cart.');
                 }
             });
         });
