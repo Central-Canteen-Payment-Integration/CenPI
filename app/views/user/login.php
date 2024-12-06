@@ -95,8 +95,13 @@
                 alert("Please complete the captcha verification.");
             }
         });
-    });
 
+        const errorMessage = "<?php echo addslashes($data['error']); ?>";
+
+        if (errorMessage) {
+            swallert('error', errorMessage);
+        }
+    });
 
     function onTurnstileComplete(token) {
         document.getElementById('turnstile_response').value = token;

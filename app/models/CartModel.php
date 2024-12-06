@@ -29,7 +29,7 @@ class CartModel extends Model
 
             $sql = "INSERT INTO CART (id_cart, id_user, id_menu, qty) 
                     VALUES (:id_cart, :id_user, :id_menu, :qty)";
-            $id_cart = Uuid::uuid4()->toString();
+            $id_cart = Uuid::uuid7()->toString();
             $this->db->query($sql);
             $this->db->bind(':id_user', $id_user);
             $this->db->bind(':id_cart', $id_cart);

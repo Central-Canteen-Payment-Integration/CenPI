@@ -12,26 +12,30 @@ class User extends Controller {
             header('Location: /Menu');
             exit;
         }
-
+    
         $data = [
             'page' => 'Login - CenPI',
             'error' => ''
         ];
-
+    
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
-
+    
             $user = $this->userModel->login($username, $password);
-
+    
             if ($user) {
-                $_SESSION['user'] = [
-                    'id' => $user['ID_USER'],
-                    'email' => $user['EMAIL'],
-                    'username' => $user['USERNAME'],
-                ];
-                header('Location: /Menu');
-                exit;
+                if ($user['ACTIVE'] == 0) {
+                    $data['error'] = 'Please verify your account.';
+                } else {
+                    $_SESSION['user'] = [
+                        'id' => $user['ID_USER'],
+                        'email' => $user['EMAIL'],
+                        'username' => $user['USERNAME'],
+                    ];
+                    header('Location: /Menu');
+                    exit;
+                }
             } else {
                 $data['error'] = 'Invalid username or password';
             }
@@ -45,30 +49,50 @@ class User extends Controller {
             header('Location: /Menu');
             exit;
         }
-
+    
         $data = [
             'page' => 'Register - CenPI',
             'error' => ''
         ];
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-
+    
             if (empty($username) || empty($password) || empty($email)) {
                 $data['error'] = 'All fields must be filled.';
             } else {
-                if ($this->userModel->register($username, $password, $email)) {
-                    header('Location: /User/login');
-                    exit;
+                $existingUser  = $this->userModel->findUserByEmail($email);
+                if ($existingUser) {
+                    if ($existingUser ['ACTIVE'] == 0) {
+                        $data['error'] = 'Please verify your account.';
+                    } else {
+                        $data['error'] = 'User  already exists.';
+                    }
                 } else {
-                    $data['error'] = 'Registration failed. Please try again.';
+                    if ($this->userModel->register($username, $password, $email)) {
+                        header('Location: /User /login');
+                        exit;
+                    } else {
+                        $data['error'] = 'Registration failed. Please try again.';
+                    }
                 }
             }
         }
+
         $this->view('templates/init', $data);
-        $this->view('user/login_register', $data);
+        $this->view('user/login', $data);
+    }
+
+    public function verify($token) {
+        $verificationMessage = $this->userModel->verifyUser ($token);
+        
+        $loginLink = '<a href="http://cenpi.test/User/login">Click here to log in</a>';
+        
+        echo $verificationMessage . '<br>' . $loginLink;
+        
+        exit;
     }
 
     public function profile() {
