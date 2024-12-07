@@ -59,8 +59,33 @@
 </div>
 
 <!-- buat chart (kalo ada) -->
-<div class="bg-white p-6 rounded-lg shadow mt-6">
-  <h3 class="text-xl font-semibold text-gray-800 mb-4">Chart</h3>
-  </div>
+<div class="bg-white p-6 rounded-lg shadow-md mt-6 mb-6">
+    <h2 class="text-lg font-semibold mb-4">Chart</h2>
+    <canvas id="revenueChart" class="w-full"></canvas>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Chart.js Example for Revenue Trend
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Revenue ($)',
+        data: [500, 700, 800, 600, 900, 1200, 1500],
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
+</script>
 

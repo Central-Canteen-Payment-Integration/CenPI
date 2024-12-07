@@ -8,16 +8,13 @@
     <div class="flex space-x-4">
       <!-- Search Bar -->
       <div class="relative">
-        <input
-          type="text"
-          placeholder="Search orders..."
+        <input type="text" placeholder="Search orders..."
           class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-300 focus:outline-none w-72"
-          id="search-bar"
-          onkeyup="filterOrders()"
-        />
+          id="search-bar" onkeyup="filterOrders()" />
       </div>
       <!-- Filter Date -->
-      <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2">
+      <button
+        class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2">
         <i class="ti ti-calendar"></i>
         <span>Today</span>
         <i class="ti ti-chevron-down"></i>
@@ -25,99 +22,122 @@
     </div>
   </div>
 
-  <!-- Table Section -->
-  <div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <table class="min-w-full divide-y divide-gray-200" id="orders-table">
-      <thead class="bg-primary">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Order ID</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Date</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Customer Name</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Order Details</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Amount</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Actions</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Table Row Example -->
-        <tr>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium">#555231</td>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium">26 March 2020, 12:42 AM</td>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium">Mikasa Ackerman</td>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium">2x Coffee, 1x Sandwich</td>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium">$164.52</td>
-          <td class="px-6 py-4 text-sm">
-            <button
-              class="bg-primary text-white px-3 py-2 rounded-lg shadow hover:bg-blue-600"
-              onclick="acceptOrder(this)">
-              Accept Order
-            </button>
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-900 font-medium status">-</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Order Cards -->
+  <div id="order-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Example Card -->
+    <div class="order-card bg-white border-4 border-red-500 rounded-lg shadow-lg p-6" data-status="Pending">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Order #555231</h2>
+        <span class="text-sm text-gray-500">26 March 2020, 12:42 AM</span>
+      </div>
+      <p class="text-gray-700 text-sm mb-2"><strong>Customer:</strong> Mikasa Ackerman</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Order Details:</strong> 2x Coffee, 1x Sandwich</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Amount:</strong> $164.52</p>
+      <p class="text-gray-700 text-sm mb-4"><strong>Payment:</strong> QRIS</p>
+      <div class="flex items-center justify-between">
+        <button class="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 shadow-md"
+          onclick="acceptOrder(this)">
+          Accept Order
+        </button>
+        <span class="text-sm text-red-500 status">Status: Pending</span>
+      </div>
+      <!-- Notes Section -->
+      <p class="text-gray-500 text-xs italic mt-2"><strong>Notes:</strong> Please call before arriving</p>
+    </div>
+    <div class="order-card bg-white border-4 border-red-500 rounded-lg shadow-lg p-6" data-status="Pending">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Order #555231</h2>
+        <span class="text-sm text-gray-500">26 March 2020, 12:42 AM</span>
+      </div>
+      <p class="text-gray-700 text-sm mb-2"><strong>Customer:</strong> Mikasa Ackerman</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Order Details:</strong> 2x Coffee, 1x Sandwich</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Amount:</strong> $164.52</p>
+      <p class="text-gray-700 text-sm mb-4"><strong>Payment:</strong> QRIS</p>
+      <div class="flex items-center justify-between">
+        <button class="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 shadow-md"
+          onclick="acceptOrder(this)">
+          Accept Order
+        </button>
+        <span class="text-sm text-red-500 status">Status: Pending</span>
+      </div>
+      <!-- Notes Section -->
+      <p class="text-gray-500 text-xs italic mt-2"><strong>Notes:</strong> Please call before arriving</p>
+    </div>
+    <div class="order-card bg-white border-4 border-red-500 rounded-lg shadow-lg p-6" data-status="Pending">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Order #555231</h2>
+        <span class="text-sm text-gray-500">26 March 2020, 12:42 AM</span>
+      </div>
+      <p class="text-gray-700 text-sm mb-2"><strong>Customer:</strong> Mikasa Ackerman</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Order Details:</strong> 2x Coffee, 1x Sandwich</p>
+      <p class="text-gray-700 text-sm mb-2"><strong>Amount:</strong> $164.52</p>
+      <p class="text-gray-700 text-sm mb-4"><strong>Payment:</strong> QRIS</p>
+      <div class="flex items-center justify-between">
+        <button class="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 shadow-md"
+          onclick="acceptOrder(this)">
+          Accept Order
+        </button>
+        <span class="text-sm text-red-500 status">Status: Pending</span>
+      </div>
+      <!-- Notes Section -->
+      <p class="text-gray-500 text-xs italic mt-2"><strong>Notes:</strong> Please call before arriving</p>
+    </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   function acceptOrder(button) {
-    const row = button.closest('tr');
-    const statusCell = row.querySelector('.status');
+    const card = button.closest('.order-card');
+    const statusElement = card.querySelector('.status');
 
-    // Show SweetAlert confirmation and update status
+    // SweetAlert confirmation
     Swal.fire({
-      title: 'Order Accepted!',
-      text: 'This order is now on delivery.',
+      title: 'Accept Order?',
+      text: 'This order will now be processed for delivery.',
       icon: 'success',
-      confirmButtonColor: '#38a169',
-    }).then(() => {
-      // Change status to "On Delivery"
-      statusCell.innerHTML = `<button class="bg-yellow-500 text-white px-3 py-2 rounded-lg shadow hover:bg-yellow-600" onclick="completeOrder(this)">Completed order</button>`;
-      button.remove(); // Remove the "Accept Order" button
+      showCancelButton: true,
+      confirmButtonColor: '#f59e0b', // Yellow color for confirm button
+      confirmButtonText: 'Accept',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Change status to "On Delivery"
+        statusElement.textContent = 'Status: On Delivery';
+        statusElement.classList.remove('text-red-500');
+        statusElement.classList.add('text-yellow-500');
+        card.classList.remove('border-red-500');
+        card.classList.add('border-yellow-500');
+
+        button.textContent = 'Complete Order';
+        button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+        button.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+        button.setAttribute('onclick', 'completeOrder(this)');
+      }
     });
   }
 
   function completeOrder(button) {
-    const row = button.closest('tr');
-    const statusCell = row.querySelector('.status');
+    const card = button.closest('.order-card');
+    const statusElement = card.querySelector('.status');
 
     Swal.fire({
-      title: 'Complete this order?',
-      text: 'Are you sure the order is completed?',
+      title: 'Complete Order?',
+      text: 'Are you sure this order has been completed?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Complete',
-      confirmButtonColor: '#38a169',
+      confirmButtonColor: '#38a169', // Green color for confirm button
     }).then((result) => {
       if (result.isConfirmed) {
         // Change status to "Completed"
-        statusCell.textContent = 'Completed';
+        statusElement.textContent = 'Status: Completed';
+        statusElement.classList.remove('text-yellow-500');
+        statusElement.classList.add('text-green-500');
+        card.classList.remove('border-yellow-500');
+        card.classList.add('border-green-500');
+
+        button.remove(); // Remove the button after completion
         Swal.fire('Order Completed', 'This order has been completed.', 'success');
       }
     });
-  }
-
-  // Function to filter orders based on search bar input
-  function filterOrders() {
-    const input = document.getElementById('search-bar').value.toLowerCase();
-    const table = document.getElementById('orders-table');
-    const rows = table.getElementsByTagName('tr');
-
-    for (let i = 1; i < rows.length; i++) {
-      const cells = rows[i].getElementsByTagName('td');
-      let match = false;
-
-      for (let j = 0; j < cells.length; j++) {
-        if (cells[j].textContent.toLowerCase().includes(input)) {
-          match = true;
-          break;
-        }
-      }
-
-      rows[i].style.display = match ? '' : 'none';
-    }
   }
 </script>
