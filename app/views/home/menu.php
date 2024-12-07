@@ -1,14 +1,14 @@
-<!-- search bar -->
-<div class="join flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4">
+<!-- Desktop Search Bar -->
+<div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4 mt-0">
     <div class="flex-1">
-        <input id="search-input" 
-               class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-               placeholder="Search" />
+        <input id="search-input"
+            class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search" />
     </div>
     <div class="flex-1">
         <div class="relative">
-            <select id="filter-select" 
-                    class="select select-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+            <select id="filter-select"
+                class="select select-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
                 <option value="" class="text-gray-500">All Menus</option>
                 <option value="Kantin Teknik">Kantek</option>
                 <option value="Kantin Bawah">Kawah</option>
@@ -21,22 +21,72 @@
         </div>
     </div>
     <div class="indicator flex items-center space-x-2">
-        <span id="filter-indicator" 
-              class="indicator-item badge badge-secondary bg-blue-500 text-white rounded-full py-1 px-2 text-xs">
+        <span id="filter-indicator"
+            class="indicator-item badge badge-secondary bg-blue-500 text-white rounded-full py-1 px-2 text-xs">
             All Menus
         </span>
-        <button id="search-btn" 
-                class="btn join-item bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+        <button id="search-btn"
+            class="btn join-item bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
             Search
         </button>
     </div>
 </div>
 
 
-<!-- buat taro menu -->
-<div class="flex flex-wrap gap-5 justify-center px-4" id="menu-container">
-    <!-- Menus di didsplay -->
+<div class="grid grid-cols-6 gap-5 px-4">
+    <!-- Left Section -->
+    <div class="col-span-1">
+        <h2 class="font-bold mb-2">Category Filters</h2>
+
+        <!-- category -->
+        <div class="relative mb-4">
+            <button id="location-dropdown-btn" class="w-full p-2 bg-white border border-gray-300 rounded-lg shadow-md flex items-center justify-between focus:outline-none">
+                <span>Select Location</span>
+                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <div id="location-dropdown-menu" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-md hidden">
+                <div class="p-2 space-y-2">
+                    <label class="flex items-center">
+                        <input type="radio" name="location" class="mr-2" value="All Menus" checked /> All Menus
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="location" class="mr-2" value="Kantin Teknik" /> Kantek
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="location" class="mr-2" value="Kantin Bawah" /> Kawah
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('location-dropdown-btn').addEventListener('click', () => {
+            const dropdownMenu = document.getElementById('location-dropdown-menu');
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            const dropdownBtn = document.getElementById('location-dropdown-btn');
+            const dropdownMenu = document.getElementById('location-dropdown-menu');
+            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <!-- Right Section -->
+    <div class="col-span-5">
+        <div class="flex flex-wrap gap-5 justify-center" id="menu-container">
+            <!-- Menu items will be displayed here -->
+        </div>
+    </div>
 </div>
+
+
+
 
 
 
@@ -135,107 +185,128 @@
 <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
 <script>
     const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-const allMenus = <?php echo json_encode($data['menus']); ?>;
+    const allMenus = <?php echo json_encode($data['menus']); ?>;
 
-// Fuse.js configuration
-const fuse = new Fuse(allMenus, {
-    keys: ['NAME'], 
-    threshold: 0.4, 
-    minMatchCharLength: 1, 
-    useExtendedSearch: true, 
-});
+    // Fuse.js configuration
+    const fuse = new Fuse(allMenus, {
+        keys: ['NAME'],
+        threshold: 0.2,
+        minMatchCharLength: 1,
+        useExtendedSearch: true,
+    });
 
-const filterIndicator = document.getElementById('filter-indicator');
-const filterSelect = document.getElementById('filter-select');
-const searchInput = document.getElementById('search-input');
-const searchButton = document.getElementById('search-btn');
+    // Dekstop
+    const filterIndicator = document.getElementById('filter-indicator');
+    const filterSelect = document.getElementById('filter-select');
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-btn');
 
-// Event listeners
-filterSelect.addEventListener('change', () => {
-    const selectedFilter = filterSelect.value;
-    const searchTerm = searchInput.value.trim();
-    updateFilterIndicator(selectedFilter);
-    filterMenus(selectedFilter, searchTerm);
-});
+    // Mobile elements
+    const searchInputMobile = document.getElementById('search-input-mobile');
+    const filterSelectMobile = document.getElementById('filter-select-mobile');
+    const searchButtonMobile = document.getElementById('search-btn-mobile');
 
-searchButton.addEventListener('click', () => {
-    const selectedFilter = filterSelect.value;
-    const searchTerm = searchInput.value.trim();
-    filterMenus(selectedFilter, searchTerm);
-});
+    // Event listeners for desktop view
+    filterSelect.addEventListener('change', () => {
+        const selectedFilter = filterSelect.value;
+        const searchTerm = searchInput.value.trim();
+        updateFilterIndicator(selectedFilter);
+        filterMenus(selectedFilter, searchTerm);
+    });
 
-// Update filter indicator
-function updateFilterIndicator(selectedFilter) {
-    if (selectedFilter) {
-        filterIndicator.textContent = `Filter: ${selectedFilter}`;
-        filterIndicator.classList.remove('badge-secondary');
-        filterIndicator.classList.add('badge-primary');
-    } else {
-        filterIndicator.textContent = 'New';
-        filterIndicator.classList.remove('badge-primary');
-        filterIndicator.classList.add('badge-secondary');
+    searchButton.addEventListener('click', () => {
+        const selectedFilter = filterSelect.value;
+        const searchTerm = searchInput.value.trim();
+        filterMenus(selectedFilter, searchTerm);
+    });
+
+    // Event listeners for mobile view
+    filterSelectMobile.addEventListener('change', () => {
+        const selectedFilter = filterSelectMobile.value;
+        const searchTerm = searchInputMobile.value.trim();
+        updateFilterIndicator(selectedFilter);
+        filterMenus(selectedFilter, searchTerm);
+    });
+
+    searchButtonMobile.addEventListener('click', () => {
+        const selectedFilter = filterSelectMobile.value;
+        const searchTerm = searchInputMobile.value.trim();
+        filterMenus(selectedFilter, searchTerm);
+    });
+
+    // Update filter indicator
+    function updateFilterIndicator(selectedFilter) {
+        if (selectedFilter) {
+            filterIndicator.textContent = `Filter: ${selectedFilter}`;
+            filterIndicator.classList.remove('badge-secondary');
+            filterIndicator.classList.add('badge-primary');
+        } else {
+            filterIndicator.textContent = 'New';
+            filterIndicator.classList.remove('badge-primary');
+            filterIndicator.classList.add('badge-secondary');
+        }
     }
-}
 
-// Filter menus
-function filterMenus(location = '', searchTerm = '') {
-    console.log('Filtering menus for location:', location, 'and search term:', searchTerm);
+    // Filter menus
+    function filterMenus(location = '', searchTerm = '') {
+        console.log('Filtering menus for location:', location, 'and search term:', searchTerm);
 
-    let filteredMenus = allMenus;
+        let filteredMenus = allMenus;
 
-    //  location filter
-    if (location) {
-        filteredMenus = filteredMenus.filter(menu =>
-            (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')
-        );
+        // location filter
+        if (location) {
+            filteredMenus = filteredMenus.filter(menu =>
+                (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')
+            );
+        }
+
+        // Fuse.js search filter
+        if (searchTerm) {
+            const searchResults = fuse.search(searchTerm);
+            filteredMenus = searchResults.map(result => result.item);
+        }
+
+        renderMenus(filteredMenus);
     }
 
-    // Apply Fuse.js
-    if (searchTerm) {
-        const searchResults = new Fuse(filteredMenus, { keys: ['NAME'], threshold: 0.4 }).search(searchTerm);
-        filteredMenus = searchResults.map(result => result.item);
-    }
+    // Render menus
+    function renderMenus(menus) {
+        const menuContainer = document.getElementById('menu-container');
+        menuContainer.innerHTML = '';
 
-    renderMenus(filteredMenus);
-}
-
-
-// Render menus
-function renderMenus(menus) {
-    const menuContainer = document.getElementById('menu-container');
-    menuContainer.innerHTML = '';
-
-    if (menus.length > 0) {
-        menus.forEach(menu => {
-            const menuCard = `
-            <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                <figure class="h-40 overflow-hidden">
-                    <img class="w-full h-full object-cover border-b-2 border-neutral"
-                        src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                        alt="${menu.NAME}" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title text-secondary">${menu.NAME}</h2>
-                    <div class="flex justify-between items-center text-secondary">
-                        <div class="text-lg font-bold">
-                            Rp. ${menu.PRICE.toLocaleString('id-ID')}
+        if (menus.length > 0) {
+            menus.forEach(menu => {
+                const menuCard = `
+                <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
+                    <figure class="h-40 overflow-hidden">
+                        <img class="w-full h-full object-cover border-b-2 border-neutral"
+                            src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                            alt="${menu.NAME}" />
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title text-secondary">${menu.NAME}</h2>
+                        <div class="flex justify-between items-center text-secondary">
+                            <div class="text-lg font-bold">
+                                Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                            </div>
+                            <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                                ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                                Add
+                            </button>
                         </div>
-                        <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                            ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                            Add
-                        </button>
                     </div>
                 </div>
-            </div>
             `;
-            menuContainer.innerHTML += menuCard;
-        });
-    } else {
-        menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+                menuContainer.innerHTML += menuCard;
+            });
+        } else {
+            menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+        }
     }
-}
 
-filterMenus();
+    filterMenus();
+
+
 
 
 
