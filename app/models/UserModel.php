@@ -137,29 +137,17 @@ class UserModel extends Model {
         }
     }
 
-    public function findUserByEmail($email) {
+    public function findUserByUsernameOrEmail($username, $email) {
         try {
-            $sql = "SELECT * FROM USERS WHERE email = :email";
+            $sql = "SELECT * FROM USERS WHERE username = :username OR email = :email";
             $this->db->query($sql);
+            
+            $this->db->bind(':username', $username);
             $this->db->bind(':email', $email);
-    
-            return $this->db->single();
+
+            return $this->db->resultSet();
         } catch (Exception $e) {
-            error_log("Find User By Email Error: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function verifyPassword($userId, $password) {
-        $sql = "SELECT PASSWORD FROM USERS WHERE id_user = :id_user";
-        $this->db->query($sql);
-        $this->db->bind(':id_user', $userId);
-
-        $storedPassword = $this->db->single();
-
-        if (password_verify($password, $storedPassword['password'])) {
-            return true;
-        } else {
+            error_log("Find User By Username or Email Error: " . $e->getMessage());
             return false;
         }
     }

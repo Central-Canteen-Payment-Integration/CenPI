@@ -1,165 +1,91 @@
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="mx-auto h-16 w-auto" src="<?= BASE_URL; ?>/assets/img/logo.svg" alt="logo cenpi">
-        <h2 id="form-title" class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-            Sign in to your account
-        </h2>
-        <p class="mt-2 text-center text-sm leading-5 text-red-500 max-w">
-            Or
-            <a href="#" id="toggle-register"
-                class="font-medium text-red-500 hover:text-red-700 focus:outline-none focus:underline transition ease-in-out duration-150">
-                Register your Tenant
-            </a>
-        </p>
-    </div>
-
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <!-- Login Form -->
-            <form id="login-form">
-                <div>
-                    <label for="email" class="block text-sm font-medium leading-5 text-gray-700">Username</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <input id="email" name="email" type="email" required=""
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <label for="password" class="block text-sm font-medium leading-5 text-gray-700">Password</label>
-                    <div class="mt-1 rounded-md shadow-sm">
-                        <input id="password" name="password" type="password" required=""
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                    </div>
-                </div>
-
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember_me" name="remember" type="checkbox"
-                            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out">
-                        <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900">Remember me</label>
-                    </div>
-                    <div class="text-sm leading-5">
-                        <a href="#"
-                            class="font-medium text-red-500 hover:text-red-700 focus:outline-none focus:underline transition ease-in-out duration-150">Forgot
-                            your password?</a>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <span class="block w-full rounded-md shadow-sm">
-                        <button type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-red-700 transition duration-150 ease-in-out">
-                            Sign in
-                        </button>
-                    </span>
-                </div>
-            </form>
-
-            <!-- Register Form -->
-            <form id="register-form" class="hidden">
-                <div class="flex flex-wrap -mx-2">
-                    <!-- Username -->
-                    <div class="w-full md:w-1/2 px-2">
-                        <label for="username" class="block text-sm font-medium leading-5 text-gray-700">Username</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <input id="username" name="username" type="text" required=""
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                        </div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="w-full md:w-1/2 px-2 mt-4 md:mt-0">
-                        <label for="email-register"
-                            class="block text-sm font-medium leading-5 text-gray-700">Email</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <input id="email-register" name="email" type="email" required=""
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap -mx-2 mt-4">
-                    <!-- Password -->
-                    <div class="w-full md:w-1/2 px-2">
-                        <label for="password-register"
-                            class="block text-sm font-medium leading-5 text-gray-700">Password</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <input id="password-register" name="password" type="password" required=""
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                        </div>
-                    </div>
-
-                    <!-- Nama Tenant -->
-                    <div class="w-full md:w-1/2 px-2 mt-4 md:mt-0">
-                        <label for="tenant-name" class="block text-sm font-medium leading-5 text-gray-700">Nama
-                            Tenant</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <input id="tenant-name" name="tenant_name" type="text" required=""
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap -mx-2 mt-4">
-                    <!-- Location Tenant -->
-                    <div class="w-full md:w-1/2 px-2">
-                        <label for="tenant-location" class="block text-sm font-medium leading-5 text-gray-700">Location
-                            Tenant</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <select id="tenant-location" name="tenant_location" required=""
-                                class="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                                <option value="" disabled selected>Pilih Lokasi</option>
-                                <option value="Kantin Bawah">Kantin Bawah</option>
-                                <option value="Kantin Teknik">Kantin Teknik</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- No Tenant -->
-                    <div class="w-full md:w-1/2 px-2 mt-4 md:mt-0">
-                        <label for="tenant-number" class="block text-sm font-medium leading-5 text-gray-700">No
-                            Tenant</label>
-                        <div class="mt-1 rounded-md shadow-sm">
-                            <input id="tenant-number" name="tenant_number" type="number" required=""
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <span class="block w-full rounded-md shadow-sm">
-                        <button type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-red-700 transition duration-150 ease-in-out">
-                            Register
-                        </button>
-                    </span>
-                </div>
-            </form>
-
-
-        </div>
-    </div>
+<div class="flex justify-between items-center mb-6 relative">
+  <h2 class="text-2xl font-semibold text-gray-800 flex items-center space-x-2 mb-4">
+    <i class="ti ti-layout-dashboard text-blue-500"></i>
+    <span>Dashboard</span>
+  </h2>
+  
+  <!-- Filter Periode -->
+  <div class="bg-white p-3 rounded-md flex items-center space-x-3 cursor-pointer shadow-md relative hover:shadow-lg transition-shadow duration-300" id="filter-period">
+    <i class="ti ti-calendar text-blue-500 text-lg"></i>
+    <span class="text-gray-800">Filter Periode</span>
+    <span class="text-gray-500" id="period-text">DD-MM-YYYY - DD-MM-YYYY</span>
+    <button class="text-blue-500 focus:outline-none">
+      <i class="ti ti-chevron-down" id="chevron-icon"></i>
+    </button>
+  </div>
 </div>
 
-<script>
-    const toggleRegister = document.getElementById('toggle-register');
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const formTitle = document.getElementById('form-title');
+<!-- Card stats -->
+<div class="grid grid-cols-4 gap-6">
+  <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
+    <div class="p-3 bg-blue-100 rounded-full">
+      <i class="ti ti-file-invoice text-blue-500 text-2xl"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Total Orders</p>
+      <h3 class="text-xl font-semibold text-gray-800">75</h3>
+    </div>
+  </div>
 
-    toggleRegister.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (registerForm.classList.contains('hidden')) {
-            loginForm.classList.add('hidden');  
-            registerForm.classList.remove('hidden');
-            formTitle.textContent = "Register your tenant";
-            toggleRegister.textContent = "Sign in to your account";
-        } else {
-            registerForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            formTitle.textContent = "Sign in to your account";
-            toggleRegister.textContent = "Register your Tenant";
-        }
-    });
+  <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
+    <div class="p-3 bg-green-100 rounded-full">
+      <i class="ti ti-package text-green-500 text-2xl"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Total Delivered</p>
+      <h3 class="text-xl font-semibold text-gray-800">357</h3>
+    </div>
+  </div>
+
+  <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
+    <div class="p-3 bg-red-100 rounded-full">
+      <i class="ti ti-ban text-red-500 text-2xl"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Total Cancelled</p>
+      <h3 class="text-xl font-semibold text-gray-800">65</h3>
+    </div>
+  </div>
+
+  <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
+    <div class="p-3 bg-yellow-100 rounded-full">
+      <i class="ti ti-cash text-yellow-500 text-2xl"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Total Revenue</p>
+      <h3 class="text-xl font-semibold text-gray-800">$128</h3>
+    </div>
+  </div>
+</div>
+
+<!-- buat chart (kalo ada) -->
+<div class="bg-white p-6 rounded-lg shadow-md mt-6 mb-6">
+    <h2 class="text-lg font-semibold mb-4">Chart</h2>
+    <canvas id="revenueChart" class="w-full"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Chart.js Example for Revenue Trend
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Revenue ($)',
+        data: [500, 700, 800, 600, 900, 1200, 1500],
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
 </script>
+
