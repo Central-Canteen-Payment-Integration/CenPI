@@ -1,5 +1,6 @@
 <!-- Desktop Search Bar -->
-<div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4 mt-0">
+<div
+    class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4 mt-0">
     <div class="flex-1">
         <input id="search-input"
             class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -14,7 +15,8 @@
                 <option value="Kantin Bawah">Kawah</option>
             </select>
             <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
@@ -40,14 +42,17 @@
 
         <!-- category -->
         <div class="relative mb-4">
-            <button id="location-dropdown-btn" class="w-full p-2 bg-white border border-gray-300 rounded-lg shadow-md flex items-center justify-between focus:outline-none">
+            <button id="location-dropdown-btn"
+                class="w-full p-2 bg-white border border-gray-300 rounded-lg shadow-md flex items-center justify-between focus:outline-none">
                 <span>Select Location</span>
-                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
 
-            <div id="location-dropdown-menu" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-md hidden">
+            <div id="location-dropdown-menu"
+                class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-md hidden">
                 <div class="p-2 space-y-2">
                     <label class="flex items-center">
                         <input type="radio" name="location" class="mr-2" value="All Menus" checked /> All Menus
@@ -279,7 +284,7 @@
                 const menuCard = `
                 <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
                     <figure class="h-40 overflow-hidden">
-                        <img class="w-full h-full object-cover border-b-2 border-neutral"
+                        <img class="w-full h-full fill-cover border-b-2 border-neutral"
                             src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
                             alt="${menu.NAME}" />
                     </figure>
@@ -289,10 +294,12 @@
                             <div class="text-lg font-bold">
                                 Rp. ${menu.PRICE.toLocaleString('id-ID')}
                             </div>
-                            <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                                ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                                <button 
+                                class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''} cursor-pointer transition-all bg-red-500 text-white px-6 py-2 rounded-lg border-red-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]" 
+                                ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}
+                                >
                                 Add
-                            </button>
+                                </button>
                         </div>
                     </div>
                 </div>
