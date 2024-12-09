@@ -4,5 +4,4 @@ assets/css/style.css
 app/config/config.php
 
 vendor/
-app/views/home/menu bak.php
 app/vendor/

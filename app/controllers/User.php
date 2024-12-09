@@ -59,16 +59,25 @@ class User extends Controller {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    
+        
             if (empty($username) || empty($password) || empty($email)) {
                 $data['error'] = 'All fields must be filled.';
             } else {
-                $existingUser  = $this->userModel->findUserByEmail($email);
-                if ($existingUser) {
-                    if ($existingUser ['ACTIVE'] == 0) {
-                        $data['error'] = 'Please verify your account.';
+                $existingUsers = $this->userModel->findUserByUsernameOrEmail($username, $email);
+                $userCount = count($existingUsers);
+                if ($userCount === 2) {
+                    $data['error'] = 'Email and username already used.';
+                } elseif ($userCount === 1) {
+                    if ($existingUsers[0]['USERNAME'] === $username && $existingUsers[0]['EMAIL'] === $email) {
+                        $data['error'] = 'Email and username already used.';
+                    } elseif ($existingUsers[0]['EMAIL'] === $email) {
+                        if ($existingUsers[0]['ACTIVE'] == 0) {
+                            $data['error'] = 'Please verify your account.';
+                        } else {
+                            $data['error'] = 'Email already used.';
+                        }
                     } else {
-                        $data['error'] = 'User  already exists.';
+                        $data['error'] = 'Username already used.';
                     }
                 } else {
                     if ($this->userModel->register($username, $password, $email)) {
