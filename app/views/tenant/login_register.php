@@ -165,6 +165,7 @@
 
         if (errorMessage) {
             swallert('error', errorMessage);
+            window.history.replaceState(null, null, '<?php echo BASE_URL; ?>/Tenant/login');
         }
     });
 </script>
