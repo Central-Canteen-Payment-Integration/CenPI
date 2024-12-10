@@ -160,4 +160,13 @@ class User extends Controller {
         header("Location: /Menu");
         exit();
     }
+
+    public function history(){
+        $data = [
+            'page' => 'History - CenPI',
+            'error' => ''
+        ];
+        $this->view('templates/init', $data);
+        $this->view('user/history', $data);
+    }
 }
