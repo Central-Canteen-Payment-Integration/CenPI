@@ -12,11 +12,15 @@ class NotificationServer implements MessageComponentInterface
         $queryParams = $conn->httpRequest->getUri()->getQuery();
         parse_str($queryParams, $queryArray);
         $tenantId = $queryArray['tenant_id'] ?? null;
-
+    
         if ($tenantId) {
-            if (!isset($this->clients[$tenantId])) {
-                $this->clients[$tenantId] = new \SplObjectStorage;
+            if (isset($this->clients[$tenantId]) && $this->clients[$tenantId]->count() > 0) {
+                $conn->send(json_encode(['error' => 'A connection for this tenant already exists.']));
+                $conn->close();
+                return;
             }
+    
+            $this->clients[$tenantId] = new \SplObjectStorage;
             $this->clients[$tenantId]->attach($conn);
             echo "Connection established for tenant {$tenantId}\n";
         } else {
@@ -60,8 +64,8 @@ $server = IoServer::factory(
             new NotificationServer()
         )
     ),
-    8076
+    8070
 );
 
-echo "WebSocket server running on ws://localhost:8076\n";
+echo "WebSocket server running on ws://localhost:8070\n";
 $server->run();

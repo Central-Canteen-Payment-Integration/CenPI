@@ -8,7 +8,6 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
 
 <div class="container min-w-full py-5 text-sm bg-[#F0F3F7]">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
         <!-- Tampilan Kiri (Profil Pembeli & Pesanan) -->
         <div class="col-span-2 bg-white p-4 rounded-lg shadow sm:ml-5 sm:mr-6">
             <!-- Profil Pembeli -->

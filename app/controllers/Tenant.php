@@ -7,6 +7,15 @@ class Tenant extends Controller {
         $this->tenantModel = $this->model('TenantModel');
     }
 
+    private function checkLoggedIn() {
+        if (!isset($_SESSION['tenant'])) {
+            $data['error'] = "Please login First!";
+            $this->view('templates/init');
+            $this->view('tenant/login_register', $data);
+            exit;
+        }
+    }
+
     public function login() {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
@@ -93,46 +102,49 @@ class Tenant extends Controller {
     }
     
     public function index() {
-        if (!isset($_SESSION['tenant'])) {
-            header('Location: /Tenant/login');
-            exit;
-        }
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/index');
     }
 
     public function orderlist() {
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/orderlist');
     }
 
     public function menu() {
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/crudmenu');
     }
 
     public function historytransaction() {
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/historytransaction');
     }
 
     public function report() {
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/report');
     }
 
     public function settings() {
+        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/settings');
     }
 
     public function logout() {
+        $this->checkLoggedIn();
         session_destroy();
         header("Location: /Tenant");
         exit();

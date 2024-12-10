@@ -29,7 +29,7 @@ CREATE TABLE MENU (
     id_menu VARCHAR2(36) PRIMARY KEY,
     id_tenant VARCHAR2(36) NOT NULL,
     name VARCHAR2(100) NOT NULL,
-    price INT NOT NULL CHECK (price >= 0),
+    price INT NOT NULL CHECK (price > 0),
     pkg_price INT,
     image_path VARCHAR2(36),
     menu_type VARCHAR2(7) CHECK (type IN ('makanan', 'minuman')),
@@ -40,11 +40,13 @@ CREATE TABLE MENU (
 CREATE TABLE TRANSACTION (
     id_transaction VARCHAR2(36) PRIMARY KEY,
     id_user VARCHAR2(36) NOT NULL,
-    trx_price INT NOT NULL CHECK (trx_price >= 0),
+    trx_price INT NOT NULL CHECK (trx_price > 0),
     trx_date DATE NOT NULL,
     takeaway NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
-    trx_status VARCHAR2(50) CHECK (trx_status IN ('pending', 'completed')),
-    trx_expiry TIMESTAMP DEFAULT NULL,
+    trx_method VARCHAR2(4) CHECK (trx_method IN ('cash', 'qris'))
+    trx_status VARCHAR2(50) CHECK (trx_status IN ('onPayment', 'Expired', 'onPending', 'Completed')),
+    midtrans_token VARCHAR2(50) NOT NULL,
+    trx_expiry TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
 
@@ -55,7 +57,7 @@ CREATE TABLE TRANSACTION_DETAIL (
     qty_price INT,
     pkg_price INT,
     notes VARCHAR2(100),
-    status VARCHAR2(50) CHECK (status IN ('waiting' ,'pending', 'completed')),
+    status VARCHAR2(50) CHECK (status IN ('Expired', 'onAccept' ,'onPending', 'Completed')),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );
@@ -76,7 +78,7 @@ CREATE TABLE CART (
     id_cart VARCHAR2(36) PRIMARY KEY,
     id_user VARCHAR2(36) NOT NULL,
     id_menu VARCHAR2(36) NOT NULL,
-    qty INT NOT NULL CHECK (qty >= 0),
+    qty INT NOT NULL CHECK (qty > 0),
     notes VARCHAR2(100),
     FOREIGN KEY (id_user) REFERENCES USERS(id_user),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)

@@ -1,6 +1,6 @@
 <body class="bg-gray-100">
     <div class="flex">
-        <aside class="w-64 bg-white h-screen shadow-lg">
+        <aside class="w-64 bg-white h-screen shadow-lg flex flex-col">
             <div class="p-6 border-b">
                 <h1 class="text-2xl font-bold text-gray-800 flex items-center space-x-2">
                     <a href="<?= BASE_URL ?>/tenant">
@@ -11,7 +11,7 @@
                 <p class="text-lg text-gray-500 mt-2">Hi, Admin</p>
             </div>
             <!-- Navigasi Sidebar -->
-            <nav class="mt-4">
+            <nav class="mt-4 flex-1">
                 <ul>
                     <!-- Dashboard -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
@@ -106,28 +106,31 @@
                 // Initialize the toggle state on page load
                 loadStatus();
 
-                const wsUrl = `ws://localhost:8076/?tenant_id=<?php echo $_SESSION['tenant']['id']; ?>`;
+                const reconnectInterval = 2000;
 
-                const socket = new WebSocket(wsUrl);
+                const connectWebSocket = () => {
+                    const socket = new WebSocket('ws://<?php echo DB_HOST; ?>:8070?tenant_id=<?php echo $_SESSION['tenant']['id']; ?>');
 
-                socket.addEventListener("open", () => {
-                    console.log("Connected to the WebSocket server as tenant:", tenantId);
-                });
+                    socket.addEventListener('open', function (event) {
+                        console.log('Connected to the WebSocket server.');
+                    });
 
-                socket.addEventListener("message", (event) => {
-                    console.log("Message received:", event.data);
+                    socket.addEventListener('message', function (event) {
+                        swallert('info', event.data);
+                    });
 
-                    const message = JSON.parse(event.data);
-                    console.log("Parsed message:", message);
-                });
+                    socket.addEventListener('error', function (event) {
+                        console.error('WebSocket error: ' + event.message);
+                        setTimeout(connectWebSocket, reconnectInterval);
+                    });
 
-                socket.addEventListener("close", () => {
-                    console.log("Connection closed.");
-                });
+                    socket.addEventListener('close', function (event) {
+                        console.log('Disconnected from the WebSocket server.');
+                        setTimeout(connectWebSocket, reconnectInterval);
+                    });
+                };
 
-                socket.addEventListener("error", (error) => {
-                    console.error("WebSocket error:", error);
-                });
+                connectWebSocket();
             </script>
         </aside>
 

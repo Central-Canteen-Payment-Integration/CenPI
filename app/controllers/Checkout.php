@@ -14,13 +14,11 @@ class Checkout extends Controller {
             'cart' => []
         ];
 
-        // Check if the user is logged in
         if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
             $userId = $_SESSION['user']['id'];
             $data['cart'] = $this->cartModel->getCartUser($userId);
         }
 
-        // Load the views
         $this->view('templates/init');
         $this->view('templates/focus_header');
         $this->view('checkout/bak', $data);
@@ -46,7 +44,7 @@ class Checkout extends Controller {
             $data = [
                 'snapToken' => $snapToken
             ];
-            // return json_encode($data);
+            $this->view('templates/init');
             $this->view('checkout/payment', $data);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
