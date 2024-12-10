@@ -33,12 +33,12 @@
     </div>
 </div>
 
-
+<!-- GRID -->
 <div class="grid grid-cols-6 gap-5 px-4">
     <!-- Left Section -->
     <div class="col-span-1">
         <div class="space-y-4">
-            <!-- Accordion 1 -->
+            <!-- Accordion 1: Category Selection -->
             <div class="border border-gray-300 rounded-lg shadow-md">
                 <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
                     Kamu Mau Makan Atau Minum?
@@ -60,46 +60,47 @@
                 </div>
             </div>
 
-            <!-- Accordion 2 (Makanan) -->
-            <div class="border border-gray-300 rounded-lg shadow-md" id="accordion-makanan" style="display: none;">
+            <!-- Accordion 2: Makanan Subcategories -->
+            <div class="border border-gray-300 rounded-lg shadow-md hidden" id="accordion-makanan">
                 <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
                     Opsi Makanan
                 </button>
                 <div class="accordion-content bg-white p-4 hidden">
                     <p class="font-medium mb-2">Silakan Pilih:</p>
                     <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" onchange="handleCategoryChange()" />
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" />
                         <span>Goreng</span>
                     </label>
                     <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" onchange="handleCategoryChange()" />
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" />
                         <span>Bakar</span>
                     </label>
                     <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" onchange="handleCategoryChange()" />
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" />
                         <span>Rebus</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Accordion 3 (Minuman) -->
-            <div class="border border-gray-300 rounded-lg shadow-md" id="accordion-minuman" style="display: none;">
+            <!-- Accordion 3: Minuman Subcategories -->
+            <div class="border border-gray-300 rounded-lg shadow-md hidden" id="accordion-minuman">
                 <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                    Minuman Options
+                    Opsi Minuman
                 </button>
                 <div class="accordion-content bg-white p-4 hidden">
                     <p class="font-medium mb-2">Silakan Pilih:</p>
                     <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" onchange="handleCategoryChange()" />
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" />
                         <span>Es</span>
                     </label>
                     <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" onchange="handleCategoryChange()" />
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" />
                         <span>Panas</span>
                     </label>
                 </div>
             </div>
         </div>
+
 
         <!-- JavaScript for Accordion Functionality -->
         <script>
@@ -108,9 +109,10 @@
                 const makananAccordion = document.getElementById('accordion-makanan');
                 const minumanAccordion = document.getElementById('accordion-minuman');
 
-                // Hide both accordions initially
                 makananAccordion.style.display = 'none';
                 minumanAccordion.style.display = 'none';
+
+                resetSubcategoryRadios();
 
                 // Show the relevant accordion based on the selected category
                 if (selectedCategory === 'Makanan') {
@@ -120,21 +122,23 @@
                 }
             }
 
+            function resetSubcategoryRadios() {
+                // Get all subcategory radio buttons and uncheck them
+                const subcategoryRadios = document.querySelectorAll('input[name="subcategory"]');
+                subcategoryRadios.forEach(radio => radio.checked = false);
+            }
+
             function toggleAccordion(button) {
                 const content = button.nextElementSibling;
-
-                // Toggle the hidden class
                 content.classList.toggle('hidden');
             }
         </script>
-
-
 
     </div>
 
     <!-- Right Section -->
     <div class="col-span-5">
-        <div class="flex flex-wrap gap-5 justify-center" id="menu-container">
+        <div class="flex flex-wrap gap-5 justify-left" id="menu-container">
             <!-- Menu items will be displayed here -->
         </div>
     </div>
@@ -403,7 +407,6 @@
         }
     }
 
-    // Initial call to apply filters on page load
     document.addEventListener('DOMContentLoaded', applyFilters);
 
 
