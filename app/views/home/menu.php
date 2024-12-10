@@ -1,5 +1,5 @@
 <!-- Desktop Search Bar -->
-<div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-4 mt-0">
+<div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 mt-0">
     <div class="flex-1">
         <input id="search-input"
             class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -36,46 +36,100 @@
 <div class="grid grid-cols-6 gap-5 px-4">
     <!-- Left Section -->
     <div class="col-span-1">
-        <h2 class="font-bold mb-2">Category Filters</h2>
-
-        <!-- category -->
-        <div class="relative mb-4">
-            <button id="location-dropdown-btn" class="w-full p-2 bg-white border border-gray-300 rounded-lg shadow-md flex items-center justify-between focus:outline-none">
-                <span>Select Location</span>
-                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-
-            <div id="location-dropdown-menu" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-md hidden">
-                <div class="p-2 space-y-2">
-                    <label class="flex items-center">
-                        <input type="radio" name="location" class="mr-2" value="All Menus" checked /> All Menus
+        <div class="space-y-4">
+            <!-- Accordion 1 -->
+            <div class="border border-gray-300 rounded-lg shadow-md">
+                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                    Kamu Mau Makan Atau Minum?
+                </button>
+                <div class="accordion-content bg-white p-4 space-y-2">
+                    <p class="font-medium mb-2">Silakan Pilih:</p>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="category" class="form-radio text-blue-600" value="" checked onchange="handleCategoryChange()" />
+                        <span>All</span>
                     </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="location" class="mr-2" value="Kantin Teknik" /> Kantek
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="category" class="form-radio text-blue-600" value="Makanan" onchange="handleCategoryChange()" />
+                        <span>Makan</span>
                     </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="location" class="mr-2" value="Kantin Bawah" /> Kawah
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="category" class="form-radio text-blue-600" value="Minuman" onchange="handleCategoryChange()" />
+                        <span>Minum</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Accordion 2 (Makanan) -->
+            <div class="border border-gray-300 rounded-lg shadow-md" id="accordion-makanan" style="display: none;">
+                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                    Opsi Makanan
+                </button>
+                <div class="accordion-content bg-white p-4 hidden">
+                    <p class="font-medium mb-2">Silakan Pilih:</p>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" onchange="handleCategoryChange()" />
+                        <span>Goreng</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" onchange="handleCategoryChange()" />
+                        <span>Bakar</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" onchange="handleCategoryChange()" />
+                        <span>Rebus</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Accordion 3 (Minuman) -->
+            <div class="border border-gray-300 rounded-lg shadow-md" id="accordion-minuman" style="display: none;">
+                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                    Minuman Options
+                </button>
+                <div class="accordion-content bg-white p-4 hidden">
+                    <p class="font-medium mb-2">Silakan Pilih:</p>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" onchange="handleCategoryChange()" />
+                        <span>Es</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" onchange="handleCategoryChange()" />
+                        <span>Panas</span>
                     </label>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        document.getElementById('location-dropdown-btn').addEventListener('click', () => {
-            const dropdownMenu = document.getElementById('location-dropdown-menu');
-            dropdownMenu.classList.toggle('hidden');
-        });
 
-        document.addEventListener('click', (e) => {
-            const dropdownBtn = document.getElementById('location-dropdown-btn');
-            const dropdownMenu = document.getElementById('location-dropdown-menu');
-            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.classList.add('hidden');
+        <!-- JavaScript for Accordion Functionality -->
+        <script>
+            function handleCategoryChange() {
+                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+                const makananAccordion = document.getElementById('accordion-makanan');
+                const minumanAccordion = document.getElementById('accordion-minuman');
+
+                // Hide both accordions initially
+                makananAccordion.style.display = 'none';
+                minumanAccordion.style.display = 'none';
+
+                // Show the relevant accordion based on the selected category
+                if (selectedCategory === 'Makanan') {
+                    makananAccordion.style.display = 'block';
+                } else if (selectedCategory === 'Minuman') {
+                    minumanAccordion.style.display = 'block';
+                }
             }
-        });
-    </script>
+
+            function toggleAccordion(button) {
+                const content = button.nextElementSibling;
+
+                // Toggle the hidden class
+                content.classList.toggle('hidden');
+            }
+        </script>
+
+
+
+    </div>
 
     <!-- Right Section -->
     <div class="col-span-5">
@@ -84,6 +138,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 
@@ -187,7 +244,7 @@
     const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
     const allMenus = <?php echo json_encode($data['menus']); ?>;
 
-    // Fuse.js configuration
+    // Fuse.js configuration for search
     const fuse = new Fuse(allMenus, {
         keys: ['NAME'],
         threshold: 0.2,
@@ -195,44 +252,65 @@
         useExtendedSearch: true,
     });
 
-    // Dekstop
+    // Desktop elements
     const filterIndicator = document.getElementById('filter-indicator');
     const filterSelect = document.getElementById('filter-select');
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-btn');
+    const categoryRadios1 = document.querySelectorAll('input[name="category"]');
+    const categoryRadios2 = document.querySelectorAll('input[name="subcategory"]');
+
 
     // Mobile elements
     const searchInputMobile = document.getElementById('search-input-mobile');
     const filterSelectMobile = document.getElementById('filter-select-mobile');
     const searchButtonMobile = document.getElementById('search-btn-mobile');
 
-    // Event listeners for desktop view
-    filterSelect.addEventListener('change', () => {
-        const selectedFilter = filterSelect.value;
-        const searchTerm = searchInput.value.trim();
-        updateFilterIndicator(selectedFilter);
-        filterMenus(selectedFilter, searchTerm);
-    });
+    // Function to get current filter values
+    function getFilterValues() {
+        const location = filterSelect.value || filterSelectMobile.value;
+        const searchTerm = searchInput.value.trim() || searchInputMobile.value.trim();
+        const category = document.querySelector('input[name="category"]:checked')?.value || '';
+        const subcategory = document.querySelector('input[name="subcategory"]:checked')?.value || '';
 
-    searchButton.addEventListener('click', () => {
-        const selectedFilter = filterSelect.value;
-        const searchTerm = searchInput.value.trim();
-        filterMenus(selectedFilter, searchTerm);
-    });
+        return {
+            location,
+            searchTerm,
+            category,
+            subcategory
+        };
+    }
+
+
+    // Function to apply filters
+    function applyFilters() {
+        const {
+            location,
+            searchTerm,
+            category,
+            subcategory
+        } = getFilterValues();
+
+        updateFilterIndicator(location);
+        filterMenus(location, searchTerm, category, subcategory);
+    }
+
+
+
+    // Event listeners for desktop view
+    filterSelect.addEventListener('change', applyFilters);
+    searchInput.addEventListener('input', applyFilters);
+    searchButton.addEventListener('click', applyFilters);
 
     // Event listeners for mobile view
-    filterSelectMobile.addEventListener('change', () => {
-        const selectedFilter = filterSelectMobile.value;
-        const searchTerm = searchInputMobile.value.trim();
-        updateFilterIndicator(selectedFilter);
-        filterMenus(selectedFilter, searchTerm);
-    });
+    filterSelectMobile.addEventListener('change', applyFilters);
+    searchInputMobile.addEventListener('input', applyFilters);
+    searchButtonMobile.addEventListener('click', applyFilters);
 
-    searchButtonMobile.addEventListener('click', () => {
-        const selectedFilter = filterSelectMobile.value;
-        const searchTerm = searchInputMobile.value.trim();
-        filterMenus(selectedFilter, searchTerm);
-    });
+    // Event listeners for category radios
+    categoryRadios1.forEach(radio => radio.addEventListener('change', applyFilters));
+    categoryRadios2.forEach(radio => radio.addEventListener('change', applyFilters));
+
 
     // Update filter indicator
     function updateFilterIndicator(selectedFilter) {
@@ -247,29 +325,49 @@
         }
     }
 
-    // Filter menus
-    function filterMenus(location = '', searchTerm = '') {
-        console.log('Filtering menus for location:', location, 'and search term:', searchTerm);
+    // Filter menus function
+    function filterMenus(location = '', searchTerm = '', category = '', subcategory = '') {
+        console.log('Filtering menus for location:', location, 'search term:', searchTerm, 'category:', category, 'subcategory:', subcategory);
 
         let filteredMenus = allMenus;
 
-        // location filter
+        // Apply location filter
         if (location) {
             filteredMenus = filteredMenus.filter(menu =>
                 (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')
             );
         }
 
-        // Fuse.js search filter
+        // Apply category filter (using combined category)
+        if (category) {
+            filteredMenus = filteredMenus.filter(menu =>
+                (menu.MAIN_CATEGORY || '').toLowerCase().includes(category.toLowerCase())
+            );
+        }
+
+        // Apply subcategory filter (only if category is also selected)
+        if (subcategory) {
+            filteredMenus = filteredMenus.filter(menu =>
+                (menu.SUBCATEGORY_NAME || '').toLowerCase() === subcategory.toLowerCase()
+            );
+        }
+
+        // Apply Fuse.js search filter (search within already filtered set)
         if (searchTerm) {
             const searchResults = fuse.search(searchTerm);
-            filteredMenus = searchResults.map(result => result.item);
+            filteredMenus = searchResults.map(result => result.item).filter(menu =>
+                (!location || (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')) &&
+                (!category || (menu.MAIN_CATEGORY || '').toLowerCase().includes(category.toLowerCase())) &&
+                (!subcategory || (menu.SUBCATEGORY_NAME || '').toLowerCase() === subcategory.toLowerCase())
+            );
         }
 
         renderMenus(filteredMenus);
     }
 
-    // Render menus
+
+
+    // Render menus function
     function renderMenus(menus) {
         const menuContainer = document.getElementById('menu-container');
         menuContainer.innerHTML = '';
@@ -277,26 +375,26 @@
         if (menus.length > 0) {
             menus.forEach(menu => {
                 const menuCard = `
-                <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                    <figure class="h-40 overflow-hidden">
-                        <img class="w-full h-full object-cover border-b-2 border-neutral"
-                            src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                            alt="${menu.NAME}" />
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="card-title text-secondary">${menu.NAME}</h2>
-                        <div class="flex justify-between items-center text-secondary">
-                            <div class="text-lg font-bold">
-                                Rp. ${menu.PRICE.toLocaleString('id-ID')}
-                            </div>
-                            <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                                ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                                Add
-                            </button>
+            <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
+                <figure class="h-40 overflow-hidden">
+                    <img class="w-full h-full object-cover border-b-2 border-neutral"
+                        src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                        alt="${menu.NAME}" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title text-secondary">${menu.NAME}</h2>
+                    <div class="flex justify-between items-center text-secondary">
+                        <div class="text-lg font-bold">
+                            Rp. ${menu.PRICE.toLocaleString('id-ID')}
                         </div>
+                        <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                            ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                            Add
+                        </button>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
                 menuContainer.innerHTML += menuCard;
             });
         } else {
@@ -304,10 +402,8 @@
         }
     }
 
-    filterMenus();
-
-
-
+    // Initial call to apply filters on page load
+    document.addEventListener('DOMContentLoaded', applyFilters);
 
 
     $(document).ready(function() {

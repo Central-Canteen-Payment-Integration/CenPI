@@ -32,6 +32,7 @@ CREATE TABLE MENU (
     price INT NOT NULL CHECK (price >= 0),
     pkg_price INT,
     image_path VARCHAR2(36),
+    menu_type VARCHAR2(7) CHECK (type IN ('makanan', 'minuman')),
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     FOREIGN KEY (id_tenant) REFERENCES TENANT(id_tenant)
 );
