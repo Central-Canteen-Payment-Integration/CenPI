@@ -33,7 +33,15 @@ class App {
 
         $this->params = $url ? array_values($url) : [];
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+        try {
+            call_user_func_array([$this->controller, $this->method], $this->params);
+        } catch (Error $e) {
+            if ($e instanceof Error && strpos($e->getMessage(), 'cannot access private method') !== false) {
+                $this->handle404();
+            } else {
+                throw $e;
+            }
+        }
     }
 
     private function parseURL() {

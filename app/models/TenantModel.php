@@ -28,7 +28,6 @@ class TenantModel extends Model {
             return true;
         } catch (Exception $e) {
             $this->db->rollBack();
-            var_dump("Register Error: " . $e->getMessage());
             return false;
         }
     }

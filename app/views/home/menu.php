@@ -453,7 +453,7 @@
                         </button>
                     </div>
                     <div class="mt-2">
-                        <a href="<?= BASE_URL; ?>/Checkout" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
+                        <a href="<?= BASE_URL; ?>/Checkout" onclick="document.getElementById('cart-drawer').checked = false;" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
                     </div>
                 `;
                 $('.cart-btn').append(cartBtn);

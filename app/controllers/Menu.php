@@ -21,7 +21,7 @@ class Menu extends Controller
 
         if (isset($_SESSION['user'])) {
             $user = $_SESSION['user'];
-            $data['cart'] = $this->cartModel->getCartUser ($user['id']); 
+            $data['cart'] = $this->cartModel->getCartUser($user['id']); 
         } else {
             $data['cart'] = [];
         }
