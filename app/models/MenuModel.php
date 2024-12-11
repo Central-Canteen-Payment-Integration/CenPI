@@ -18,7 +18,7 @@ class MenuModel extends Model
                 m.menu_type AS main_category,
                 m.image_path AS menu_image_path,
                 m.active AS menu_active,
-                c.category_name AS subcategory_name,
+                c.category_name AS subcategory_name
             FROM 
                 TENANT t
             JOIN 
