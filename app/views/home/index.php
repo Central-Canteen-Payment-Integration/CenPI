@@ -84,7 +84,7 @@
 
   <script>
     document.getElementById("orderButton").addEventListener("click", function() {
-    window.location.href = "<?= BASE_URL; ?>/menu";
+    window.location.href = "<?= BASE_URL; ?>/Home/menu";
     });
     const texts = document.querySelectorAll(".slider-text");
     let currentIndex = 0;

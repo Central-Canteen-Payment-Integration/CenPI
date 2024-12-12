@@ -62,7 +62,7 @@ class Checkout extends Controller {
 
     public function qrisPayment($snapToken) {
         if (is_null($snapToken)) {
-            header('Location: /Menu');
+            header('Location: /Home/menu');
             exit();
         }
 

@@ -9,7 +9,7 @@ class User extends Controller {
 
     public function login() {
         if (isset($_SESSION['user'])) {
-            header('Location: /Menu');
+            header('Location: /Home/menu');
             exit;
         }
     
@@ -33,7 +33,7 @@ class User extends Controller {
                         'email' => $user['EMAIL'],
                         'username' => $user['USERNAME'],
                     ];
-                    header('Location: /Menu');
+                    header('Location: /Home/menu');
                     exit;
                 }
             } else {
@@ -46,7 +46,7 @@ class User extends Controller {
 
     public function register() {
         if (isset($_SESSION['user'])) {
-            header('Location: /Menu');
+            header('Location: /Home/menu');
             exit;
         }
     
@@ -157,16 +157,21 @@ class User extends Controller {
 
     public function logout() {
         session_destroy();
-        header("Location: /Menu");
+        header("Location: /Home/menu");
         exit();
     }
 
-    public function history(){
+    public function order() {
         $data = [
-            'page' => 'History - CenPI',
+            'page' => 'My Orders - CenPI',
             'error' => ''
         ];
+
+        if (!isset($_SESSION['user'])) {
+            header('Location: /Home/menu');
+        }
+    
         $this->view('templates/init', $data);
-        $this->view('user/history', $data);
+        $this->view('user/order', $data);
     }
 }

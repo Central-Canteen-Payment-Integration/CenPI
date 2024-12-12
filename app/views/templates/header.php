@@ -2,7 +2,7 @@
 	<header class="mb-4 md:mb-10">
 		<div class="navbar px-4 py-2 md:px-8 md:py-4 mt-1 md:mt-2">
 			<div class="navbar-start">
-				<a href="<?= BASE_URL ?>/menu">
+				<a href="<?= BASE_URL ?>/Home/menu">
 					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="h-12 md:h-16">
 				</a>
 			</div>
@@ -117,8 +117,7 @@
 						<ul tabindex="0"
 							class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
 							<li><a href="<?= BASE_URL ?>/User/profile">Profile</a></li>
-							<li><a href="<?= BASE_URL ?>/User/history">History</a></li>
-							<li><a>Settings</a></li>
+							<li><a href="<?= BASE_URL ?>/User/order">Order</a></li>
 							<li><a href="<?= BASE_URL ?>/User/logout">Logout</a></li>
 						</ul>
 					</div>
@@ -162,7 +161,6 @@
 			event.preventDefault();
 			const overlay = document.getElementById('overlay');
 
-			// Sembunyikan semua tombol
 			document.querySelectorAll('button').forEach(button => {
 				button.style.display = 'none';
 			});
