@@ -4,7 +4,7 @@ use Ramsey\Uuid\Uuid;
 
 class CartModel extends Model
 {
-    public function getCartUser ($id_user) {
+    public function getCartUser($id_user) {
         try {
             $sql = "SELECT CART.*, MENU.*, TENANT.tenant_name AS tenant_name
                     FROM CART

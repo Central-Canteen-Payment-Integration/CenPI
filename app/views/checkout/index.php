@@ -59,34 +59,31 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
 </div>
 
 <script>
-    const cartItems = <?php echo json_encode($cartItems); ?>;
-
-    function generateOrderList() {
+    let cartItems = <?php echo json_encode($cartItems); ?>;
+    
+    function renderOrderList(cartItems) {
         const orderListContainer = document.getElementById('order-list');
         orderListContainer.innerHTML = '';
-        let subtotal = 0;
-        let takeaway = 0;
 
         cartItems.forEach((item, index) => {
             const orderItem = document.createElement('div');
             orderItem.classList.add('border', 'p-3', 'rounded-lg', 'mb-3');
 
             const itemPrice = parseFloat(item.PRICE);
-            subtotal += itemPrice;
 
             orderItem.innerHTML = `
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <img src="<?= MENU_URL . '/'; ?>${item.IMAGE_PATH}" alt="Product Image" class="rounded-lg w-12 h-12">
+                        <img src="<?= MENU_URL ?>${item.IMAGE_PATH}" alt="Product Image" class="rounded-lg w-12 h-12">
                         <div class="ml-3">
                             <p class="font-medium">${item.NAME}</p>
                             <p class="text-xs text-gray-500">${item.TENANT_NAME}</p>
                         </div>
                     </div>
                     <div class="flex items-center">
-                        <button class="btn btn-outline btn-xs" onclick="updateQuantity('decrease', ${index + 1})">-</button>
-                        <input type="text" id="quantity-${index + 1}" value="1" class="input input-bordered input-xs mx-2 w-12 text-center" readonly>
-                        <button class="btn btn-outline btn-xs" onclick="updateQuantity('increase', ${index + 1})">+</button>
+                        <button type="button" class="btn btn-outline btn-xs" onclick="updateQuantity('decrease', ${index + 1})">-</button>
+                        <input type="text" id="quantity-${index + 1}" value="${item.QTY}" class="input input-bordered input-xs mx-2 w-12 text-center" readonly>
+                        <button type="button" class="btn btn-outline btn-xs" onclick="updateQuantity('increase', ${index + 1})">+</button>
                     </div>
                     <p class="font-medium ml-4 text-sm">Rp ${itemPrice.toLocaleString('id-ID')}</p>
                 </div>
@@ -96,45 +93,71 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
             orderListContainer.appendChild(orderItem);
         });
 
-        document.getElementById('subtotal-price').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+        renderOrderDetail(cartItems)
+    }
 
+    function renderOrderDetail(cartItems) {
+        let subtotal = 0;
+        let takeaway = 0;
         const orderType = document.querySelector('input[name="order-type"]:checked');
         if (orderType && orderType.value === 'Takeaway') {
             cartItems.forEach((item, index) => {
+                subtotal += item.PRICE * item.QTY;
                 takeaway += item.PKG_PRICE * item.QTY;
             });
         } else {
+            cartItems.forEach((item, index) => {
+                subtotal += item.PRICE * item.QTY;
+            });
             takeaway = 0;
         }
-
+        document.getElementById('subtotal-price').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
         document.getElementById('takeaway-price').innerText = `Rp ${takeaway.toLocaleString('id-ID')}`;
-
         const total = subtotal + takeaway;
         document.getElementById('total-price').innerText = `Rp ${total.toLocaleString('id-ID')}`;
     }
 
-    generateOrderList();
-
     function updateQuantity(action, id) {
         const quantityInput = document.getElementById(`quantity-${id}`);
-        let quantity = parseInt(quantityInput.value);
 
-        if (action === 'increase') {
-            quantity += 1;
-        } else if (action === 'decrease' && quantity > 1) {
-            quantity -= 1;
-        }
+        const increase = (action == 'increase');
 
-        quantityInput.value = quantity;
+        $.ajax({
+            url: '<?= BASE_URL; ?>/Cart/update',
+            type: 'POST',
+            data: {
+                id_cart: cartItems[id - 1].ID_CART,
+                qty: cartItems[id - 1].QTY,
+                increase: increase
+            },
+            dataType: 'json',
+            success: function(res) {
+                if (res.status === 'success') {
+                    if (cartItems[id - 1].QTY == 1 && !increase) {
+                        renderOrderList(res.cart);
+                    } else {
+                        quantityInput.value = res.cart[id - 1].QTY;
+                        renderOrderDetail(res.cart);
+                    }
 
-        generateOrderList();
+                    cartItems = res.cart;
+                    swallert('success', 'Cart updated.');
+                } else {
+                    swallert('error', 'Error updating item: ' + res.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + error);
+                swallert('error', 'An error occurred while updating the item.');
+            }
+        });
     }
 
     const orderTypeButtons = document.querySelectorAll('input[name="order-type"]');
     
     orderTypeButtons.forEach(button => {
         button.addEventListener('change', () => {
-            generateOrderList();
+            renderOrderDetail(cartItems);
         });
     });
 
@@ -146,4 +169,6 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
             swallert("error" ,"Please select a payment option.", {position: "top-end"});
         }
     });
+
+    renderOrderList(cartItems);
 </script>

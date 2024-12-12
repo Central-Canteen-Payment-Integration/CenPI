@@ -243,7 +243,6 @@
 </div>
 
 <!-- logic buat cart & menu & filter -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
 <script>
     const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;

@@ -96,5 +96,43 @@ class Cart extends Controller {
         }
     }
     
+    public function update() {
+        if (isset($_POST['id_cart'])) {
+            $id_cart = $_POST['id_cart'];
+            $increase = $_POST['increase'];
+            $qty = (int)$_POST['qty'];
+            $user = $_SESSION['user'];
+            $qty = $increase == 'true' ? $qty + 1 : ($qty == 1 ? -1 : $qty - 1);
+
+            if ($id_cart) {
+                $result = $this->cartModel->updateCart($id_cart, $qty);
     
+                if ($result) {
+                    $cart = $this->cartModel->getCartUser($user['id']);
+    
+                    echo json_encode([
+                        'status' => 'success',
+                        'cart' => $cart
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Failed to delete item from cart.'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Invalid menu ID.'
+                ]);
+            }
+            exit;
+        }
+    
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Menu ID not provided.'
+        ]);
+        exit;
+    }
 }
