@@ -172,6 +172,7 @@ class User extends Controller {
         }
     
         $this->view('templates/init', $data);
+        $this->view('templates/focus_header');
         $this->view('user/order', $data);
     }
 }
