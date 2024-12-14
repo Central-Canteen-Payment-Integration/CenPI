@@ -138,10 +138,29 @@ class Tenant extends Controller {
 
     public function settings() {
         $this->checkLoggedIn();
+        $tenantId = $_SESSION['tenant']['id'];
+    
+        $tenantData = $this->tenantModel->getTenantById($tenantId);
+    
+        if (!$tenantData) {
+            unset($_SESSION['tenant']);
+            header('Location: /Tenant/login');
+            exit;
+        }
+    
+        $data = [
+            'tenant_name' => $tenantData['TENANT_NAME'],
+            'username' => $tenantData['USERNAME'],
+            'email' => $tenantData['EMAIL'],
+            'location_name' => $tenantData['LOCATION_NAME'],
+            'location_booth' => $tenantData['LOCATION_BOOTH'],
+        ];
+    
         $this->view('templates/init');
         $this->view('templates/tenant_header');
-        $this->view('tenant/settings');
+        $this->view('tenant/settings', $data);
     }
+    
 
     public function logout() {
         $this->checkLoggedIn();

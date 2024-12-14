@@ -50,7 +50,13 @@ class TenantModel extends Model {
             return false;
         }
     }
-
+    public function getTenantById($tenantId) {
+        $sql = "SELECT * FROM TENANT WHERE id_tenant = :id_tenant";
+        $this->db->query($sql);
+        $this->db->bind(':id_tenant', $tenantId);
+    
+        return $this->db->single();
+    }
     public function findUserByUsernameOrEmail($username, $email) {
         try {
             $sql = "SELECT * FROM TENANT WHERE username = :username OR email = :email";
