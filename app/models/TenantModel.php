@@ -57,6 +57,48 @@ class TenantModel extends Model {
     
         return $this->db->single();
     }
+    
+    public function updateTenantProfile($tenantId, $tenantName, $hashedPassword = null) {
+        try {
+            $this->db->beginTransaction();
+    
+            $sql = "UPDATE TENANT SET tenant_name = :tenant_name";
+    
+            if ($hashedPassword) {
+                $sql .= ", password = :password";
+            }
+    
+            $sql .= " WHERE id_tenant = :id_tenant";
+    
+            $this->db->query($sql);
+            $this->db->bind(':tenant_name', $tenantName);
+            $this->db->bind(':id_tenant', $tenantId);
+    
+            if ($hashedPassword) {
+                $this->db->bind(':password', $hashedPassword);
+            }
+    
+            $this->db->execute();
+            $this->db->commit();
+    
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log("Update Tenant Profile Error: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function verifyPassword($tenantId, $password) {
+        $sql = "SELECT password FROM TENANT WHERE id_tenant = :id_tenant";
+        $this->db->query($sql);
+        $this->db->bind(':id_tenant', $tenantId);
+    
+        $result = $this->db->single();
+    
+        return password_verify($password, $result['password']);
+    }
+    
     public function findUserByUsernameOrEmail($username, $email) {
         try {
             $sql = "SELECT * FROM TENANT WHERE username = :username OR email = :email";

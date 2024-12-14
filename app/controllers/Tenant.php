@@ -194,31 +194,63 @@ class Tenant extends Controller
         $this->view('tenant/report');
     }
 
-    public function settings()
-    {
+    public function settings() {
         $this->checkLoggedIn();
+    
         $tenantId = $_SESSION['tenant']['id'];
+        
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $tenantName = htmlspecialchars($_POST['tenant_name'] ?? '');
+            $currentPassword = $_POST['current_password'] ?? '';
+            $newPassword = $_POST['new_password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            
+    
+            if (empty($tenantName)) {
+                $data['error'] = 'Nama Tenant tidak boleh kosong.';
+                var_dump($data['error']); 
+            } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
+                $data['error'] = 'Password baru dan konfirmasi tidak cocok.';
+                var_dump($data['error']); 
+            } else {
+                $tenant = $this->tenantModel->getTenantById($tenantId);
+                if (!password_verify($currentPassword, $tenant['PASSWORD'])) {
+                    $data['error'] = 'Password saat ini salah.';
+                    var_dump($data['error']);
+                } else {
+                    $hashedPassword = !empty($newPassword) ? password_hash($newPassword, PASSWORD_BCRYPT) : null;
+    
+                    $isUpdated = $this->tenantModel->updateTenantProfile($tenantId, $tenantName, $hashedPassword);
+    
+                    if ($isUpdated) {
+                        $data['success'] = 'Profil berhasil diperbarui.';
+                        var_dump($data['error']);
+                    } else {
+                        $data['error'] = 'Gagal memperbarui profil.';
+                        var_dump($data['error']);
+                    }
+                }
+            }
+        }
     
         $tenantData = $this->tenantModel->getTenantById($tenantId);
     
-        if (!$tenantData) {
-            unset($_SESSION['tenant']);
-            header('Location: /Tenant/login');
-            exit;
-        }
-    
         $data = [
-            'tenant_name' => $tenantData['TENANT_NAME'],
-            'username' => $tenantData['USERNAME'],
-            'email' => $tenantData['EMAIL'],
-            'location_name' => $tenantData['LOCATION_NAME'],
-            'location_booth' => $tenantData['LOCATION_BOOTH'],
+            'tenant_name' => $tenantData['TENANT_NAME'] ?? '',
+            'username' => $tenantData['USERNAME'] ?? '',
+            'email' => $tenantData['EMAIL'] ?? '',
+            'location_name' => $tenantData['LOCATION_NAME'] ?? '',
+            'location_booth' => $tenantData['LOCATION_BOOTH'] ?? '',
         ];
     
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/settings', $data);
     }
+    
+    
+    
     
 
     public function logout()
