@@ -1,13 +1,18 @@
 <?php
 
-class Tenant extends Controller {
+class Tenant extends Controller
+{
     private $tenantModel;
+    private $analModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->tenantModel = $this->model('TenantModel');
+        $this->analModel = $this->model('AnalModel');
     }
 
-    private function checkLoggedIn() {
+    private function checkLoggedIn()
+    {
         if (!isset($_SESSION['tenant'])) {
             $data['error'] = "Please login First!";
             $this->view('templates/init');
@@ -16,7 +21,8 @@ class Tenant extends Controller {
         }
     }
 
-    public function login() {
+    public function login()
+    {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
@@ -29,9 +35,9 @@ class Tenant extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
-    
+
             $user = $this->tenantModel->login($username, $password);
-    
+
             if ($user) {
                 if ($user['ACTIVE'] == 0) {
                     $data['error'] = 'Please verify your account.';
@@ -52,7 +58,8 @@ class Tenant extends Controller {
         $this->view('tenant/login_register', $data);
     }
 
-    public function register() {
+    public function register()
+    {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
@@ -69,7 +76,7 @@ class Tenant extends Controller {
             $location_name = $_POST['tenant_location'];
             $location_booth = $_POST['tenant_number'];
             $tenant_name = $_POST['tenant_name'];
-        
+
             if (empty($username) || empty($password) || empty($email) || empty($location_name) || empty($location_booth) || empty($tenant_name)) {
                 $data['error'] = 'All fields must be filled.';
             } else {
@@ -100,50 +107,103 @@ class Tenant extends Controller {
             }
         }
     }
-    
-    public function index() {
+
+    public function index()
+    {
+        // Assuming the tenant ID is stored in the session
+        $tenantId = $_SESSION['tenant']['id'];
+
+        // Ensure startDate and endDate are passed as strings, if not set default
+        $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : date('d-m-Y');
+        $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : date('d-m-Y');
+
+        // Debug: Log received dates
+        error_log("Received dates index: Start Date - " . $startDate . ", End Date - " . $endDate);
+
+        // Get data from the model
+        $data = $this->analModel->getDashboardData($tenantId, $startDate, $endDate);
+
+        // Debug: Log the data received
+        error_log("Dashboard Data: " . var_export($data, true));
+
+        // Pass data to the view
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
-        $this->view('tenant/index');
+        $this->view('tenant/index', $data);
     }
 
-    public function orderlist() {
+    public function applyFilter()
+    {
+        // Assuming tenant ID is stored in the session
+        $tenantId = $_SESSION['tenant']['id'];
+
+        // Get startDate and endDate from GET parameters
+        $startDate = $_GET['startDate'] ?? date(format: 'd-m-Y');
+        $endDate = $_GET['endDate'] ?? date('d-m-Y');
+
+        // Debug: Log the received dates
+        error_log("Received dates filter: Start Date - " . $startDate . ", End Date - " . $endDate);
+
+        // Get data from the model
+        $data = $this->analModel->getDashboardData($tenantId, $startDate, $endDate);
+
+        // Debug: Log the data received
+        error_log("Dashboard Data in applyFilter: " . var_export($data, true));
+
+        // Return the data as JSON
+        echo json_encode([
+            'totalOrders' => $data['totalOrders'] ?? 0,
+            'totalRevenue' => $data['totalRevenue'] ?? 0,
+            'chartLabels' => $data['chartLabels'] ?? [],
+            'chartData' => $data['chartData'] ?? [],
+        ]);
+
+    }
+
+
+    public function orderlist()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/orderlist');
     }
 
-    public function menu() {
+    public function menu()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/crudmenu');
     }
 
-    public function historytransaction() {
+    public function historytransaction()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/historytransaction');
     }
 
-    public function report() {
+    public function report()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/report');
     }
 
-    public function settings() {
+    public function settings()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/settings');
     }
 
-    public function logout() {
+    public function logout()
+    {
         $this->checkLoggedIn();
         session_destroy();
         header("Location: /Tenant");

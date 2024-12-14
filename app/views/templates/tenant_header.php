@@ -16,7 +16,7 @@
                     <!-- Dashboard -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-home text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/" class="flex-1">Dashboard</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/index" class="flex-1">Dashboard</a>
                     </li>
 
                     <!-- Order List -->
