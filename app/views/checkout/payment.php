@@ -1,16 +1,31 @@
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-cTqhWteHD6IgJ7nU"></script>
+<body>
+</body>
 <script>
-    snap.pay('<?= $data['snapToken']; ?>', {
+    var snapToken = '<?= $data['snapToken']; ?>';
+    var baseUrl = '<?= BASE_URL; ?>';
+
+    snap.pay(snapToken, {
         onSuccess: function(result) {
-            console.log(result);
+            swallert('success', 'Success Payment, You will be redirected to My Orders!', { position: "top-start" });
+            setTimeout(function() {
+                window.location.href = baseUrl + '/User/order'; 
+            }, 3000);
         },
         onPending: function(result) {
-            console.log(result);
-            alert('Waiting for payment...');
+            swallert('info', 'You will be redirected to My Orders!', { position: "top-start" });
+            setTimeout(function() {
+                window.location.href = baseUrl + '/User/order'; 
+            }, 3000);
         },
         onError: function(result) {
-            console.error(result);
-            alert('Payment failed!');
+            console.log(result);
+        },
+        onClose: function() {
+            swallert('info', 'You will be redirected to My Orders!', { position: "top-start" });
+            setTimeout(function() {
+                window.location.href = baseUrl + '/User/order'; 
+            }, 3000);
         }
     });
 </script>

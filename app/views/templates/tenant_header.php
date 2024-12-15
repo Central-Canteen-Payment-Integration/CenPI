@@ -124,29 +124,29 @@
 
                 const reconnectInterval = 2000;
 
-                const connectWebSocket = () => {
-                    const socket = new WebSocket('ws://<?php echo DB_HOST; ?>:8070?tenant_id=<?php echo $_SESSION['tenant']['id']; ?>');
+                // const connectWebSocket = () => {
+                //     const socket = new WebSocket('ws://<?php //echo DB_HOST; ?>:8070?tenant_id=<?php //echo $_SESSION['tenant']['id']; ?>');
 
-                    socket.addEventListener('open', function (event) {
-                        console.log('Connected to the WebSocket server.');
-                    });
+                //     socket.addEventListener('open', function (event) {
+                //         console.log('Connected to the WebSocket server.');
+                //     });
 
-                    socket.addEventListener('message', function (event) {
-                        swallert('info', event.data);
-                    });
+                //     socket.addEventListener('message', function (event) {
+                //         swallert('info', event.data);
+                //     });
 
-                    socket.addEventListener('error', function (event) {
-                        console.error('WebSocket error: ' + event.message);
-                        setTimeout(connectWebSocket, reconnectInterval);
-                    });
+                //     socket.addEventListener('error', function (event) {
+                //         console.error('WebSocket error: ' + event.message);
+                //         setTimeout(connectWebSocket, reconnectInterval);
+                //     });
 
-                    socket.addEventListener('close', function (event) {
-                        console.log('Disconnected from the WebSocket server.');
-                        setTimeout(connectWebSocket, reconnectInterval);
-                    });
-                };
+                //     socket.addEventListener('close', function (event) {
+                //         console.log('Disconnected from the WebSocket server.');
+                //         setTimeout(connectWebSocket, reconnectInterval);
+                //     });
+                // };
 
-                connectWebSocket();
+                // connectWebSocket();
                 document.getElementById('settingsMenu').addEventListener('click', function () {
                     const submenu = document.getElementById('submenu');
                     submenu.classList.toggle('hidden');

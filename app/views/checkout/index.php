@@ -1,8 +1,4 @@
 <?php
-$buyerName = isset($_SESSION['user']['username']) ? $_SESSION['user']['username'] : '';
-$buyerEmail = isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '';
-$buyerPhone = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : '';
-
 $cartItems = isset($data['cart']) ? $data['cart'] : [];
 ?>
 

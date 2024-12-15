@@ -3,12 +3,10 @@
 class Tenant extends Controller
 {
     private $tenantModel;
-    private $analModel;
 
     public function __construct()
     {
         $this->tenantModel = $this->model('TenantModel');
-        $this->analModel = $this->model('AnalModel');
     }
 
     private function checkLoggedIn()
@@ -108,57 +106,36 @@ class Tenant extends Controller
         }
     }
 
-    public function index()
-    {
-        // Assuming the tenant ID is stored in the session
+    public function index() {
+        $this->checkLoggedIn();
+
         $tenantId = $_SESSION['tenant']['id'];
 
-        // Ensure startDate and endDate are passed as strings, if not set default
-        $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : date('d-m-Y');
-        $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : date('d-m-Y');
+        $startDate = date('d-m-Y');
+        $endDate = date('d-m-Y');
 
-        // Debug: Log received dates
-        error_log("Received dates index: Start Date - " . $startDate . ", End Date - " . $endDate);
+        $data = $this->tenantModel->getDashboardData($tenantId, $startDate, $endDate);
 
-        // Get data from the model
-        $data = $this->analModel->getDashboardData($tenantId, $startDate, $endDate);
 
-        // Debug: Log the data received
-        error_log("Dashboard Data: " . var_export($data, true));
-
-        // Pass data to the view
-        $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/index', $data);
     }
 
-    public function applyFilter()
-    {
-        // Assuming tenant ID is stored in the session
+    public function getAnalytics($startDate, $endDate) {
         $tenantId = $_SESSION['tenant']['id'];
 
-        // Get startDate and endDate from GET parameters
-        $startDate = $_GET['startDate'] ?? date(format: 'd-m-Y');
-        $endDate = $_GET['endDate'] ?? date('d-m-Y');
+        $startDate = $startDate ?? date(format: 'd-m-Y');
+        $endDate = $endDate ?? date('d-m-Y');
 
-        // Debug: Log the received dates
-        error_log("Received dates filter: Start Date - " . $startDate . ", End Date - " . $endDate);
+        $data = $this->tenantModel->getDashboardData($tenantId, $startDate, $endDate);
 
-        // Get data from the model
-        $data = $this->analModel->getDashboardData($tenantId, $startDate, $endDate);
-
-        // Debug: Log the data received
-        error_log("Dashboard Data in applyFilter: " . var_export($data, true));
-
-        // Return the data as JSON
         echo json_encode([
             'totalOrders' => $data['totalOrders'] ?? 0,
             'totalRevenue' => $data['totalRevenue'] ?? 0,
             'chartLabels' => $data['chartLabels'] ?? [],
             'chartData' => $data['chartData'] ?? [],
         ]);
-
     }
 
 

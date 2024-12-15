@@ -79,8 +79,8 @@ class Checkout extends Controller {
                 'gross_amount' => $amount,
             ],
             "page_expiry" => [
-                "duration" => 1,
-                "unit" => "hours"
+                "duration" => 15,
+                "unit" => "minutes"
             ]
         ];
         

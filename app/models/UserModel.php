@@ -38,7 +38,7 @@ class UserModel extends Model {
     private function sendVerificationEmail($email, $token) {
         $mailer = new Mailer();
         $subject = 'Account Verification';
-        $verificationLink = "http://cenpi.test/User/verify/" . $token;
+        $verificationLink = BASE_URL . "/User/verify/" . $token;
         $body = "Please click the following link to verify your account: <a href='$verificationLink'>Verify Account</a>";
     
         return $mailer->sendMail($email, $subject, $body);

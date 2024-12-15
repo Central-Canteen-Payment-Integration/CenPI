@@ -106,12 +106,8 @@
     console.log('Sending request with dates:', formattedStartDate, formattedEndDate);
 
     $.ajax({
-      url: '<?= BASE_URL; ?>/Tenant/applyFilter',
+      url: `<?= BASE_URL; ?>/Tenant/getAnalytics/${formattedStartDate}/${formattedEndDate}`,
       method: 'GET',
-      data: {
-        startDate: formattedStartDate,
-        endDate: formattedEndDate
-      },
       success: function(response) {
         console.log('Received data:', response);
         try {
