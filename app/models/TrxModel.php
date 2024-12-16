@@ -30,14 +30,12 @@ class TrxModel extends Model
         }
     }
 
-    public function getTransactionAmount($transactionId) {
-        $query = "SELECT trx_price FROM TRANSACTION WHERE id_transaction = :id_transaction";
+    public function getTransaction($transactionId) {
+        $query = "SELECT * FROM TRANSACTION WHERE id_transaction = :id_transaction";
         $this->db->query($query);
         $this->db->bind(':id_transaction', $transactionId);
-
-        $result = $this->db->single();
         
-        return $result ? (int)$result['TRX_PRICE'] : 0;
+        return $this->db->single();;
     }
 
     public function updateMidtransToken($transactionId, $snapToken) {

@@ -24,40 +24,42 @@ class Checkout extends Controller {
         $this->view('checkout/index', $data);
     }
 
-    public function processPayment() {
+    public function initialize() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /Checkout');
             return;
         }
 
-        $snapToken = isset($_POST['snapToken']) ? $_POST['snapToken'] : null;
+        $snapToken = '';
     
-        if ($snapToken == null) {
-            if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
-                $userId = $_SESSION['user']['id'];
-                $data['cart'] = $this->cartModel->getCartUser($userId);
-            }
-            $orderType = isset($_POST['order-type']) ? strtoupper($_POST['order-type']) : null;
-            $paymentOption = isset($_POST['payment-option']) ? strtoupper($_POST['payment-option']) : null;
+        if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
+            $userId = $_SESSION['user']['id'];
+            $data['cart'] = $this->cartModel->getCartUser($userId);
+        }
         
-            if (is_null($orderType) || is_null($paymentOption)) {
-                echo json_encode(['error' => 'Request error']);
-                return;
-            }
-
-            $transactionId = $this->trxModel->createTransactionWithDetails($userId, $orderType, $paymentOption);
-            $totalAmount = $this->trxModel->getTransactionAmount($transactionId);
-            if ($paymentOption === 'QRIS') {
-                $snapToken = $this->createSnap($transactionId, $totalAmount);
-                $this->trxModel->updateMidtransToken($transactionId, $snapToken);
-            } else {
-                $this->view('templates/init');
-                $this->view('');
-                return;
-            }
+        $orderType = isset($_POST['order-type']) ? strtoupper($_POST['order-type']) : null;
+        $paymentOption = isset($_POST['payment-option']) ? strtoupper($_POST['payment-option']) : null;
+    
+        if (is_null($orderType) || is_null($paymentOption)) {
+            echo json_encode(['error' => 'Request error']);
+            return;
         }
 
-        header("Location: /Checkout/qrisPayment/" . $snapToken);
+        $transactionId = $this->trxModel->createTransactionWithDetails($userId, $orderType, $paymentOption);
+        $data['transaction'] = $this->trxModel->getTransaction($transactionId);
+
+        if ($paymentOption === 'QRIS') {
+            $dbDate = $data['transaction']['TRX_DATETIME'];
+            $date = DateTime::createFromFormat('d-M-y h.i.s.u A', $dbDate);
+            $formattedDate = $date->format('Y-m-d H:i:s') . ' +0700';
+            $snapToken = $this->createSnap($transactionId, (int)$data['transaction']['TRX_PRICE'], $formattedDate);
+            $this->trxModel->updateMidtransToken($transactionId, $snapToken);
+            header("Location: /Checkout/qrisPayment/" . $snapToken);
+        } else {
+            $this->view('templates/init');
+            $this->view('');
+            return;
+        }
     }
 
     public function qrisPayment($snapToken) {
@@ -72,15 +74,28 @@ class Checkout extends Controller {
         $this->view('checkout/payment', $data);
     }
 
-    private function createSnap($transactionId, $amount) {
+    public function cashPayment($snapToken) {
+        if (is_null($snapToken)) {
+            header('Location: /Home/menu');
+            exit();
+        }
+
+        $data['snapToken'] = $snapToken;
+
+        $this->view('templates/init');
+        $this->view('checkout/payment', $data);
+    }
+
+    private function createSnap($transactionId, $amount, $startTime) {
         $params = [
             'transaction_details' => [
                 'order_id' => $transactionId,
                 'gross_amount' => $amount,
             ],
-            "page_expiry" => [
-                "duration" => 15,
-                "unit" => "minutes"
+            "expiry" => [
+                "start_time" => $startTime,
+                "unit" => "minutes",
+                "duration" => 20
             ]
         ];
         

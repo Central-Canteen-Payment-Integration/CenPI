@@ -41,12 +41,11 @@ CREATE TABLE TRANSACTION (
     id_transaction VARCHAR2(36) PRIMARY KEY,
     id_user VARCHAR2(36) NOT NULL,
     trx_price INT NOT NULL CHECK (trx_price > 0),
-    trx_date DATE NOT NULL,
+    trx_datetime TIMESTAMP NOT NULL,
     takeaway NUMBER(1) DEFAULT 0 CHECK (takeaway IN (0, 1)) NOT NULL,
     trx_method VARCHAR2(4) CHECK (trx_method IN ('cash', 'qris')) NOT NULL,
     midtrans_token VARCHAR2(50),
     trx_status VARCHAR2(50) CHECK (trx_status IN ('onPayment', 'Expired', 'onPending', 'Completed')),
-    trx_expiry TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
 

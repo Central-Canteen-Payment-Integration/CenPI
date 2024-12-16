@@ -137,7 +137,7 @@ class TenantModel extends Model
             JOIN TRANSACTION_DETAIL td ON t.id_transaction = td.id_transaction
             JOIN MENU m ON td.id_menu = m.id_menu
             WHERE m.id_tenant = :tenantId
-              AND t.trx_date BETWEEN TO_DATE(:startDate, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:endDate, 'DD-MM-YYYY HH24:MI:SS')
+              AND t.trx_datetime BETWEEN TO_DATE(:startDate, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:endDate, 'DD-MM-YYYY HH24:MI:SS')
               AND t.trx_status = 'Completed'
         ";
     
@@ -150,16 +150,16 @@ class TenantModel extends Model
         $totalRevenue = isset($result['TOTAL_REVENUE']) ? (int)$result['TOTAL_REVENUE'] : 0;
     
         $sql = "
-            SELECT TO_CHAR(t.trx_date, 'DD-MM-YYYY') AS trx_date,
+            SELECT TO_CHAR(t.trx_datetime, 'DD-MM-YYYY') AS trx_datetime,
                    NVL(SUM(td.qty_price + td.pkg_price), 0) AS total_revenue
             FROM TRANSACTION t
             JOIN TRANSACTION_DETAIL td ON t.id_transaction = td.id_transaction
             JOIN MENU m ON td.id_menu = m.id_menu
             WHERE m.id_tenant = :tenantId
-              AND t.trx_date BETWEEN TO_DATE(:startDate, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:endDate, 'DD-MM-YYYY HH24:MI:SS')
+              AND t.trx_datetime BETWEEN TO_DATE(:startDate, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:endDate, 'DD-MM-YYYY HH24:MI:SS')
               AND t.trx_status = 'Completed'
-            GROUP BY TO_CHAR(t.trx_date, 'DD-MM-YYYY')
-            ORDER BY trx_date
+            GROUP BY TO_CHAR(t.trx_datetime, 'DD-MM-YYYY')
+            ORDER BY trx_datetime
         ";
     
         $this->db->query($sql);
@@ -173,7 +173,7 @@ class TenantModel extends Model
     
         if (!empty($revenuePerDayResults)) {
             foreach ($revenuePerDayResults as $result) {
-                $chartLabels[] = $result['TRX_DATE'];
+                $chartLabels[] = $result['TRX_DATETIME'];
                 $chartData[] = (float)$result['TOTAL_REVENUE'];
             }
         }
