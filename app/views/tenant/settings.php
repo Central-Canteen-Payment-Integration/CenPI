@@ -45,7 +45,7 @@
         <!-- Update Button -->
         <div class="mt-8 text-center">
             <button id="openModalBtn"
-                class="px-6 py-3 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                class="px-6 py-3 bg-red-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-red-600 transition">
                 Update Profile
             </button>
         </div>
@@ -56,45 +56,52 @@
 <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-8">
         <h2 class="text-2xl font-bold text-gray-700 mb-6">Edit Profile</h2>
-        <form id="editProfileForm">
-            <!-- Upload Image -->
-            <div class="mb-4">
-                <label for="profileImage" class="block text-sm font-medium text-gray-700">Profile Image</label>
-                <input id="profileImage" type="file" accept="image/*"
-                    class="mt-1 w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <?php if (!empty($data['error'])): ?>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+                <?= htmlspecialchars($data['error']); ?>
             </div>
-            <!-- Nama Tenant -->
-            <div class="mb-4">
-                <label for="tenantName" class="block text-sm font-medium text-gray-700">Nama Tenant</label>
-                <input id="tenantName" type="text" placeholder="Masukkan Nama Tenant"
-                    class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <?php elseif (!empty($data['success'])): ?>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
+                <?= htmlspecialchars($data['success']); ?>
             </div>
-            <!-- Current Password -->
-            <div class="mb-4">
-                <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
-                <input id="currentPassword" type="password" placeholder="Masukkan Password Saat Ini"
-                    class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <!-- New Password -->
-            <div class="mb-4">
-                <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-                <input id="newPassword" type="password" placeholder="Masukkan Password Baru"
-                    class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <!-- Confirm New Password -->
-            <div class="mb-6">
-                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                <input id="confirmPassword" type="password" placeholder="Konfirmasi Password Baru"
-                    class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <!-- Buttons -->
-            <div class="flex justify-end space-x-4">
-                <button type="button" id="closeModalBtn"
-                    class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</button>
-                <button type="submit"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Save</button>
-            </div>
-        </form>
+        <?php endif; ?>
+        <form id="editProfileForm"method="POST" action="/Tenant/settings">
+        <!-- Tenant Name -->
+        <div class="mb-4">
+            <label for="tenantName" class="block text-sm font-medium text-gray-700">Nama Tenant</label>
+            <input id="tenantName" name="tenant_name" type="text" placeholder="Masukkan Nama Tenant"
+                value="<?= htmlspecialchars($data['tenant_name'] ?? ''); ?>"
+                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <!-- Current Password -->
+        <div class="mb-4">
+            <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+            <input id="currentPassword" name="current_password" type="password" placeholder="Masukkan Password Saat Ini"
+                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <!-- New Password -->
+        <div class="mb-4">
+            <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+            <input id="newPassword" name="new_password" type="password" placeholder="Masukkan Password Baru"
+                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <!-- Confirm New Password -->
+        <div class="mb-4">
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <input id="confirmPassword" name="confirm_password" type="password" placeholder="Konfirmasi Password Baru"
+                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <!-- Submit Button -->
+        <div class="flex justify-end space-x-4">
+        <button type="button" id="closeModalBtn"
+        class="px-6 py-3 bg-gray-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-gray-600 transition">Cancel</button>
+            <button type="submit"
+                class="px-6 py-3 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                Save Changes
+            </button>
+        </div>
+    </form>
+
     </div>
 </div>
 
@@ -106,30 +113,11 @@
     const closeModalBtn = document.getElementById('closeModalBtn');
     const editProfileForm = document.getElementById('editProfileForm');
 
-    // Open Modal
     openModalBtn.addEventListener('click', () => {
         modal.classList.remove('hidden');
     });
 
-    // Close Modal
     closeModalBtn.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    // Handle Form Submit
-    editProfileForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const tenantName = document.getElementById('tenantName').value;
-        const currentPassword = document.getElementById('currentPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (newPassword !== confirmPassword) {
-            alert("New Password and Confirm New Password do not match!");
-            return;
-        }
-
-        alert(`Profile Updated!\nNama Tenant: ${tenantName}\nCurrent Password: ${currentPassword}`);
         modal.classList.add('hidden');
     });
 </script>
