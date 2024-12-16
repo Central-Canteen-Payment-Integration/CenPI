@@ -106,7 +106,8 @@ class Tenant extends Controller
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->checkLoggedIn();
 
         $tenantId = $_SESSION['tenant']['id'];
@@ -122,7 +123,8 @@ class Tenant extends Controller
         $this->view('tenant/index', $data);
     }
 
-    public function getAnalytics($startDate, $endDate) {
+    public function getAnalytics($startDate, $endDate)
+    {
         $tenantId = $_SESSION['tenant']['id'];
 
         $startDate = $startDate ?? date(format: 'd-m-Y');
@@ -151,23 +153,23 @@ class Tenant extends Controller
     {
         try {
             $this->checkLoggedIn();
-    
+
             $tenant_id = $_SESSION['tenant']['id'] ?? null;
             if (!$tenant_id) {
                 throw new Exception("Tenant ID not found in session.");
             }
-    
+
             $this->tenantModel = $this->model('TenantModel');
             $menus = $this->tenantModel->getMenusByTenant($tenant_id);
-    
+
             error_log("Menus Data: " . print_r($menus, true));
-    
+
 
             $data = [
                 'page' => 'Menu - CenPI',
-                'menus' => $menus 
+                'menus' => $menus
             ];
-    
+
             // Load Views
             $this->view('templates/tenant_header');
             $this->view('templates/init', $data);
@@ -194,25 +196,26 @@ class Tenant extends Controller
         $this->view('tenant/report');
     }
 
-    public function settings() {
+    public function settings()
+    {
         $this->checkLoggedIn();
-    
+
         $tenantId = $_SESSION['tenant']['id'];
-        
-    
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tenantName = htmlspecialchars($_POST['tenant_name'] ?? '');
             $currentPassword = $_POST['current_password'] ?? '';
             $newPassword = $_POST['new_password'] ?? '';
             $confirmPassword = $_POST['confirm_password'] ?? '';
-            
-    
+
+
             if (empty($tenantName)) {
                 $data['error'] = 'Nama Tenant tidak boleh kosong.';
-                var_dump($data['error']); 
+                var_dump($data['error']);
             } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
                 $data['error'] = 'Password baru dan konfirmasi tidak cocok.';
-                var_dump($data['error']); 
+                var_dump($data['error']);
             } else {
                 $tenant = $this->tenantModel->getTenantById($tenantId);
                 if (!password_verify($currentPassword, $tenant['PASSWORD'])) {
@@ -220,9 +223,9 @@ class Tenant extends Controller
                     var_dump($data['error']);
                 } else {
                     $hashedPassword = !empty($newPassword) ? password_hash($newPassword, PASSWORD_BCRYPT) : null;
-    
+
                     $isUpdated = $this->tenantModel->updateTenantProfile($tenantId, $tenantName, $hashedPassword);
-    
+
                     if ($isUpdated) {
                         $data['success'] = 'Profil berhasil diperbarui.';
                         var_dump($data['error']);
@@ -233,9 +236,9 @@ class Tenant extends Controller
                 }
             }
         }
-    
+
         $tenantData = $this->tenantModel->getTenantById($tenantId);
-    
+
         $data = [
             'tenant_name' => $tenantData['TENANT_NAME'] ?? '',
             'username' => $tenantData['USERNAME'] ?? '',
@@ -243,7 +246,7 @@ class Tenant extends Controller
             'location_name' => $tenantData['LOCATION_NAME'] ?? '',
             'location_booth' => $tenantData['LOCATION_BOOTH'] ?? '',
         ];
-    
+
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/settings', $data);
@@ -252,24 +255,24 @@ class Tenant extends Controller
     public function addMenu()
     {
         $this->checkLoggedIn();
-    
+
         if (!isset($_SESSION['tenant']['id'])) {
             echo json_encode(['status' => 'error', 'message' => 'Tenant ID is missing']);
             return;
         }
-    
-        $id_tenant = $_SESSION['tenant']['id']; 
+
+        $id_tenant = $_SESSION['tenant']['id'];
         $name = $_POST['name'];
         $price = $_POST['price'];
         $pkg_price = $_POST['pkg_price'] ?? null;
         $menu_type = $_POST['menu_type'];
         $id_category = $_POST['id_category'];
-    
+
         if (empty($name) || empty($price) || empty($menu_type) || empty($id_category)) {
             echo json_encode(['status' => 'error', 'message' => 'Required fields are missing']);
             return;
         }
-    
+
         $image_path = null;
         if (!empty($_FILES['image_path']['name'])) {
             $image_path = $this->uploadImage($_FILES['image_path']);
@@ -278,7 +281,7 @@ class Tenant extends Controller
                 return;
             }
         }
-    
+
         $result = $this->tenantModel->addMenu($id_tenant, $name, $price, $pkg_price, $image_path, $menu_type, $id_category);
 
         if ($result['status'] === 'success') {
@@ -289,9 +292,9 @@ class Tenant extends Controller
             exit;
         }
     }
-    
-    
-    
+
+
+
 
     private function uploadImage($image)
     {
@@ -304,6 +307,33 @@ class Tenant extends Controller
         }
         return null;
     }
+    public function updateMenuStatus()
+    {
+        $menuId = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
+        $currentStatus = isset($_POST['current_status']) ? $_POST['current_status'] : null;
+    
+        if (empty($menuId) || !in_array($currentStatus, ['0', '1'])) {
+            $_SESSION['error'] = 'Invalid data!';
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            return; 
+        }
+    
+        $newStatus = $currentStatus == '1' ? 0 : 1;
+    
+        $tenantModel = new TenantModel();
+        $updated = $tenantModel->updateMenuStatus($menuId, $newStatus);
+    
+        if ($updated) {
+            $_SESSION['success'] = 'Menu status updated successfully!';
+        } else {
+            $_SESSION['error'] = 'Failed to update menu status.';
+        }
+    
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        return;
+    }
+    
+
 
 
     public function logout()

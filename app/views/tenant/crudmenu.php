@@ -100,10 +100,10 @@
     <?php if (!empty($data['menus'])): ?>
       <?php foreach ($data['menus'] as $menu): ?>
         <!-- Card Item -->
-        <div class="bg-white shadow-lg rounded-lg p-4 w-[25%]">
+        <div class="bg-white shadow-lg rounded-lg px-4 py-2 w-[25%]">
           <img src="<?= BASE_URL; ?>/assets/img/menu/<?= htmlspecialchars($menu['IMAGE_PATH']); ?>" alt="Food Image"
             class="rounded-lg w-full h-36 fill-cover" />
-          <div class="mt-4">
+          <div class="mt-3">
             <h2 class="text-md font-semibold"><?= htmlspecialchars($menu['NAME']); ?></h2>
             <div class="flex space-x-2">
               <p class="text-sm text-gray-500"><?= htmlspecialchars($menu['MENU_TYPE']); ?></p>
@@ -119,11 +119,15 @@
           </div>
           <div class="flex gap-2 justify-center mt-4">
             <!-- Active Button -->
-            <button id="toggleButton"
-              class="bg-green-500 text-white text-xs px-3 py-1 rounded-lg flex items-center space-x-1">
-              <i class="ti ti-eye"></i>
-              <span id="buttonText"><?= $menu['ACTIVE'] ? 'Active' : 'Inactive'; ?></span>
-            </button>
+            <form method="POST" action="/tenant/updateMenuStatus" class="flex gap-2">
+              <input type="hidden" name="menu_id" value="<?= $menu['ID_MENU']; ?>">
+              <input type="hidden" name="current_status" value="<?= $menu['ACTIVE']; ?>">
+              <button type="button"
+                class="toggleButton <?= $menu['ACTIVE'] ? 'bg-green-500' : 'bg-red-500'; ?> text-white text-xs px-3 py-1 rounded-lg flex items-center"
+                data-id="<?= $menu['ID_MENU']; ?>" data-status="<?= $menu['ACTIVE']; ?>">
+                <i class="ti <?= $menu['ACTIVE'] ? 'ti-eye' : 'ti-eye-closed'; ?>"></i>
+                <span><?= $menu['ACTIVE'] ? 'Active' : 'Inactive'; ?></span>
+              </button>
             <!-- Edit Button -->
             <button onclick="openEditMenuModal('<?= htmlspecialchars($menu['ID_MENU']); ?>')"
               class="bg-yellow-500 text-white text-xs px-3 py-1 rounded-lg hover:bg-yellow-600 flex items-center">
@@ -136,6 +140,7 @@
               <i class="ti ti-trash"></i>
               <span>Delete</span>
             </button>
+            </form>
           </div>
         </div>
       <?php endforeach; ?>
@@ -159,40 +164,35 @@
 
 
 <script>
-  const toggleButton = document.getElementById('toggleButton');
-  const buttonText = document.getElementById('buttonText');
+  const toggleButtons = document.querySelectorAll('.toggleButton');
 
-  toggleButton.addEventListener('click', () => {
-    const isActive = toggleButton.classList.contains('bg-green-500');
+  toggleButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const form = button.closest('form'); 
+      const menuId = button.getAttribute('data-id');
+      const currentStatus = parseInt(button.getAttribute('data-status')); 
+      const newStatus = currentStatus === 1 ? 0 : 1; 
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to change the menu to ${isActive ? 'Inactive' : 'Active'}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: isActive ? '#d33' : '#3085d6',
-      cancelButtonColor: '#aaa',
-      confirmButtonText: `Yes, set to ${isActive ? 'Inactive' : 'Active'}`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (isActive) {
-          toggleButton.classList.remove('bg-green-500', 'hover:bg-green-600');
-          toggleButton.classList.add('bg-red-500', 'hover:bg-red-600');
-          buttonText.textContent = 'Inactive';
-        } else {
-          toggleButton.classList.remove('bg-red-500', 'hover:bg-red-600');
-          toggleButton.classList.add('bg-green-500', 'hover:bg-green-600');
-          buttonText.textContent = 'Active';
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to change the menu to ${newStatus === 1 ? 'Active' : 'Inactive'}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: newStatus === 1 ? '#3085d6' : '#d33',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: `Yes, set to ${newStatus === 1 ? 'Active' : 'Inactive'}`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.querySelector('input[name="current_status"]').value = currentStatus;
+          form.submit();
         }
-
-        Swal.fire(
-          'Changed!',
-          `The menu is now ${isActive ? 'Inactive' : 'Active'}.`,
-          'success'
-        );
-      }
+      });
     });
   });
+
+
+
+
 
   // fungsi open edit menu
   function openEditMenuModal() {
