@@ -170,12 +170,35 @@ class Tenant extends Controller
         $this->view('tenant/orderlist');
     }
 
-    public function menu()
+    public function crudmenu()
     {
-        $this->checkLoggedIn();
-        $this->view('templates/init');
-        $this->view('templates/tenant_header');
-        $this->view('tenant/crudmenu');
+        try {
+            $this->checkLoggedIn();
+    
+            $tenant_id = $_SESSION['tenant']['id'] ?? null;
+            if (!$tenant_id) {
+                throw new Exception("Tenant ID not found in session.");
+            }
+    
+            $this->tenantModel = $this->model('TenantModel');
+            $menus = $this->tenantModel->getMenusByTenant($tenant_id);
+    
+            error_log("Menus Data: " . print_r($menus, true));
+    
+
+            $data = [
+                'page' => 'Menu - CenPI',
+                'menus' => $menus 
+            ];
+    
+            // Load Views
+            $this->view('templates/tenant_header');
+            $this->view('templates/init', $data);
+            $this->view('tenant/crudmenu', $data);
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage());
+            die("Error fetching menus: " . $e->getMessage());
+        }
     }
 
     public function historytransaction()
@@ -248,10 +271,63 @@ class Tenant extends Controller
         $this->view('templates/tenant_header');
         $this->view('tenant/settings', $data);
     }
+
+    public function addMenu()
+    {
+        $this->checkLoggedIn();
+    
+        if (!isset($_SESSION['tenant']['id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Tenant ID is missing']);
+            return;
+        }
+    
+        $id_tenant = $_SESSION['tenant']['id']; 
+        $name = $_POST['name'];
+        $price = $_POST['price'];
+        $pkg_price = $_POST['pkg_price'] ?? null;
+        $menu_type = $_POST['menu_type'];
+        $id_category = $_POST['id_category'];
+    
+        if (empty($name) || empty($price) || empty($menu_type) || empty($id_category)) {
+            echo json_encode(['status' => 'error', 'message' => 'Required fields are missing']);
+            return;
+        }
+    
+        $image_path = null;
+        if (!empty($_FILES['image_path']['name'])) {
+            $image_path = $this->uploadImage($_FILES['image_path']);
+            if (!$image_path) {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid image file']);
+                return;
+            }
+        }
+    
+        $result = $this->tenantModel->addMenu($id_tenant, $name, $price, $pkg_price, $image_path, $menu_type, $id_category);
+
+        if ($result['status'] === 'success') {
+            header('Location: /tenant/crudmenu');
+            exit;
+        } else {
+            header('Location: /tenant/menu?error=' . urlencode($result['message']));
+            exit;
+        }
+    }
     
     
     
-    
+
+    private function uploadImage($image)
+    {
+        if ($image['error'] == 0) {
+            $targetDir = "uploads/";
+            $targetFile = $targetDir . uniqid() . "-" . basename($image["name"]);
+            if (move_uploaded_file($image["tmp_name"], $targetFile)) {
+                return $targetFile;
+            }
+        }
+        return null;
+    }
+
 
     public function logout()
     {
