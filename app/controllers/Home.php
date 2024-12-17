@@ -29,7 +29,8 @@ class Home extends Controller {
         }
 
         $this->view('templates/init', $data);
-        $this->view('templates/header');
+        $this->view('templates/header', $data);
         $this->view('home/menu', $data);
+        $this->view('templates/footer');
     }
 }

@@ -99,7 +99,7 @@
         const errorMessage = "<?php echo addslashes($data['error']); ?>";
 
         if (errorMessage) {
-            swallert('error', errorMessage);
+            swalert('error', errorMessage);
         }
     });
 

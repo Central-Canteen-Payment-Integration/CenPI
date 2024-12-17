@@ -1,166 +1,116 @@
-<div id="activeOrdersSection" class="section">
-    <h2 class="section-title text-center text-xl font-bold">Active Orders</h2>
-    <div id="activeOrderContent" class="content mt-6">
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Active orders will be dynamically loaded here -->
+<div class="section max-w-md mx-auto mt-4">
+    <h2 class="text-center text-xl font-bold">My Orders</h2>
+    <div class="mt-6">
+        <div class="grid gap-6">
+            <?php if (isset($data['orders']) && count($data['orders']) > 0): ?>
+                <?php foreach ($data['orders'] as $order): ?>
+                    <div data-id=<?= $order['ID_TRANSACTION'] ?> class="details cursor-pointer bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-bold location">
+                                    <?= htmlspecialchars(implode(', ', array_unique(array_column($order['DETAILS'], 'LOCATION_NAME')))); ?>
+                                </h2>
+                                <p class="text-gray-500"><?= $order['TRX_DATETIME']; ?></p>
+                            </div>
+                            <p class="text-gray-500"><?= $order['TRX_STATUS']; ?></p>
+                        </div>
+                        <div class="flex mt-6 gap-4 items-start justify-between">
+                            <div class="flex gap-4">
+                                <?php
+                                    if (COUNT($order['DETAILS']) > 1) {
+                                        for ($i = 0; $i < 2; $i++) {
+                                            if (isset($order['DETAILS'][$i])) {
+                                ?>
+                                    <img src=<?= MENU_URL . $order['DETAILS'][$i]['MENU_IMAGE_PATH']?> alt="" class="w-16 h-16 rounded-full">
+                                <?php
+                                            }
+                                        }
+                                    } elseif (COUNT($order['DETAILS']) == 1) {
+                                ?>
+                                    <img src=<?= MENU_URL . $order['DETAILS'][0]['MENU_IMAGE_PATH']?> alt="" class="w-16 h-16 rounded-full">
+                                    <div class="">
+                                        <h3 class="text-lg font-medium"><?= $order['DETAILS'][0]['MENU_NAME']; ?></h3>
+                                    </div>
+                                <?php
+                                    }
+                                ?>
+                            </div>
+                            <div class="flex flex-col justify-start items-end text-right">
+                                <p class="text-gray-500"><?= COUNT($order['DETAILS'])?> Item</p>
+                                <p class="font-bold">Rp <?= number_format($order['TRX_PRICE'], 0, ',', '.'); ?></p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end items-end w-full mt-2">
+                            <?php
+                                switch ($order['TRX_STATUS']) {
+                                    case 'Cooked':
+                                        echo '<span class="border rounded-full bg-white text-black font-medium py-2 px-4 flex items-center justify-center">Pending</span>';
+                                        break;
+                                    case 'Unpaid':
+                                        echo '<button onclick="window.location.href=\'/Checkout/' . ($order['TRX_METHOD'] == 'qris' ? 'qrisPayment/' . $order['MIDTRANS_TOKEN'] : 'cashPayment/' . $order['ID_TRANSACTION']) . '\'" class="group/button relative inline-flex items-center justify-center overflow-hidden rounded-full bg-red-500 backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-red-600/50 border border-white/20">
+                                                <span class="text-md">Pay</span>
+                                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]">
+                                                    <div class="relative h-full w-10 bg-white/30"></div>
+                                                </div>
+                                              </button>';
+                                        break;
+                                    default:
+                                        echo '<button data-order-id=' . $order['ID_TRANSACTION'] . ' class="group/button relative inline-flex items-center justify-center overflow-hidden reorder rounded-full bg-[#0B3C33] backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-green-600/50 border border-white/20">
+                                                <span class="text-md">Reorder</span>
+                                                <div
+                                                    class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]">
+                                                    <div class="relative h-full w-10 bg-white/30"></div>
+                                                </div>
+                                              </button>';
+                                        break;
+                                }
+                            ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center text-lg text-gray-500">No orders.</p>
+            <?php endif; ?>
         </div>
     </div>
-</div>
-
-<div id="transactionHistorySection" class="section mt-12">
-    <h2 class="section-title text-center text-xl font-bold">Transaction History</h2>
-    <div id="historyContent" class="content mt-6">
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Transaction history will be dynamically loaded here -->
-        </div>
-    </div>
-    <p id="empty-message" class="text-center text-lg text-gray-500 hidden">No transaction history found.</p>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        loadActiveOrders();
-        loadTransactionHistory();
+    $(document).ready(function() {
+        $('.reorder').on('click', function() {
+            event.stopPropagation();
+            const id_transaction = $(this).data('order-id');
+
+            $.ajax({
+                url: '/Cart/reorder',
+                type: 'POST',
+                data: {
+                    id_transaction: id_transaction,
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == 'success') {
+                        swalert('success', 'Items added to cart successfully!');
+                        updateCartDisplay(res.cart);
+                    } else {
+                        swalert('error', 'Failed to add items to cart.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    swalert('error', 'An error occurred while adding items to the cart.');
+                }
+            });
+        });
+
+        $('.details a').on('click', function(event) {
+            event.stopPropagation();
+        });
+
+        $('.details').on('click', function() {
+            const id_transaction = $(this).data('id');
+
+            console.log('Details clicked with ID:', id_transaction);
+        });
     });
-
-    function loadActiveOrders() {
-        fetch('/Order/activeOrders')
-            .then(response => response.json())
-            .then(data => {
-                const activeOrderContent = document.getElementById('activeOrderContent').querySelector('.grid');
-                if (data && data.length > 0) {
-                    activeOrderContent.innerHTML = ''; 
-                    data.forEach(order => {
-                        const orderCard = createOrderCard(order);
-                        activeOrderContent.appendChild(orderCard);
-                    });
-                } else {
-                    activeOrderContent.innerHTML = `<p class="text-center text-lg text-gray-500">No active orders.</p>`;
-                }
-            })
-            .catch(error => console.error('Error fetching active orders:', error));
-    }
-
-    function loadTransactionHistory() {
-        fetch('/Order/transactionHistory')
-            .then(response => response.json())
-            .then(data => {
-                const historyContent = document.getElementById('historyContent').querySelector('.grid');
-                if (data && data.length > 0) {
-                    historyContent.innerHTML = ''; 
-                    data.forEach(transaction => {
-                        const transactionCard = createTransactionCard(transaction);
-                        historyContent.appendChild(transactionCard);
-                    });
-                    document.getElementById('empty-message').classList.add('hidden'); 
-                } else {
-                    document.getElementById('empty-message').classList.remove('hidden');
-                }
-            })
-            .catch(error => console.error('Error fetching transaction history:', error));
-    }
-
-    function createOrderCard(order) {
-        const card = document.createElement('div');
-        card.className = 'container px-4 mx-auto';
-
-        card.innerHTML = `
-            <div class="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
-                <div class="flex flex-wrap items-center justify-between mb-1 -m-2">
-                    <div class="w-auto p-2">
-                        <h2 class="text-lg font-semibold text-coolGray-900">${order.id_transaction}</h2>
-                        <a href="#" class="text-sm text-green-500 hover:text-green-600 font-semibold">Total: Rp.${order.trx_price}</a>
-                    </div>
-                    <div class="w-auto">
-                        <p class="text-xs text-coolGray-500">Tanggal: ${order.trx_date}</p>
-                        <p class="text-xs text-coolGray-500">Status: ${order.trx_status}</p>
-                    </div>
-                </div>
-                <button class="w-full py-2 text-sm font-medium text-coolGray-900 bg-gray-100 rounded-md hover:bg-gray-200 mb-4" onclick="toggleDropdown('order-${order.real_id}')">Lihat Detail</button>
-                <div id="order-${order.real_id}" class="hidden flex flex-wrap">
-                    ${order.details && order.details.length > 0 ? order.details.map(detail => `
-                        <div class="w-full border-b border-coolGray-100">
-                            <div class="flex flex-wrap items-center justify-between py-4 -m-2">
-                                <div class="w-auto p-2">
-                                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-50 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
-                                            <path fill="#F59E0B"
-                                                d="M19 4H5C4.20435 4 3.44129 4.31607 2.87868 4.87868C2.31607 5.44129 2 6.20435 2 7V17C2 17.7956 2.31607 18.5587 2.87868 19.1213C3.44129 19.6839 4.20435 20 5 20H19C19.7956 20 20.5587 19.6839 21.1213 19.1213C21.6839 18.5587 22 17.7956 22 17V7C22 6.20435 21.6839 5.44129 21.1213 4.87868C20.5587 4.31607 19.7956 4 19 4ZM5 18C4.73478 18 4.48043 17.8946 4.29289 17.7071C4.10536 17.5196 4 17.2652 4 17V14.58L7.3 11.29C7.48693 11.1068 7.73825 11.0041 8 11.0041C8.26175 11.0041 8.51307 11.1068 8.7 11.29L15.41 18H5ZM20 17C20 17.2652 19.8946 17.5196 19.7071 17.7071C19.5196 17.8946 19.2652 18 19 18H18.23L14.42 14.17L15.3 13.29C15.4869 13.1068 15.7382 13.0041 16 13.0041C16.2618 13.0041 16.5131 13.1068 16.7 13.29L20 16.58V17ZM20 13.76L18.12 11.89C17.5501 11.3424 16.7904 11.0366 16 11.0366C15.2096 11.0366 14.4499 11.3424 13.88 11.89L13 12.77L10.12 9.89C9.55006 9.34243 8.79036 9.03663 8 9.03663C7.20964 9.03663 6.44994 9.34243 5.88 9.89L4 11.76V7C4 6.73478 4.10536 6.48043 4.29289 6.29289C4.48043 6.10536 4.73478 6 5 6H19C19.2652 6 19.5196 6.10536 19.7071 6.29289C19.8946 6.48043 20 6.73478 20 7V13.76Z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="w-auto p-2">
-                                    <h2 class="text-sm font-medium text-coolGray-900">${detail.menu_name}</h2>
-                                    <h3 class="text-xs font-medium text-coolGray-400">${detail.tenant_name}</h3>
-                                </div>
-                                <div class="w-auto p-2">
-                                    <p class="text-xs text-coolGray-500 font-medium">${detail.qty} x Rp.${detail.qty_price}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('') : 'No details available'}
-                </div>
-            </div>
-        `;
-
-        return card;
-    }
-
-    function createTransactionCard(transaction) {
-        const card = document.createElement('div');
-        card.className = 'container px-4 mx-auto';
-
-        card.innerHTML = `
-            <div class="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
-                <div class="flex flex-wrap items-center justify-between mb-1 -m-2">
-                    <div class="w-auto p-2">
-                        <h2 class="text-lg font-semibold text-coolGray-900">${transaction.id_transaction}</h2>
-                        <a href="#" class="text-sm text-green-500 hover:text-green-600 font-semibold">Total: Rp.${transaction.trx_price}</a>
-                    </div>
-                    <div class="w-auto">
-                        <p class="text-xs text-coolGray-500">Tanggal: ${transaction.trx_date}</p>
-                        <p class="text-xs text-coolGray-500">Status: ${transaction.trx_status}</p>
-                    </div>
-                </div>
-                <button class="w-full py-2 text-sm font-medium text-coolGray-900 bg-gray-100 rounded-md hover:bg-gray-200 mb-4" onclick="toggleDropdown('transaction-${transaction.real_id}')">Lihat Detail</button>
-                <div id="transaction-${transaction.real_id}" class="hidden flex flex-wrap">
-                    ${transaction.details && transaction.details.length > 0 ? transaction.details.map(detail => `
-                        <div class="w-full border-b border-coolGray-100">
-                            <div class="flex flex-wrap items-center justify-between py-4 -m-2">
-                                <div class="w-auto p-2">
-                                    <div class="flex items-center justify-center w-12 h-12 bg-yellow-50 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24" width="24">
-                                            <path fill="#F59E0B"
-                                                d="M19 4H5C4.20435 4 3.44129 4.31607 2.87868 4.87868C2.31607 5.44129 2 6.20435 2 7V17C2 17.7956 2.31607 18.5587 2.87868 19.1213C3.44129 19.6839 4.20435 20 5 20H19C19.7956 20 20.5587 19.6839 21.1213 19.1213C21.6839 18.5587 22 17.7956 22 17V7C22 6.20435 21.6839 5.44129 21.1213 4.87868C20.5587 4.31607 19.7956 4 19 4ZM5 18C4.73478 18 4.48043 17.8946 4.29289 17.7071C4.10536 17.5196 4 17.2652 4 17V14.58L7.3 11.29C7.48693 11.1068 7.73825 11.0041 8 11.0041C8.26175 11.0041 8.51307 11.1068 8.7 11.29L15.41 18H5ZM20 17C20 17.2652 19.8946 17.5196 19.7071 17.7071C19.5196 17.8946 19.2652 18 19 18H18.23L14.42 14.17L15.3 13.29C15.4869 13.1068 15.7382 13.0041 16 13.0041C16.2618 13.0041 16.5131 13.1068 16.7 13.29L20 16.58V17ZM20 13.76L18.12 11.89C17.5501 11.3424 16.7904 11.0366 16 11.0366C15.2096 11.0366 14.4499 11.3424 13.88 11.89L13 12.77L10.12 9.89C9.55006 9.34243 8.79036 9.03663 8 9.03663C7.20964 9.03663 6.44994 9.34243 5.88 9.89L4 11.76V7C4 6.73478 4.10536 6.48043 4.29289 6.29289C4.48043 6.10536 4.73478 6 5 6H19C19.2652 6 19.5196 6.10536 19.7071 6.29289C19.8946 6.48043 20 6.73478 20 7V13.76Z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="w-auto p-2">
-                                    <h2 class="text-sm font-medium text-coolGray-900">${detail.menu_name}</h2>
-                                    <h3 class="text-xs font-medium text-coolGray-400">${detail.tenant_name}</h3>
-                                </div>
-                                <div class="w-auto p-2">
-                                    <p class="text-xs text-coolGray-500 font-medium">${detail.qty} x Rp.${detail.qty_price}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('') : 'No details available'}
-                </div>
-            </div>
-        `;
-
-        return card;
-    }
-
-    function toggleDropdown(dropdownId) {
-        const dropdown = document.getElementById(dropdownId);
-        console.log('Toggling dropdown: ', dropdownId);
-        if (dropdown) {
-            dropdown.classList.toggle('hidden');
-        } else {
-            console.error('Dropdown not found for id:', dropdownId);
-        }
-    }
 </script>

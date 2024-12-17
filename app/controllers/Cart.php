@@ -2,9 +2,11 @@
 
 class Cart extends Controller {
     private $cartModel;
+    private $trxModel;
 
     public function __construct() {
         $this->cartModel = $this->model('CartModel');
+        $this->trxModel = $this->model('TrxModel');
     }
 
     public function add() {
@@ -134,5 +136,36 @@ class Cart extends Controller {
             'message' => 'Menu ID not provided.'
         ]);
         exit;
+    }
+
+    public function reorder() {
+        $user = $_SESSION['user'];
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id_transaction = isset($_POST['id_transaction']) ? $_POST['id_transaction'] : "";
+            $validId = $this->trxModel->checkTransaction($id_transaction);
+
+            if ($validId) {
+                $reorder = $this->cartModel->reorder($id_transaction, $user['id']);
+                if ($reorder) {
+                    $cart = $this->cartModel->getCartUser($user['id']);
+                    echo json_encode([
+                        'status' => 'success',
+                        'cart' => $cart
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Failed to Reorder.',
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Invalid ID Transaction.'
+                ]);
+            }
+            exit;
+        }
     }
 }

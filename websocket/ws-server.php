@@ -11,18 +11,18 @@ class NotificationServer implements MessageComponentInterface
     public function onOpen(ConnectionInterface $conn) {
         $queryParams = $conn->httpRequest->getUri()->getQuery();
         parse_str($queryParams, $queryArray);
-        $tenantId = $queryArray['tenant_id'] ?? null;
+        $id = $queryArray['client_id'] ?? null;
     
-        if ($tenantId) {
-            if (isset($this->clients[$tenantId]) && $this->clients[$tenantId]->count() > 0) {
-                $conn->send(json_encode(['error' => 'A connection for this tenant already exists.']));
+        if ($id) {
+            if (isset($this->clients[$id]) && $this->clients[$id]->count() > 0) {
+                $conn->send(json_encode(['error' => 'A connection for this client already exists.']));
                 $conn->close();
                 return;
             }
     
-            $this->clients[$tenantId] = new \SplObjectStorage;
-            $this->clients[$tenantId]->attach($conn);
-            echo "Connection established for tenant {$tenantId}\n";
+            $this->clients[$id] = new \SplObjectStorage;
+            $this->clients[$id]->attach($conn);
+            echo "Connection established for client {$id}\n";
         } else {
             $conn->close();
         }
@@ -30,20 +30,26 @@ class NotificationServer implements MessageComponentInterface
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $data = json_decode($msg, true);
-        $tenantId = $data['tenant_id'] ?? null;
-
-        if ($tenantId && isset($this->clients[$tenantId])) {
-            foreach ($this->clients[$tenantId] as $client) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo "Invalid JSON received: {$msg}\n";
+            return;
+        }
+    
+        $id = $data['client_id'] ?? null;
+        echo "Message received from client {$id}: " . json_encode($data) . "\n";
+    
+        if ($id && isset($this->clients[$id])) {
+            foreach ($this->clients[$id] as $client) {
                 $client->send(json_encode($data));
             }
         }
     }
 
     public function onClose(ConnectionInterface $conn) {
-        foreach ($this->clients as $tenantId => $connections) {
+        foreach ($this->clients as $id => $connections) {
             if ($connections->contains($conn)) {
                 $connections->detach($conn);
-                echo "Connection closed for tenant {$tenantId}\n";
+                echo "Connection closed for client {$id}\n";
             }
         }
     }

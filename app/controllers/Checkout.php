@@ -30,18 +30,23 @@ class Checkout extends Controller {
             return;
         }
 
-        $snapToken = '';
-    
         if (isset($_SESSION['user']) && isset($_SESSION['user']['id'])) {
             $userId = $_SESSION['user']['id'];
-            $data['cart'] = $this->cartModel->getCartUser($userId);
+            $data['cart'] = $this->cartModel->getCartUser ($userId);
+    
+            if (empty($data['cart']) || count($data['cart']) === 0) {
+                $_SESSION['error'] = 'Cart is empty';
+                header('Location: /Checkout');
+                return;
+            }
         }
         
         $orderType = isset($_POST['order-type']) ? strtoupper($_POST['order-type']) : null;
         $paymentOption = isset($_POST['payment-option']) ? strtoupper($_POST['payment-option']) : null;
     
         if (is_null($orderType) || is_null($paymentOption)) {
-            echo json_encode(['error' => 'Request error']);
+            $_SESSION['error'] = 'Please select a payment option.';
+            header('Location: /Checkout');
             return;
         }
 
@@ -95,7 +100,7 @@ class Checkout extends Controller {
             "expiry" => [
                 "start_time" => $startTime,
                 "unit" => "minutes",
-                "duration" => 20
+                "duration" => 30
             ]
         ];
         

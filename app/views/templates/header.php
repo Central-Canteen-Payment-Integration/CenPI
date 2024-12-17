@@ -171,4 +171,126 @@
 				window.location.href = url;
 			}, 1000);
 		}
+
+        function updateCartDisplay(cartItems) {
+            $('.cart-list').empty();
+            $('.cart-btn').empty();
+            let totalPrice = 0;
+
+            if (cartItems.length > 0) {
+                cartItems.forEach((item) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = `flex py-6`;
+                    listItem.innerHTML = `
+                        <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                            <img src="<?= MENU_URL ?>${item.IMAGE_PATH || 'placeholder.jpg'}" alt="${item.NAME}" class="size-full object-cover">
+                        </div>
+                        <div class="ml-4 flex flex-1 flex-col">
+                            <div>
+                                <div class="flex justify-between text-base font-medium text-gray-900">
+                                    <h3>
+                                        <a href="#">${item.NAME}</a>
+                                    </h3>
+                                    <p class="ml-4">Rp. ${item.PRICE}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 items-end justify-between text-sm">
+                                <p class="text-gray-500">Qty ${item.QTY}</p>
+                                <div class="flex">
+                                    <button type="button" class="font-medium text-primary hover:text-indigo-500 remove-btn" data-id="${item.ID_CART}">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    totalPrice += parseFloat(item.PRICE);
+                    $('.cart-list').append(listItem);
+                });
+
+                const cartBtn = `
+                    <div class="flex justify-between text-base font-medium text-secondary">
+                        <p>Subtotal</p>
+                        <p>Rp. ${totalPrice}</p>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" id="clear-cart-btn" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
+                            Clear Cart
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <a href="<?= BASE_URL; ?>/Checkout" onclick="document.getElementById('cart-drawer').checked = false;" class="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white hover:bg-red-600 mb-2">Checkout</a>
+                    </div>
+                `;
+                $('.cart-btn').append(cartBtn);
+            } else {
+                const emptyMessage = `
+                <div class="flex flex-col items-center justify-center h-full py-10 mt-4">
+                    <div class="w-36 h-36 mb-6">
+                        <img src="<?= BASE_URL; ?>/assets/img/emptycart.jpg" alt="Empty Cart" class="w-full h-full object-contain">
+                    </div>
+                    <h2 class="text-lg font-medium text-red-600 mb-2">Your cart is empty</h2>
+                    <p class="text-center text-sm text-gray-500 mb-6">Looks like you have not added anything to your cart. Go ahead & explore our menu.</p>
+                    <div class="mt-4">
+                        <button type="button" onclick="document.getElementById('cart-drawer').checked = false" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
+                            Go to Menu
+                        </button>
+                    </div>
+                </div>
+                `;
+                $('.cart-list').html(emptyMessage);
+            }
+
+            $('.qty-cart').text(cartItems.length);
+
+            if (cartItems.length > 0) {
+                $('.dropdown.dropdown-end').addClass('md:inline');
+            }
+        }
+
+        $(document).on('click', '.remove-btn', function() {
+            const cart = $(this).data();
+
+            $.ajax({
+                url: '/Cart/delete',
+                type: 'POST',
+                data: {
+                    id_cart: cart.id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                        swalert('success', 'Item removed from cart.');
+                    } else {
+                        swalert('error', 'Error removing item: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                    swalert('error', 'An error occurred while removing the item.');
+                }
+            });
+        });
+
+        $(document).on('click', '#clear-cart-btn', function() {
+            $.ajax({
+                url: '/Cart/clear',
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 'success') {
+                        updateCartDisplay(res.cart);
+                        swalert('success', 'Cart cleared successfully.');
+                    } else {
+                        swalert('error', 'Error clearing cart: ' + res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                    swalert('error', 'An error occurred while clearing the cart.');
+                }
+            });
+        });
+
+        const cart = <?= json_encode($data['cart']); ?>;
+        updateCartDisplay(cart);
 	</script>

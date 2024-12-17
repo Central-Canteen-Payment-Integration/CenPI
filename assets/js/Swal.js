@@ -3,7 +3,7 @@
  * @param {string} icon - Type of alert (success, error, warning, info, question).
  * @param {Object} options - Additional Swal options (optional).
  */
-function swallert(icon, title, options = {}) {
+function swalert(icon, title, options = {}) {
     const defaultOptions = {
         title: title,
         icon: icon,

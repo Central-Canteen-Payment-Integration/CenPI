@@ -283,7 +283,7 @@
             const cart = $(this).data();
 
             $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/delete',
+                url: '/Cart/delete',
                 type: 'POST',
                 data: {
                     id_cart: cart.id
@@ -306,7 +306,7 @@
             const menu = $(this).data();
 
             $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/add',
+                url: '/Cart/add',
                 type: 'POST',
                 data: {
                     id_menu: menu.id,
@@ -328,7 +328,7 @@
 
         $(document).on('click', '#clear-cart-btn', function() {
             $.ajax({
-                url: '<?= BASE_URL; ?>/Cart/clear',
+                url: '/Cart/clear',
                 type: 'POST',
                 dataType: 'json',
                 success: function(res) {

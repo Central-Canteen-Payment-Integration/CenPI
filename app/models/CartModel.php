@@ -99,4 +99,23 @@ class CartModel extends Model
             return false;
         }
     }
+
+    public function reorder($id_transaction, $id_user) {
+        try {
+            $this->db->beginTransaction();
+            $this->db->query("CALL reorder(:p_id_transaction, :p_id_user)");
+            
+            $this->db->bind(':p_id_transaction', $id_transaction);
+            $this->db->bind(':p_id_user', $id_user);
+
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw new Exception("Failed to create transaction: " . $e->getMessage());
+        }
+    }
 }

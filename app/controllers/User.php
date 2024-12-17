@@ -2,9 +2,13 @@
 
 class User extends Controller {
     private $userModel;
+    private $trxModel;
+    private $cartModel;
 
     public function __construct() {
         $this->userModel = $this->model('UserModel');
+        $this->trxModel = $this->model('TrxModel');
+        $this->cartModel = $this->model('CartModel');
     }
 
     public function login() {
@@ -151,7 +155,9 @@ class User extends Controller {
                 'error' => ''
             ];
             $this->view('templates/init', $data);
+            $this->view('templates/header');
             $this->view('User/profile', $user);
+            $this->view('templates/footer');
         }
     }
 
@@ -162,17 +168,24 @@ class User extends Controller {
     }
 
     public function order() {
+        $this->trxModel->checkExpiredOrder($_SESSION['user']['id']);
         $data = [
             'page' => 'My Orders - CenPI',
-            'error' => ''
+            'error' => '',
+            'cart' => ''
         ];
 
-        if (!isset($_SESSION['user'])) {
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
+            $data['cart'] = $this->cartModel->getCartUser($user['id']); 
+        } else {
             header('Location: /Home/menu');
         }
-    
+
         $this->view('templates/init', $data);
-        $this->view('templates/focus_header');
+        $data['orders'] = $this->trxModel->getTransactionByUserId($_SESSION['user']['id']);
+        $this->view('templates/header', $data);
         $this->view('user/order', $data);
+        $this->view('templates/footer');
     }
 }

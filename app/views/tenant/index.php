@@ -106,7 +106,7 @@
     console.log('Sending request with dates:', formattedStartDate, formattedEndDate);
 
     $.ajax({
-      url: `<?= BASE_URL; ?>/Tenant/getAnalytics/${formattedStartDate}/${formattedEndDate}`,
+      url: `/Tenant/getAnalytics/${formattedStartDate}/${formattedEndDate}`,
       method: 'GET',
       success: function(response) {
         console.log('Received data:', response);
@@ -130,8 +130,6 @@
       }
     });
   }
-
-
 
   // Initialize the Revenue Trend chart with sample data
   const ctx = document.getElementById('revenueChart').getContext('2d');

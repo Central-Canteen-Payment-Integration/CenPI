@@ -1,5 +1,14 @@
 <?php
 $cartItems = isset($data['cart']) ? $data['cart'] : [];
+if (isset($_SESSION['error'])) {
+    $errorMessage = $_SESSION['error'];
+    unset($_SESSION['error']);
+?>
+    <script>
+        swalert('error', '<?php echo $errorMessage; ?>', {position: "top-end"});
+    </script>
+<?php
+}
 ?>
 
 <div class="container min-w-full py-5 text-sm bg-[#F0F3F7]">
@@ -119,7 +128,7 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
         const increase = (action == 'increase');
 
         $.ajax({
-            url: '<?= BASE_URL; ?>/Cart/update',
+            url: '/Cart/update',
             type: 'POST',
             data: {
                 id_cart: cartItems[id - 1].ID_CART,
@@ -137,14 +146,14 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
                     }
 
                     cartItems = res.cart;
-                    swallert('success', 'Cart updated.');
+                    swalert('success', 'Cart updated.');
                 } else {
-                    swallert('error', 'Error updating item: ' + res.message);
+                    swalert('error', 'Error updating item: ' + res.message);
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error: ' + error);
-                swallert('error', 'An error occurred while updating the item.');
+                swalert('error', 'An error occurred while updating the item.');
             }
         });
     }
@@ -162,7 +171,7 @@ $cartItems = isset($data['cart']) ? $data['cart'] : [];
         
         if (paymentOption.value === "Select Payment") {
             event.preventDefault();
-            swallert("error" ,"Please select a payment option.", {position: "top-end"});
+            swalert("error" ,"Please select a payment option.", {position: "top-end"});
         }
     });
 
