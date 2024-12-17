@@ -121,15 +121,16 @@ class TenantModel extends Model
         }
     }
 
-    public function getDashboardData($tenantId, $startDate, $endDate) {
+    public function getDashboardData($tenantId, $startDate, $endDate)
+    {
         if (strtotime($startDate) === false || strtotime($endDate) === false) {
             error_log("Invalid date format for startDate or endDate");
             return false;
         }
-    
+
         $startDate = date('d-m-Y 00:00:00', strtotime($startDate));
         $endDate = date('d-m-Y 23:59:59', strtotime($endDate));
-    
+
         $sql = "
             SELECT NVL(COUNT(td.id_transaction), 0) AS TOTAL_ORDERS, 
                    NVL(SUM(td.qty_price + td.pkg_price), 0) AS TOTAL_REVENUE
@@ -140,15 +141,15 @@ class TenantModel extends Model
               AND t.trx_datetime BETWEEN TO_DATE(:startDate, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:endDate, 'DD-MM-YYYY HH24:MI:SS')
               AND t.trx_status = 'Completed'
         ";
-    
+
         $this->db->query($sql);
         $this->db->bind(':tenantId', $tenantId);
         $this->db->bind(':startDate', $startDate);
         $this->db->bind(':endDate', $endDate);
         $result = $this->db->single();
-        $totalOrders = isset($result['TOTAL_ORDERS']) ? (int)$result['TOTAL_ORDERS'] : 0;
-        $totalRevenue = isset($result['TOTAL_REVENUE']) ? (int)$result['TOTAL_REVENUE'] : 0;
-    
+        $totalOrders = isset($result['TOTAL_ORDERS']) ? (int) $result['TOTAL_ORDERS'] : 0;
+        $totalRevenue = isset($result['TOTAL_REVENUE']) ? (int) $result['TOTAL_REVENUE'] : 0;
+
         $sql = "
             SELECT TO_CHAR(t.trx_datetime, 'DD-MM-YYYY') AS trx_datetime,
                    NVL(SUM(td.qty_price + td.pkg_price), 0) AS total_revenue
@@ -161,23 +162,23 @@ class TenantModel extends Model
             GROUP BY TO_CHAR(t.trx_datetime, 'DD-MM-YYYY')
             ORDER BY trx_datetime
         ";
-    
+
         $this->db->query($sql);
         $this->db->bind(':tenantId', $tenantId);
         $this->db->bind(':startDate', $startDate);
         $this->db->bind(':endDate', $endDate);
         $revenuePerDayResults = $this->db->resultSet();
-    
+
         $chartLabels = [];
         $chartData = [];
-    
+
         if (!empty($revenuePerDayResults)) {
             foreach ($revenuePerDayResults as $result) {
                 $chartLabels[] = $result['TRX_DATETIME'];
-                $chartData[] = (float)$result['TOTAL_REVENUE'];
+                $chartData[] = (float) $result['TOTAL_REVENUE'];
             }
         }
-    
+
         return [
             'totalOrders' => $totalOrders,
             'totalRevenue' => $totalRevenue,
@@ -247,4 +248,20 @@ class TenantModel extends Model
             throw $e;
         }
     }
+    public function updateMenuStatus($menuId, $newStatus)
+    {
+        $query = "UPDATE MENU 
+                  SET ACTIVE = :new_status 
+                  WHERE ID_MENU = :menu_id";
+    
+        $this->db->query($query);
+        $this->db->bind(':new_status', $newStatus);
+        $this->db->bind(':menu_id', $menuId);
+    
+        return $this->db->execute();
+    }
+    
+    
+
+
 }
