@@ -150,12 +150,14 @@ class User extends Controller {
     
                 exit;
             }
+            $user = $_SESSION['user'];
             $data = [
                 'page' => 'Profile - CenPI',
-                'error' => ''
+                'error' => '',
+                'cart' => $this->cartModel->getCartUser($user['id'])
             ];
             $this->view('templates/init', $data);
-            $this->view('templates/header');
+            $this->view('templates/header', $data);
             $this->view('User/profile', $user);
             $this->view('templates/footer');
         }

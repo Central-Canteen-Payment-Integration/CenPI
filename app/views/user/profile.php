@@ -1,4 +1,4 @@
-<body class="bg-base-100 min-h-screen flex items-center justify-center p-4">
+<div class="bg-base-100 flex justify-center p-4">
     <div class="font-std w-full max-w-4xl rounded-xl bg-white p-10 shadow-2xl border-2 border-neutral">
         <div class="flex flex-col">
             <!-- Title and Profile Picture -->
@@ -104,3 +104,4 @@
             </script>
         </div>
     </div>
+</div>

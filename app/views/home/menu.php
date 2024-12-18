@@ -1,4 +1,33 @@
 <!-- Desktop Search Bar -->
+<div id="mobile-search-bar" class="block bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto md:hidden mb-4">
+    <div class="flex items-center space-x-4">
+        <div class="flex-1">
+            <input id="search-input-mobile"
+                class="input input-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Search" />
+        </div>
+        <div class="relative flex-1">
+            <select id="filter-select-mobile"
+                class="select select-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                <option value="" class="text-gray-500">All Menus</option>
+                <option value="Kantin Teknik">Kantek</option>
+                <option value="Kantin Bawah">Kawah</option>
+            </select>
+            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button id="search-btn-mobile"
+                class="btn bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                Search
+            </button>
+        </div>
+    </div>
+</div>
 <div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 mt-0">
     <div class="flex-1">
         <input id="search-input"
