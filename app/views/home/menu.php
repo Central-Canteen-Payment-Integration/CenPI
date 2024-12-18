@@ -35,8 +35,8 @@
 
 <!-- GRID -->
 <div class="grid grid-cols-6 gap-5 px-4">
-    <!-- Left Section -->
-    <div class="col-span-1">
+    <!-- Left Section (Desktop) -->
+    <div class="col-span-1 hidden md:block">
         <div class="space-y-4">
             <!-- Accordion 1: Category Selection -->
             <div class="border border-gray-300 rounded-lg shadow-md">
@@ -100,48 +100,164 @@
                 </div>
             </div>
         </div>
-
-        <!-- JavaScript for Accordion Functionality -->
-        <script>
-            function handleCategoryChange() {
-                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-                const makananAccordion = document.getElementById('accordion-makanan');
-                const minumanAccordion = document.getElementById('accordion-minuman');
-
-                makananAccordion.style.display = 'none';
-                minumanAccordion.style.display = 'none';
-
-                resetSubcategoryRadios();
-
-                // Show the relevant accordion based on the selected category
-                if (selectedCategory === 'Makanan') {
-                    makananAccordion.style.display = 'block';
-                } else if (selectedCategory === 'Minuman') {
-                    minumanAccordion.style.display = 'block';
-                }
-            }
-
-            function resetSubcategoryRadios() {
-                // Get all subcategory radio buttons and uncheck them
-                const subcategoryRadios = document.querySelectorAll('input[name="subcategory"]');
-                subcategoryRadios.forEach(radio => radio.checked = false);
-            }
-
-            function toggleAccordion(button) {
-                const content = button.nextElementSibling;
-                content.classList.toggle('hidden');
-            }
-        </script>
-
     </div>
 
     <!-- Right Section -->
-    <div class="col-span-5">
-        <div class="flex flex-wrap gap-5 justify-left" id="menu-container">
+    <div class="col-span-5 hidden md:block">
+        <div class="flex flex-wrap gap-5 justify-start" id="menu-container">
+            <!-- Menu items will be displayed here -->
+        </div>
+    </div>
+
+    <div class="col-span-5 block md:hidden">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 justify-items-center" id="menu-container-mobile">
             <!-- Menu items will be displayed here -->
         </div>
     </div>
 </div>
+
+
+
+
+<!-- Mobile Filter Drawer -->
+<div class="drawer drawer-end block md:hidden z-30">
+    <!-- Drawer Toggle Input -->
+    <input id="mobile-filter-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <!-- Close Button & Overlay -->
+        <label for="mobile-filter-drawer" class="drawer-overlay z-20"></label>
+        <div class="relative z-40">
+            <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto max-h-[80vh]">
+                <!-- Header and Close Button -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Filter</h2>
+                    <button type="button" class="text-gray-500 hover:text-gray-700"
+                        onclick="document.getElementById('mobile-filter-drawer').checked = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Category Filter for Mobile -->
+                <div class="space-y-4">
+                    <div class="border border-gray-300 rounded-lg shadow-md">
+                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                            Kamu Mau Makan Atau Minum?
+                        </button>
+                        <div class="accordion-content bg-white p-4 space-y-2">
+                            <p class="font-medium mb-2">Silakan Pilih:</p>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="category" class="form-radio text-blue-600" value="" checked onchange="handleCategoryChange()" />
+                                <span>All</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="category" class="form-radio text-blue-600" value="Makanan" onchange="handleCategoryChange()" />
+                                <span>Makan</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="category" class="form-radio text-blue-600" value="Minuman" onchange="handleCategoryChange()" />
+                                <span>Minum</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Makanan Subcategories for Mobile -->
+                    <div id="mobile-accordion-makanan" class="border border-gray-300 rounded-lg shadow-md hidden">
+                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                            Opsi Makanan
+                        </button>
+                        <div class="accordion-content bg-white p-4">
+                            <p class="font-medium mb-2">Silakan Pilih:</p>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" />
+                                <span>Goreng</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" />
+                                <span>Bakar</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" />
+                                <span>Rebus</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Minuman Subcategories for Mobile -->
+                    <div id="mobile-accordion-minuman" class="border border-gray-300 rounded-lg shadow-md hidden">
+                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
+                            Opsi Minuman
+                        </button>
+                        <div class="accordion-content bg-white p-4">
+                            <p class="font-medium mb-2">Silakan Pilih:</p>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" />
+                                <span>Es</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" />
+                                <span>Panas</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- JavaScript for Accordion Functionality -->
+<script>
+    // Handle category change (Makanan/Minuman) for both mobile and desktop
+    function handleCategoryChange() {
+        const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+
+        // Desktop version: Show/Hide the Makanan and Minuman accordions
+        const makananAccordionDesktop = document.getElementById('accordion-makanan');
+        const minumanAccordionDesktop = document.getElementById('accordion-minuman');
+        makananAccordionDesktop.style.display = 'none';
+        minumanAccordionDesktop.style.display = 'none';
+
+        // Mobile version: Show/Hide the mobile accordions
+        const makananAccordionMobile = document.getElementById('mobile-accordion-makanan');
+        const minumanAccordionMobile = document.getElementById('mobile-accordion-minuman');
+        makananAccordionMobile.classList.add('hidden');
+        minumanAccordionMobile.classList.add('hidden');
+
+        // Reset subcategory radio buttons for both versions
+        resetSubcategoryRadios();
+
+        // Show the relevant accordion based on the selected category
+        if (selectedCategory === 'Makanan') {
+            // Desktop: Show the Makanan accordion
+            makananAccordionDesktop.style.display = 'block';
+            // Mobile: Show the Makanan accordion
+            makananAccordionMobile.classList.remove('hidden');
+        } else if (selectedCategory === 'Minuman') {
+            // Desktop: Show the Minuman accordion
+            minumanAccordionDesktop.style.display = 'block';
+            // Mobile: Show the Minuman accordion
+            minumanAccordionMobile.classList.remove('hidden');
+        }
+    }
+
+    // Reset all subcategory radio buttons to unchecked for both versions
+    function resetSubcategoryRadios() {
+        const subcategoryRadios = document.querySelectorAll('input[name="subcategory"]');
+        subcategoryRadios.forEach(radio => radio.checked = false);
+    }
+
+    // Toggle the visibility of the accordion content (for both desktop and mobile)
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        content.classList.toggle('hidden');
+    }
+</script>
+
 
 <!-- Please Login Modal -->
 <input type="checkbox" id="login-modal" class="modal-toggle" hidden>
@@ -170,13 +286,33 @@
     </div>
 </div>
 
-<!-- Tombol buat mobel -->
+<!-- Tombol buat mobel Filter -->
+<div class="fixed bottom-5 left-15 z-10 block md:hidden">
+    <button class="bg-primary text-white p-4 rounded-full shadow-lg"
+        onclick="document.getElementById('mobile-filter-drawer').checked = true" id="mobile-filter-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 90 90">
+            <g fill="white">
+                <path d="M 15.205 90 c -1.104 0 -2 -0.896 -2 -2 V 55.115 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 17.205 89.104 16.31 90 15.205 90 z" />
+                <path d="M 74.795 59.357 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 55.357 C 76.795 58.462 75.899 59.357 74.795 59.357 z" />
+                <path d="M 45 90 c -1.104 0 -2 -0.896 -2 -2 V 27.922 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 47 89.104 46.104 90 45 90 z" />
+                <path d="M 45 29.922 c -5.464 0 -9.91 -4.445 -9.91 -9.91 s 4.445 -9.91 9.91 -9.91 c 5.465 0 9.91 4.445 9.91 9.91 S 50.465 29.922 45 29.922 z M 45 14.103 c -3.259 0 -5.91 2.651 -5.91 5.91 s 2.651 5.91 5.91 5.91 s 5.91 -2.651 5.91 -5.91 S 48.259 14.103 45 14.103 z" />
+                <path d="M 15.205 57.115 c -5.464 0 -9.91 -4.445 -9.91 -9.91 c 0 -5.464 4.445 -9.91 9.91 -9.91 s 9.91 4.445 9.91 9.91 C 25.115 52.67 20.669 57.115 15.205 57.115 z M 15.205 41.295 c -3.259 0 -5.91 2.651 -5.91 5.91 s 2.651 5.91 5.91 5.91 s 5.91 -2.651 5.91 -5.91 S 18.464 41.295 15.205 41.295 z" />
+                <path d="M 74.795 75.177 c -5.464 0 -9.909 -4.445 -9.909 -9.91 c 0 -5.464 4.445 -9.909 9.909 -9.909 c 5.465 0 9.91 4.445 9.91 9.909 C 84.705 70.731 80.26 75.177 74.795 75.177 z M 74.795 59.357 c -3.259 0 -5.909 2.65 -5.909 5.909 s 2.65 5.91 5.909 5.91 s 5.91 -2.651 5.91 -5.91 S 78.054 59.357 74.795 59.357 z" />
+                <path d="M 15.205 41.295 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 37.295 C 17.205 40.4 16.31 41.295 15.205 41.295 z" />
+                <path d="M 45 14.103 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 10.103 C 47 13.207 46.104 14.103 45 14.103 z" />
+                <path d="M 74.795 90 c -1.104 0 -2 -0.896 -2 -2 V 73.177 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 76.795 89.104 75.899 90 74.795 90 z" />
+            </g>
+        </svg>
+    </button>
+</div>
+
+<!-- Tombol buat mobel Cart -->
 <div class="fixed bottom-5 right-5 z-10 block md:hidden">
     <?php if (isset($_SESSION['user'])): ?>
         <button class="bg-primary text-white rounded-full p-4 shadow-lg"
             onclick="document.getElementById('mobile-cart-drawer').checked = true" id="mobile-cart-button">
             <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-8" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -199,7 +335,7 @@
     <?php endif; ?>
 </div>
 
-<!-- Mobel Modal -->
+<!-- Mobel Modal Cart-->
 <div class="drawer drawer-bottom block md:hidden z-30">
     <input id="mobile-cart-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-side">
@@ -357,42 +493,92 @@
         renderMenus(filteredMenus);
     }
 
-    // Render menus function
     function renderMenus(menus) {
-        const menuContainer = document.getElementById('menu-container');
-        menuContainer.innerHTML = '';
+        const menuContainerDesktop = document.getElementById('menu-container');
+        const menuContainerMobile = document.getElementById('menu-container-mobile');
 
-        if (menus.length > 0) {
-            menus.forEach(menu => {
-                const menuCard = `
-            <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                <figure class="h-40 overflow-hidden">
-                    <img class="w-full h-full object-cover border-b-2 border-neutral"
-                        src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                        alt="${menu.NAME}" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title text-secondary">${menu.NAME}</h2>
-                    <div class="flex justify-between items-center text-secondary">
-                        <div class="text-lg font-bold">
-                            Rp. ${menu.PRICE.toLocaleString('id-ID')}
+        // Clear both containers to avoid content duplication
+        menuContainerDesktop.innerHTML = '';
+        menuContainerMobile.innerHTML = '';
+
+        // Check if the device is mobile or desktop
+        const isMobile = window.innerWidth < 768;
+
+        // Render menus for mobile if on a mobile device
+        if (isMobile) {
+            if (menus.length > 0) {
+                menus.forEach(menu => {
+                    const menuCard = `
+                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64">
+                        <div class="card card-compact bg-base-100 border-2 border-neutral shadow-xl">
+                            <figure class="h-40 overflow-hidden">
+                                <img class="object-cover w-full h-full border-b-2 border-neutral"
+                                    src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                                    alt="${menu.NAME}" />
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title text-secondary text-sm md:text-base">${menu.NAME}</h2>
+                                <div class="flex justify-between items-center text-secondary text-xs md:text-lg">
+                                    <div class="font-bold">
+                                        Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                                    </div>
+                                    <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                                        ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                            ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                            Add
-                        </button>
                     </div>
-                </div>
-            </div>
-        `;
-                menuContainer.innerHTML += menuCard;
-            });
-        } else {
-            menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+                `;
+                    menuContainerMobile.innerHTML += menuCard;
+                });
+            } else {
+                menuContainerMobile.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+            }
+        }
+        // Render menus for desktop if on a desktop device
+        else {
+            if (menus.length > 0) {
+                menus.forEach(menu => {
+                    const menuCard = `
+                    <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
+                        <figure class="h-40 overflow-hidden">
+                            <img class="w-full h-full object-cover border-b-2 border-neutral"
+                                src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                                alt="${menu.NAME}" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title text-secondary">${menu.NAME}</h2>
+                            <div class="flex justify-between items-center text-secondary">
+                                <div class="text-lg font-bold">
+                                    Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                                </div>
+                                <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
+                                    ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    menuContainerDesktop.innerHTML += menuCard;
+                });
+            } else {
+                menuContainerDesktop.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+            }
         }
     }
 
-    document.addEventListener('DOMContentLoaded', applyFilters);
+    // Combine DOMContentLoaded event listener with filters
+    document.addEventListener('DOMContentLoaded', () => {
+        renderMenus(allMenus);
+        applyFilters(); 
+    });
+
+    // Resize event listener
+    window.addEventListener('resize', () => renderMenus(allMenus));
+
 
     $(document).on('click', '.add-to-cart', function() {
         const menu = $(this).data();
