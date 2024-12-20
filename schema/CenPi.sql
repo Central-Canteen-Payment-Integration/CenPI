@@ -2,12 +2,13 @@ CREATE TABLE USERS (
     id_user VARCHAR2(36) PRIMARY KEY,
     email VARCHAR2(50) NOT NULL UNIQUE,
     username VARCHAR2(30) NOT NULL UNIQUE,
-    password VARCHAR2(255) NOT NULL,
+    password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     token_activation VARCHAR2(36),
     forgot_password_token VARCHAR2(36),
     token_expiry TIMESTAMP DEFAULT NULL,
     image_path VARCHAR2(36)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE TENANT (
@@ -15,13 +16,14 @@ CREATE TABLE TENANT (
     tenant_name VARCHAR2(50) NOT NULL UNIQUE,
     email VARCHAR2(50) NOT NULL UNIQUE,
     username VARCHAR2(30) NOT NULL UNIQUE,
-    password VARCHAR2(255) NOT NULL,
+    password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     forgot_password_token VARCHAR2(36),
     token_expiry TIMESTAMP DEFAULT NULL,
     image_path VARCHAR2(36),
     location_name VARCHAR2(20),
     location_booth VARCHAR2(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL
 );
 
@@ -34,6 +36,8 @@ CREATE TABLE MENU (
     image_path VARCHAR2(36),
     menu_type VARCHAR2(7) CHECK (menu_type IN ('makanan', 'minuman')),
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (id_tenant) REFERENCES TENANT(id_tenant)
 );
 
@@ -45,7 +49,7 @@ CREATE TABLE TRANSACTION (
     takeaway NUMBER(1) DEFAULT 0 CHECK (takeaway IN (0, 1)) NOT NULL,
     trx_method VARCHAR2(4) CHECK (trx_method IN ('cash', 'qris')) NOT NULL,
     midtrans_token VARCHAR2(50),
-    trx_status VARCHAR2(50) CHECK (trx_status IN ('onPayment', 'Expired', 'onPending', 'Completed')),
+    trx_status VARCHAR2(50) CHECK (trx_status IN ('Unpaid', 'Cancelled', 'Pending', 'Completed')),
     FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
 
@@ -56,7 +60,7 @@ CREATE TABLE TRANSACTION_DETAIL (
     qty_price INT,
     pkg_price INT,
     notes VARCHAR2(100),
-    status VARCHAR2(50) CHECK (status IN ('Expired', 'onAccept' ,'onPending', 'Completed')),
+    status VARCHAR2(50) CHECK (status IN ('Cancelled', 'Pending', 'Accept', 'Completed')),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );
@@ -83,45 +87,17 @@ CREATE TABLE MENU_CATEGORY (
     FOREIGN KEY (id_category) REFERENCES CATEGORY(id_category)
 );
 
-
-
-INSERT INTO TENANT (
-    id_tenant, tenant_name, email, username, password, active, forgot_password_token, token_expiry, image_path, location_name, location_booth
-) VALUES (
-    '4b6482e0-09a9-4d1b-a9ad-c6c6c6f8d1f1', 'Warung Mas Budi', 'warungbudi@example.com', 'warungbudi', 'password123', 0, NULL, NULL, 'image001.png', 'Kantin Teknik', '12'
+CREATE TABLE ADMIN (
+    id_admin VARCHAR2(36) PRIMARY KEY,
+    username VARCHAR2(30) NOT NULL UNIQUE,
+    password VARCHAR2(60) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO TENANT (
-    id_tenant, tenant_name, email, username, password, active, forgot_password_token, token_expiry, image_path, location_name, location_booth
-) VALUES (
-    '64d492bc-8c56-41b7-a29c-3f3f9e6cb662', 'Kopi Rindu', 'kopirindu@example.com', 'kopirindu', 'securepass456', 1, NULL, NULL, 'image002.png', 'Kantin Teknik', '13'
+CREATE TABLE LOGS_ADMIN (
+    id_log VARCHAR2(36) PRIMARY KEY,
+    id_admin VARCHAR2(36) NOT NULL,
+    action VARCHAR2(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_admin) REFERENCES ADMIN(id_admin)
 );
-
-INSERT INTO TENANT (
-    id_tenant, tenant_name, email, username, password, active, forgot_password_token, token_expiry, image_path, location_name, location_booth
-) VALUES (
-    '1e27f13a-b6a2-4312-9c37-5d1e9b9a6d7e', 'Ayam Geprek Enak', 'geprekenak@example.com', 'geprek_enak', 'enakbanget789', 1, NULL, NULL, 'image003.png', 'Kantin Bawah', '10'
-);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('da678372-2b89-4b23-a2a2-64ed3c3f9201', '4b6482e0-09a9-4d1b-a9ad-c6c6c6f8d1f1', 'Nasi Goreng', 20000, 2000, 'nasigoreng.jpeg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('72824bc6-4d9f-41eb-93a7-546dfc6beec7', '4b6482e0-09a9-4d1b-a9ad-c6c6c6f8d1f1', 'Mie Goreng', 18000, 2000, 'miegoreng.jpg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('9d15e442-47cc-419b-a8a2-b56d6f4a2e2c', '64d492bc-8c56-41b7-a29c-3f3f9e6cb662', 'Es Kopi Susu', 15000, 0, 'eskopisusu.jpeg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('b3f8440d-9536-45d3-9cb4-3a3426a73f0b', '64d492bc-8c56-41b7-a29c-3f3f9e6cb662', 'Kopi Hitam', 12000, 0, 'kopihitam.jpg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('b95852c5-5cdd-4696-bd99-86c264a85a1d', '1e27f13a-b6a2-4312-9c37-5d1e9b9a6d7e', 'Ayam Geprek Original', 25000, 2000, 'ayamgeprekoriginal.jpg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('ee8979fa-483c-4d87-8b3b-c2ec4f318162', '1e27f13a-b6a2-4312-9c37-5d1e9b9a6d7e', 'Ayam Geprek Keju', 30000, 2000, 'ayamgeprekkeju.jpg', 1);
-
-INSERT INTO MENU (id_menu, id_tenant, name, price, pkg_price, image_path, active) 
-VALUES ('a4de849e-34a9-45f9-8e69-1964c34434ab', '1e27f13a-b6a2-4312-9c37-5d1e9b9a6d7e', 'Nasi Bakar', 15000, 2000, null, 1);
-
-COMMIT;

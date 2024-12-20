@@ -1,292 +1,164 @@
-<!-- Desktop Search Bar -->
-<div id="mobile-search-bar" class="block bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto md:hidden mb-4">
+<!-- Search Bar -->
+<div class="block bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto p-4">
     <div class="flex items-center space-x-4">
         <div class="flex-1">
-            <input id="search-input-mobile"
+            <input id="search-input"
                 class="input input-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Search" />
         </div>
-        <div class="relative flex-1">
-            <select id="filter-select-mobile"
-                class="select select-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-                <option value="" class="text-gray-500">All Menus</option>
-                <option value="Kantin Teknik">Kantek</option>
-                <option value="Kantin Bawah">Kawah</option>
-            </select>
-            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+    </div>
+</div>
+
+<div class="bg-white">
+  <div>
+
+  <?php /*
+    <!-- Mobile filter dialog -->
+    <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+      <div class="fixed inset-0 bg-black/25" aria-hidden="true"></div>
+      <div class="fixed inset-0 z-40 flex">
+        <div class="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+          <div class="flex items-center justify-between px-4">
+            <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+            <button type="button" class="btn btn-ghost">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Filters -->
+          <form class="mt-4 border-t border-gray-200">
+
+            <div class="border-t border-gray-200 px-4 py-6">
+              <h3 class="-mx-2 -my-3 flow-root">
+                <button type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false">
+                  <span class="font-medium text-gray-900">Color</span>
+                  <span class="ml-6 flex items-center">
+                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                    </svg>
+                  </span>
+                </button>
+              </h3>
+              <div class="pt-6" id="filter-section-mobile-0">
+                <div class="space-y-6">
+                  <!-- Color options -->
+                  <div class="flex gap-3">
+                    <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
+                    <label for="filter-mobile-color-0" class="text-gray-500">White</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-mobile-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
+                    <label for="filter-mobile-color-1" class="text-gray-500">Beige</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-mobile-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
+                    <label for="filter-mobile-color-2" class="text-gray-500">Blue</label>
+                  </div>
+                </div>
+              </div>
             </div>
+          </form>
         </div>
-        <div class="flex items-center space-x-2">
-            <button id="search-btn-mobile"
-                class="btn bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-                Search
+      </div>
+    </div>*/
+    ?>
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-4">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900">Menu</h1>
+
+        <div class="flex items-center">
+            <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
+                <svg class="w-5 h-5" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd" />
+                </svg>
             </button>
         </div>
-    </div>
-</div>
-<div class="join hidden md:flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 mt-0">
-    <div class="flex-1">
-        <input id="search-input"
-            class="input input-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search" />
-    </div>
-    <div class="flex-1">
-        <div class="relative">
-            <select id="filter-select"
-                class="select select-bordered join-item w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
-                <option value="" class="text-gray-500">All Menus</option>
-                <option value="Kantin Teknik">Kantek</option>
-                <option value="Kantin Bawah">Kawah</option>
-            </select>
-            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
-        </div>
-    </div>
-    <div class="indicator flex items-center space-x-2">
-        <span id="filter-indicator"
-            class="indicator-item badge badge-secondary bg-blue-500 text-white rounded-full py-1 px-2 text-xs">
-            All Menus
-        </span>
-        <button id="search-btn"
-            class="btn join-item bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-            Search
-        </button>
-    </div>
-</div>
+      </div>
 
-<!-- GRID -->
-<div class="grid grid-cols-6 gap-5 px-4">
-    <!-- Left Section (Desktop) -->
-    <div class="col-span-1 hidden md:block">
-        <div class="space-y-4">
-            <!-- Accordion 1: Category Selection -->
-            <div class="border border-gray-300 rounded-lg shadow-md">
-                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                    Kamu Mau Makan Atau Minum?
-                </button>
-                <div class="accordion-content bg-white p-4 space-y-2">
-                    <p class="font-medium mb-2">Silakan Pilih:</p>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="category" class="form-radio text-blue-600" value="" checked onchange="handleCategoryChange()" />
-                        <span>All</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="category" class="form-radio text-blue-600" value="Makanan" onchange="handleCategoryChange()" />
-                        <span>Makan</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="category" class="form-radio text-blue-600" value="Minuman" onchange="handleCategoryChange()" />
-                        <span>Minum</span>
-                    </label>
+      <section aria-labelledby="products-heading" class="pb-24 pt-6">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+          <!-- Filters -->
+          <form class="hidden lg:block">
+            <div class="border-b border-gray-200 py-6">
+              <h3 class="-my-3 flow-root">
+                <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+                  <span class="font-medium text-gray-900">Kantin</span>
                 </div>
-            </div>
-
-            <!-- Accordion 2: Makanan Subcategories -->
-            <div class="border border-gray-300 rounded-lg shadow-md hidden" id="accordion-makanan">
-                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                    Opsi Makanan
-                </button>
-                <div class="accordion-content bg-white p-4 hidden">
-                    <p class="font-medium mb-2">Silakan Pilih:</p>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" />
-                        <span>Goreng</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" />
-                        <span>Bakar</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" />
-                        <span>Rebus</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Accordion 3: Minuman Subcategories -->
-            <div class="border border-gray-300 rounded-lg shadow-md hidden" id="accordion-minuman">
-                <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                    Opsi Minuman
-                </button>
-                <div class="accordion-content bg-white p-4 hidden">
-                    <p class="font-medium mb-2">Silakan Pilih:</p>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" />
-                        <span>Es</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" />
-                        <span>Panas</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Right Section -->
-    <div class="col-span-5 hidden md:block">
-        <div class="flex flex-wrap gap-5 justify-start" id="menu-container">
-            <!-- Menu items will be displayed here -->
-        </div>
-    </div>
-
-    <div class="col-span-5 block md:hidden">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 justify-items-center" id="menu-container-mobile">
-            <!-- Menu items will be displayed here -->
-        </div>
-    </div>
-</div>
-
-
-
-
-<!-- Mobile Filter Drawer -->
-<div class="drawer drawer-end block md:hidden z-30">
-    <!-- Drawer Toggle Input -->
-    <input id="mobile-filter-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
-        <!-- Close Button & Overlay -->
-        <label for="mobile-filter-drawer" class="drawer-overlay z-20"></label>
-        <div class="relative z-40">
-            <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto max-h-[80vh]">
-                <!-- Header and Close Button -->
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold">Filter</h2>
-                    <button type="button" class="text-gray-500 hover:text-gray-700"
-                        onclick="document.getElementById('mobile-filter-drawer').checked = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Category Filter for Mobile -->
+              </h3>
+              <div class="pt-6" id="filter-section-0">
                 <div class="space-y-4">
-                    <div class="border border-gray-300 rounded-lg shadow-md">
-                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                            Kamu Mau Makan Atau Minum?
-                        </button>
-                        <div class="accordion-content bg-white p-4 space-y-2">
-                            <p class="font-medium mb-2">Silakan Pilih:</p>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" class="form-radio text-blue-600" value="" checked onchange="handleCategoryChange()" />
-                                <span>All</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" class="form-radio text-blue-600" value="Makanan" onchange="handleCategoryChange()" />
-                                <span>Makan</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" class="form-radio text-blue-600" value="Minuman" onchange="handleCategoryChange()" />
-                                <span>Minum</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Makanan Subcategories for Mobile -->
-                    <div id="mobile-accordion-makanan" class="border border-gray-300 rounded-lg shadow-md hidden">
-                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                            Opsi Makanan
-                        </button>
-                        <div class="accordion-content bg-white p-4">
-                            <p class="font-medium mb-2">Silakan Pilih:</p>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Goreng" />
-                                <span>Goreng</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Bakar" />
-                                <span>Bakar</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Rebus" />
-                                <span>Rebus</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Minuman Subcategories for Mobile -->
-                    <div id="mobile-accordion-minuman" class="border border-gray-300 rounded-lg shadow-md hidden">
-                        <button class="w-full text-left bg-gray-100 p-4 font-semibold text-lg rounded-t-lg hover:bg-gray-200" onclick="toggleAccordion(this)">
-                            Opsi Minuman
-                        </button>
-                        <div class="accordion-content bg-white p-4">
-                            <p class="font-medium mb-2">Silakan Pilih:</p>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Es" />
-                                <span>Es</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="subcategory" class="form-radio text-blue-600" value="Panas" />
-                                <span>Panas</span>
-                            </label>
-                        </div>
-                    </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
+                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
+                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
+                  </div>
                 </div>
+              </div>
             </div>
+            <div class="border-b border-gray-200 py-6">
+              <h3 class="-my-3 flow-root">
+                <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+                  <span class="font-medium text-gray-900">Food</span>
+                </div>
+              </h3>
+              <div class="pt-6" id="filter-section-0">
+                <div class="space-y-4">
+                  <div class="flex gap-3">
+                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
+                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
+                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
+                    <label for="filter-color-2" class="text-sm text-gray-600">Blue</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="border-b border-gray-200 py-6">
+              <h3 class="-my-3 flow-root">
+                <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+                  <span class="font-medium text-gray-900">Drinks</span>
+                </div>
+              </h3>
+              <div class="pt-6" id="filter-section-0">
+                <div class="space-y-4">
+                  <div class="flex gap-3">
+                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
+                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
+                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
+                  </div>
+                  <div class="flex gap-3">
+                    <input id="filter-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
+                    <label for="filter-color-2" class="text-sm text-gray-600">Blue</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- Product grid -->
+          <div class="lg:col-span-3 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="menu-container">
+          </div>
         </div>
-    </div>
+        <div class="flex justify-center mt-4" id="pagination-controls">
+        </div>
+      </section>
+    </main>
+  </div>
 </div>
-
-
-<!-- JavaScript for Accordion Functionality -->
-<script>
-    // Handle category change (Makanan/Minuman) for both mobile and desktop
-    function handleCategoryChange() {
-        const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-
-        // Desktop version: Show/Hide the Makanan and Minuman accordions
-        const makananAccordionDesktop = document.getElementById('accordion-makanan');
-        const minumanAccordionDesktop = document.getElementById('accordion-minuman');
-        makananAccordionDesktop.style.display = 'none';
-        minumanAccordionDesktop.style.display = 'none';
-
-        // Mobile version: Show/Hide the mobile accordions
-        const makananAccordionMobile = document.getElementById('mobile-accordion-makanan');
-        const minumanAccordionMobile = document.getElementById('mobile-accordion-minuman');
-        makananAccordionMobile.classList.add('hidden');
-        minumanAccordionMobile.classList.add('hidden');
-
-        // Reset subcategory radio buttons for both versions
-        resetSubcategoryRadios();
-
-        // Show the relevant accordion based on the selected category
-        if (selectedCategory === 'Makanan') {
-            // Desktop: Show the Makanan accordion
-            makananAccordionDesktop.style.display = 'block';
-            // Mobile: Show the Makanan accordion
-            makananAccordionMobile.classList.remove('hidden');
-        } else if (selectedCategory === 'Minuman') {
-            // Desktop: Show the Minuman accordion
-            minumanAccordionDesktop.style.display = 'block';
-            // Mobile: Show the Minuman accordion
-            minumanAccordionMobile.classList.remove('hidden');
-        }
-    }
-
-    // Reset all subcategory radio buttons to unchecked for both versions
-    function resetSubcategoryRadios() {
-        const subcategoryRadios = document.querySelectorAll('input[name="subcategory"]');
-        subcategoryRadios.forEach(radio => radio.checked = false);
-    }
-
-    // Toggle the visibility of the accordion content (for both desktop and mobile)
-    function toggleAccordion(button) {
-        const content = button.nextElementSibling;
-        content.classList.toggle('hidden');
-    }
-</script>
-
 
 <!-- Please Login Modal -->
 <input type="checkbox" id="login-modal" class="modal-toggle" hidden>
@@ -314,94 +186,12 @@
         </div>
     </div>
 </div>
-
-<!-- Tombol buat mobel Filter -->
-<div class="fixed bottom-5 left-15 z-10 block md:hidden">
-    <button class="bg-primary text-white p-4 rounded-full shadow-lg"
-        onclick="document.getElementById('mobile-filter-drawer').checked = true" id="mobile-filter-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 90 90">
-            <g fill="white">
-                <path d="M 15.205 90 c -1.104 0 -2 -0.896 -2 -2 V 55.115 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 17.205 89.104 16.31 90 15.205 90 z" />
-                <path d="M 74.795 59.357 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 55.357 C 76.795 58.462 75.899 59.357 74.795 59.357 z" />
-                <path d="M 45 90 c -1.104 0 -2 -0.896 -2 -2 V 27.922 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 47 89.104 46.104 90 45 90 z" />
-                <path d="M 45 29.922 c -5.464 0 -9.91 -4.445 -9.91 -9.91 s 4.445 -9.91 9.91 -9.91 c 5.465 0 9.91 4.445 9.91 9.91 S 50.465 29.922 45 29.922 z M 45 14.103 c -3.259 0 -5.91 2.651 -5.91 5.91 s 2.651 5.91 5.91 5.91 s 5.91 -2.651 5.91 -5.91 S 48.259 14.103 45 14.103 z" />
-                <path d="M 15.205 57.115 c -5.464 0 -9.91 -4.445 -9.91 -9.91 c 0 -5.464 4.445 -9.91 9.91 -9.91 s 9.91 4.445 9.91 9.91 C 25.115 52.67 20.669 57.115 15.205 57.115 z M 15.205 41.295 c -3.259 0 -5.91 2.651 -5.91 5.91 s 2.651 5.91 5.91 5.91 s 5.91 -2.651 5.91 -5.91 S 18.464 41.295 15.205 41.295 z" />
-                <path d="M 74.795 75.177 c -5.464 0 -9.909 -4.445 -9.909 -9.91 c 0 -5.464 4.445 -9.909 9.909 -9.909 c 5.465 0 9.91 4.445 9.91 9.909 C 84.705 70.731 80.26 75.177 74.795 75.177 z M 74.795 59.357 c -3.259 0 -5.909 2.65 -5.909 5.909 s 2.65 5.91 5.909 5.91 s 5.91 -2.651 5.91 -5.91 S 78.054 59.357 74.795 59.357 z" />
-                <path d="M 15.205 41.295 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 37.295 C 17.205 40.4 16.31 41.295 15.205 41.295 z" />
-                <path d="M 45 14.103 c -1.104 0 -2 -0.896 -2 -2 V 2 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 v 10.103 C 47 13.207 46.104 14.103 45 14.103 z" />
-                <path d="M 74.795 90 c -1.104 0 -2 -0.896 -2 -2 V 73.177 c 0 -1.104 0.896 -2 2 -2 s 2 0.896 2 2 V 88 C 76.795 89.104 75.899 90 74.795 90 z" />
-            </g>
-        </svg>
-    </button>
-</div>
-
-<!-- Tombol buat mobel Cart -->
-<div class="fixed bottom-5 right-5 z-10 block md:hidden">
-    <?php if (isset($_SESSION['user'])): ?>
-        <button class="bg-primary text-white rounded-full p-4 shadow-lg"
-            onclick="document.getElementById('mobile-cart-drawer').checked = true" id="mobile-cart-button">
-            <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-8" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span class="badge badge-sm badge-secondary !text-white indicator-item qty-cart"></span>
-            </div>
-        </button>
-    <?php else: ?>
-        <!--  button buat non-logged-in users -->
-        <button class="bg-primary text-white rounded-full p-4 shadow-lg"
-            onclick="document.getElementById('login-modal').checked = true" id="mobile-login-button">
-            <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            </div>
-        </button>
-    <?php endif; ?>
-</div>
-
-<!-- Mobel Modal Cart-->
-<div class="drawer drawer-bottom block md:hidden z-30">
-    <input id="mobile-cart-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
-        <label for="mobile-cart-drawer" class="drawer-overlay z-20"></label>
-        <div class="relative z-40">
-            <div class="bg-white text-base-content min-h-screen p-4 overflow-y-auto max-h-[80vh]">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-medium text-secondary">Food Cart</h2>
-                    <button type="button" class="text-gray-500 hover:text-gray-700"
-                        onclick="document.getElementById('mobile-cart-drawer').checked = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="mt-2">
-                    <div class="flow-root">
-                        <ul role="list" class="divide-y divide-gray-200 cart-list">
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-gray-200 px-4 py-6 cart-btn">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- logic buat menu & filter -->
-<script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
 <script>
-    const isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
     const allMenus = <?php echo json_encode($data['menus']); ?>;
+    const itemsPerPage = 8;
+    let currentPage = 1;
+    let filteredMenus = allMenus;
 
-    // Fuse.js configuration for search
     const fuse = new Fuse(allMenus, {
         keys: ['NAME'],
         threshold: 0.2,
@@ -409,205 +199,102 @@
         useExtendedSearch: true,
     });
 
-    // Desktop elements
-    const filterIndicator = document.getElementById('filter-indicator');
-    const filterSelect = document.getElementById('filter-select');
-    const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('search-btn');
-    const categoryRadios1 = document.querySelectorAll('input[name="category"]');
-    const categoryRadios2 = document.querySelectorAll('input[name="subcategory"]');
+    function renderMenus(menus, append = false) {
+      const menuContainer = document.getElementById('menu-container');
+      const paginationControls = document.getElementById('pagination-controls');
+      
+      if (!append) {
+          menuContainer.innerHTML = '';
+      }
+      paginationControls.innerHTML = '';
 
+      const totalPages = Math.ceil(menus.length / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedMenus = menus.slice(startIndex, endIndex);
 
-    // Mobile elements
-    const searchInputMobile = document.getElementById('search-input-mobile');
-    const filterSelectMobile = document.getElementById('filter-select-mobile');
-    const searchButtonMobile = document.getElementById('search-btn-mobile');
+      if (paginatedMenus.length > 0) {
+          paginatedMenus.forEach(menu => {
+              const menuCard = `
+                  <div class="relative bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                      <figure class="h-40 overflow-hidden">
+                          <img class="w-full h-full object-cover"
+                              src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
+                              alt="${menu.NAME}" />
+                      </figure>
+                      <div class="description p-3">
+                          <h2 class="text-lg font-semibold text-gray-800 max-md:text-sm">${menu.NAME}</h2>
+                          <div class="flex justify-between items-center mt-2">
+                              <div class="text-lg font-bold text-gray-900 max-md:text-sm">
+                                  Rp. ${menu.PRICE.toLocaleString('id-ID')}
+                              </div>
+                              <?php if (isset($_SESSION['user'])): ?>
+                                  <button class="btn btn-primary text-white add-to-cart max-md:text-sm" data-id=${menu.ID_MENU}>
+                                      Add
+                                  </button>
+                              <?php else: ?>
+                                  <label class="btn btn-primary text-white max-md:text-sm" for="login-modal">
+                                      Add
+                                  </label>
+                              <?php endif; ?>
+                          </div>
+                      </div>
+                  </div>
+              `;
+              menuContainer.innerHTML += menuCard;
+          });
+      } else {
+          menuContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
+      }
 
-    // Function to get current filter values
-    function getFilterValues() {
-        const location = filterSelect.value || filterSelectMobile.value;
-        const searchTerm = searchInput.value.trim() || searchInputMobile.value.trim();
-        const category = document.querySelector('input[name="category"]:checked')?.value || '';
-        const subcategory = document.querySelector('input[name="subcategory"]:checked')?.value || '';
-
-        return {
-            location,
-            searchTerm,
-            category,
-            subcategory
-        };
-    }
-
-
-    // Function to apply filters
-    function applyFilters() {
-        const {
-            location,
-            searchTerm,
-            category,
-            subcategory
-        } = getFilterValues();
-
-        updateFilterIndicator(location);
-        filterMenus(location, searchTerm, category, subcategory);
-    }
-
-
-
-    // Event listeners for desktop view
-    filterSelect.addEventListener('change', applyFilters);
-    searchInput.addEventListener('input', applyFilters);
-    searchButton.addEventListener('click', applyFilters);
-
-    // Event listeners for mobile view
-    filterSelectMobile.addEventListener('change', applyFilters);
-    searchInputMobile.addEventListener('input', applyFilters);
-    searchButtonMobile.addEventListener('click', applyFilters);
-
-    // Event listeners for category radios
-    categoryRadios1.forEach(radio => radio.addEventListener('change', applyFilters));
-    categoryRadios2.forEach(radio => radio.addEventListener('change', applyFilters));
-
-
-    // Update filter indicator
-    function updateFilterIndicator(selectedFilter) {
-        if (selectedFilter) {
-            filterIndicator.textContent = `Filter: ${selectedFilter}`;
-            filterIndicator.classList.remove('badge-secondary');
-            filterIndicator.classList.add('badge-primary');
+        if (window.innerWidth <= 768) {
+            if (currentPage < totalPages) {
+                const loadMoreButton = `
+                    <div class="flex justify-center mt-4">
+                        <button class="btn btn-primary text-white" onclick="loadMore()">Load More</button>
+                    </div>
+                `;
+                paginationControls.innerHTML = loadMoreButton;
+            }
         } else {
-            filterIndicator.textContent = 'New';
-            filterIndicator.classList.remove('badge-primary');
-            filterIndicator.classList.add('badge-secondary');
+            const pagination = `
+                <div class="join">
+                    <button class="join-item btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">«</button>
+                    ${Array.from({ length: totalPages }, (_, i) => `
+                        <button class="join-item btn ${currentPage === i + 1 ? 'btn-primary' : ''}" onclick="changePage(${i + 1})">${i + 1}</button>
+                    `).join('')}
+                    <button class="join-item btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">»</button>
+                </div>
+            `;
+            paginationControls.innerHTML = pagination;
         }
     }
 
-    // Filter menus function
-    function filterMenus(location = '', searchTerm = '', category = '', subcategory = '') {
-        console.log('Filtering menus for location:', location, 'search term:', searchTerm, 'category:', category, 'subcategory:', subcategory);
-
-        let filteredMenus = allMenus;
-
-        // Apply location filter
-        if (location) {
-            filteredMenus = filteredMenus.filter(menu =>
-                (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')
-            );
-        }
-
-        // Apply category filter (using combined category)
-        if (category) {
-            filteredMenus = filteredMenus.filter(menu =>
-                (menu.MAIN_CATEGORY || '').toLowerCase().includes(category.toLowerCase())
-            );
-        }
-
-        // Apply subcategory filter (only if category is also selected)
-        if (subcategory) {
-            filteredMenus = filteredMenus.filter(menu =>
-                (menu.SUBCATEGORY_NAME || '').toLowerCase() === subcategory.toLowerCase()
-            );
-        }
-
-        // Apply Fuse.js search filter (search within already filtered set)
-        if (searchTerm) {
-            const searchResults = fuse.search(searchTerm);
-            filteredMenus = searchResults.map(result => result.item).filter(menu =>
-                (!location || (menu.LOCATION_NAME || '').toLowerCase().replace(/\s+/g, '') === location.toLowerCase().replace(/\s+/g, '')) &&
-                (!category || (menu.MAIN_CATEGORY || '').toLowerCase().includes(category.toLowerCase())) &&
-                (!subcategory || (menu.SUBCATEGORY_NAME || '').toLowerCase() === subcategory.toLowerCase())
-            );
-        }
-
+    function changePage(page) {
+        currentPage = page;
         renderMenus(filteredMenus);
     }
 
-    function renderMenus(menus) {
-        const menuContainerDesktop = document.getElementById('menu-container');
-        const menuContainerMobile = document.getElementById('menu-container-mobile');
-
-        // Clear both containers to avoid content duplication
-        menuContainerDesktop.innerHTML = '';
-        menuContainerMobile.innerHTML = '';
-
-        // Check if the device is mobile or desktop
-        const isMobile = window.innerWidth < 768;
-
-        // Render menus for mobile if on a mobile device
-        if (isMobile) {
-            if (menus.length > 0) {
-                menus.forEach(menu => {
-                    const menuCard = `
-                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64">
-                        <div class="card card-compact bg-base-100 border-2 border-neutral shadow-xl">
-                            <figure class="h-40 overflow-hidden">
-                                <img class="object-cover w-full h-full border-b-2 border-neutral"
-                                    src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                                    alt="${menu.NAME}" />
-                            </figure>
-                            <div class="card-body">
-                                <h2 class="card-title text-secondary text-sm md:text-base">${menu.NAME}</h2>
-                                <div class="flex justify-between items-center text-secondary text-xs md:text-lg">
-                                    <div class="font-bold">
-                                        Rp. ${menu.PRICE.toLocaleString('id-ID')}
-                                    </div>
-                                    <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                                        ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                    menuContainerMobile.innerHTML += menuCard;
-                });
-            } else {
-                menuContainerMobile.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
-            }
-        }
-        // Render menus for desktop if on a desktop device
-        else {
-            if (menus.length > 0) {
-                menus.forEach(menu => {
-                    const menuCard = `
-                    <div class="card card-compact bg-base-100 w-64 border-2 border-neutral shadow-xl">
-                        <figure class="h-40 overflow-hidden">
-                            <img class="w-full h-full object-cover border-b-2 border-neutral"
-                                src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
-                                alt="${menu.NAME}" />
-                        </figure>
-                        <div class="card-body">
-                            <h2 class="card-title text-secondary">${menu.NAME}</h2>
-                            <div class="flex justify-between items-center text-secondary">
-                                <div class="text-lg font-bold">
-                                    Rp. ${menu.PRICE.toLocaleString('id-ID')}
-                                </div>
-                                <button class="btn btn-primary text-white ${isLoggedIn ? 'add-to-cart' : ''}"
-                                    ${isLoggedIn ? `data-id="${menu.ID_MENU}"` : 'onclick="document.getElementById(\'login-modal\').checked = true"'}>
-                                    Add
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                    menuContainerDesktop.innerHTML += menuCard;
-                });
-            } else {
-                menuContainerDesktop.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No items available.</p>';
-            }
-        }
+    function loadMore() {
+        currentPage++;
+        renderMenus(filteredMenus, true);
     }
 
-    // Combine DOMContentLoaded event listener with filters
     document.addEventListener('DOMContentLoaded', () => {
         renderMenus(allMenus);
-        applyFilters(); 
+
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            if (searchTerm === '') {
+                filteredMenus = allMenus;
+            } else {
+                filteredMenus = fuse.search(searchTerm).map(result => result.item);
+            }
+            currentPage = 1;
+            renderMenus(filteredMenus);
+        });
     });
-
-    // Resize event listener
-    window.addEventListener('resize', () => renderMenus(allMenus));
-
 
     $(document).on('click', '.add-to-cart', function() {
         const menu = $(this).data();

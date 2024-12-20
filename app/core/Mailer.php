@@ -11,7 +11,7 @@ class Mailer {
 
     public function sendMail($to, $subject, $body) {
         try {
-            $this->mail->IsMail();
+            $this->mail->IsSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
             $this->mail->Username = 'cenpiofficial@gmail.com';

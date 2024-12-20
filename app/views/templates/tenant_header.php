@@ -28,7 +28,7 @@
                     <!-- Menu -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-list text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/crudmenu" class="flex-1">Menu</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/menu" class="flex-1">Menu</a>
                     </li>
 
                     <!-- History Transaksi -->

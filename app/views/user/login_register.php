@@ -1,4 +1,4 @@
-<div class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
+<div class="relative z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full rounded-md px-8 py-6 space-y-5 drop-shadow-lg">
     <main class="flex justify-center <?= ($data['page'] === 'register') ? 'sign-up-mode' : ''; ?>">
         <div class="box">
             <div class="inner-box">

@@ -3,14 +3,16 @@
 class Tenant extends Controller
 {
     private $tenantModel;
+    private $menuModel;
+    private $categoryModel;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->tenantModel = $this->model('TenantModel');
+        $this->menuModel = $this->model('MenuModel');
+        $this->categoryModel = $this->model('CategoryModel');
     }
 
-    private function checkLoggedIn()
-    {
+    private function checkLoggedIn() {
         if (!isset($_SESSION['tenant'])) {
             $data['error'] = "Please login First!";
             $this->view('templates/init');
@@ -19,8 +21,7 @@ class Tenant extends Controller
         }
     }
 
-    public function login()
-    {
+    public function login() {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
@@ -56,8 +57,7 @@ class Tenant extends Controller
         $this->view('tenant/login_register', $data);
     }
 
-    public function register()
-    {
+    public function register() {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
@@ -78,7 +78,7 @@ class Tenant extends Controller
             if (empty($username) || empty($password) || empty($email) || empty($location_name) || empty($location_booth) || empty($tenant_name)) {
                 $data['error'] = 'All fields must be filled.';
             } else {
-                $existingUsers = $this->tenantModel->findUserByUsernameOrEmail($username, $email);
+                $existingUsers = $this->tenantModel->findTenantByUsernameOrEmail($username, $email);
                 $userCount = count($existingUsers);
                 if ($userCount === 2) {
                     $data['error'] = 'Email and username already used.';
@@ -106,8 +106,7 @@ class Tenant extends Controller
         }
     }
 
-    public function index()
-    {
+    public function index() {
         $this->checkLoggedIn();
 
         $tenantId = $_SESSION['tenant']['id'];
@@ -123,8 +122,7 @@ class Tenant extends Controller
         $this->view('tenant/index', $data);
     }
 
-    public function getAnalytics($startDate, $endDate)
-    {
+    public function getAnalytics($startDate, $endDate) {
         $tenantId = $_SESSION['tenant']['id'];
 
         $startDate = $startDate ?? date(format: 'd-m-Y');
@@ -140,64 +138,28 @@ class Tenant extends Controller
         ]);
     }
 
-
-    public function orderlist()
-    {
+    public function orderlist() {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/orderlist');
     }
-
-    public function crudmenu()
-    {
-        try {
-            $this->checkLoggedIn();
-
-            $tenant_id = $_SESSION['tenant']['id'] ?? null;
-            if (!$tenant_id) {
-                throw new Exception("Tenant ID not found in session.");
-            }
-
-            $this->tenantModel = $this->model('TenantModel');
-            $menus = $this->tenantModel->getMenusByTenant($tenant_id);
-
-            error_log("Menus Data: " . print_r($menus, true));
-
-
-            $data = [
-                'page' => 'Menu - CenPI',
-                'menus' => $menus
-            ];
-
-            // Load Views
-            $this->view('templates/tenant_header');
-            $this->view('templates/init', $data);
-            $this->view('tenant/crudmenu', $data);
-        } catch (Exception $e) {
-            error_log("Error: " . $e->getMessage());
-            die("Error fetching menus: " . $e->getMessage());
-        }
-    }
-
-    public function historytransaction()
-    {
+    
+    public function historytransaction() {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/historytransaction');
     }
 
-    public function report()
-    {
+    public function report() {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/report');
     }
 
-    public function settings()
-    {
+    public function settings() {
         $this->checkLoggedIn();
 
         $tenantId = $_SESSION['tenant']['id'];
@@ -252,92 +214,168 @@ class Tenant extends Controller
         $this->view('tenant/settings', $data);
     }
 
-    public function addMenu()
-    {
+    public function menu($action = 'view') {
         $this->checkLoggedIn();
 
-        if (!isset($_SESSION['tenant']['id'])) {
-            echo json_encode(['status' => 'error', 'message' => 'Tenant ID is missing']);
-            return;
-        }
-
-        $id_tenant = $_SESSION['tenant']['id'];
-        $name = $_POST['name'];
-        $price = $_POST['price'];
-        $pkg_price = $_POST['pkg_price'] ?? null;
-        $menu_type = $_POST['menu_type'];
-        $id_category = $_POST['id_category'];
-
-        if (empty($name) || empty($price) || empty($menu_type) || empty($id_category)) {
-            echo json_encode(['status' => 'error', 'message' => 'Required fields are missing']);
-            return;
-        }
-
-        $image_path = null;
-        if (!empty($_FILES['image_path']['name'])) {
-            $image_path = $this->uploadImage($_FILES['image_path']);
-            if (!$image_path) {
-                echo json_encode(['status' => 'error', 'message' => 'Invalid image file']);
-                return;
-            }
-        }
-
-        $result = $this->tenantModel->addMenu($id_tenant, $name, $price, $pkg_price, $image_path, $menu_type, $id_category);
-
-        if ($result['status'] === 'success') {
-            header('Location: /tenant/crudmenu');
-            exit;
-        } else {
-            header('Location: /tenant/menu?error=' . urlencode($result['message']));
-            exit;
+        switch ($action) {
+            case 'add':
+                $this->addMenu();
+                break;
+            case 'update':
+                $this->updateMenu();
+                break;
+            case 'delete':
+                $this->deleteMenu();
+                break;
+            case 'updateStatus':
+                $this->updateMenuStatus();
+                break;
+            default:
+                $this->viewMenus();
+                break;
         }
     }
 
+    private function viewMenus() {
+        $tenant_id = $_SESSION['tenant']['id'] ?? null;
+        if (!$tenant_id) {
+            throw new Exception("Tenant ID not found in session.");
+        }
 
+        $menus = $this->menuModel->getMenusByTenant($tenant_id);
 
+        error_log("Menus Data: " . print_r($menus, true));
 
-    private function uploadImage($image)
-    {
+        $data = [
+            'page' => 'Menu - ' . $_SESSION['tenant']['username'],
+            'menus' => $menus,
+            'categories' => $this->categoryModel->getCategory()
+        ];
+
+        $this->view('templates/tenant_header');
+        $this->view('templates/init', $data);
+        $this->view('tenant/menu', $data);
+    }
+
+    private function addMenu() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_tenant = $_SESSION['tenant']['id'];
+            $name = $_POST['name'];
+            $price = $_POST['price'];
+            $pkg_price = $_POST['pkg_price'] ?? null;
+            $menu_type = $_POST['menu_type'];
+            $id_category = $_POST['id_category'];
+
+            if (empty($name) || empty($price) || empty($menu_type) || empty($id_category)) {
+                echo json_encode(['status' => 'error', 'message' => 'Required fields are missing']);
+                return;
+            }
+
+            $image_path = null;
+            if (!empty($_FILES['image_path']['name'])) {
+                $image_path = $this->uploadImage($_FILES['image_path']);
+                if (!$image_path) {
+                    echo json_encode(['status' => 'error', 'message' => 'Invalid image file']);
+                    return;
+                }
+            }
+
+            $result = $this->menuModel->addMenu($id_tenant, $name, $price, $pkg_price, $image_path, $menu_type, $id_category);
+
+            if ($result['status'] === 'success') {
+                header('Location: /tenant/menu');
+                exit;
+            } else {
+                header('Location: /tenant/menu?error=' . urlencode($result['message']));
+                exit;
+            }
+        }
+    }
+
+    private function updateMenu() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_menu = $_POST['id_menu'];
+            $name = $_POST['name'];
+            $price = $_POST['price'];
+            $pkg_price = $_POST['pkg_price'] ?? null;
+            $menu_type = $_POST['menu_type'];
+            $id_category = $_POST['id_category'];
+
+            if (empty($id_menu) || empty($name) || empty($price) || empty($menu_type) || empty($id_category)) {
+                echo json_encode(['status' => 'error', 'message' => 'Required fields are missing']);
+                return;
+            }
+
+            $image_path = null;
+            if (!empty($_FILES['image_path']['name'])) {
+                $image_path = $this->uploadImage($_FILES['image_path']);
+                if (!$image_path) {
+                    echo json_encode(['status' => 'error', 'message' => 'Invalid image file']);
+                    return;
+                }
+            }
+
+            $result = $this->menuModel->updateMenu($id_menu, $name, $price, $pkg_price, $image_path, $menu_type, $id_category);
+            if ($result['status'] === 'success') {
+                header('Location: /tenant/menu');
+                exit;
+            } else {
+                header('Location: /tenant/menu?error=' . urlencode($result['message']));
+                exit;
+            }
+        }
+    }
+
+    private function deleteMenu() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $menuId = $_POST['id_menu'] ?? null;
+
+            if (empty($menuId)) {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid data!']);
+                return;
+            }
+
+            $deleted = $this->menuModel->deleteMenu($menuId);
+
+            if ($deleted) {
+                echo json_encode(['status' => 'success', 'message' => 'Menu deleted successfully!']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to delete menu.']);
+            }
+        }
+    }
+
+    private function uploadImage($image) {
         if ($image['error'] == 0) {
-            $targetDir = "uploads/";
-            $targetFile = $targetDir . uniqid() . "-" . basename($image["name"]);
-            if (move_uploaded_file($image["tmp_name"], $targetFile)) {
-                return $targetFile;
+            $targetDir = "./assets/img/menu/";
+            $nameFile = uniqid() . "-" . basename($image["name"]);
+            $moveFile = $targetDir . $nameFile;
+            if (move_uploaded_file($image["tmp_name"], $moveFile)) {
+                return $nameFile;
             }
         }
         return null;
     }
-    public function updateMenuStatus()
-    {
+
+    private function updateMenuStatus() {
         $menuId = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
         $currentStatus = isset($_POST['current_status']) ? $_POST['current_status'] : null;
     
         if (empty($menuId) || !in_array($currentStatus, ['0', '1'])) {
-            $_SESSION['error'] = 'Invalid data!';
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            return; 
+            return json_encode(['status' => 'error', 'message' => 'Invalid data!']);
         }
     
         $newStatus = $currentStatus == '1' ? 0 : 1;
-    
-        $tenantModel = new TenantModel();
-        $updated = $tenantModel->updateMenuStatus($menuId, $newStatus);
-    
+        $updated = $this->menuModel->updateMenuStatus($menuId, $newStatus);
+        var_dump($updated);
         if ($updated) {
-            $_SESSION['success'] = 'Menu status updated successfully!';
+            return json_encode(['status' => 'success', 'message' => 'Menu status updated successfully!']);
         } else {
-            $_SESSION['error'] = 'Failed to update menu status.';
+            return json_encode(['status' => 'error', 'message' => 'Failed to update menu status.']);
         }
-    
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        return;
     }
     
-
-
-
-    public function logout()
-    {
+    public function logout() {
         $this->checkLoggedIn();
         session_destroy();
         header("Location: /Tenant");

@@ -45,6 +45,7 @@ class User extends Controller {
             }
         }
         $this->view('templates/init', $data);
+        $this->view('templates/header', $data);
         $this->view('user/login', $data);
     }
 
@@ -95,6 +96,7 @@ class User extends Controller {
         }
 
         $this->view('templates/init', $data);
+        $this->view('templates/header', $data);
         $this->view('user/login', $data);
     }
 
@@ -170,7 +172,6 @@ class User extends Controller {
     }
 
     public function order() {
-        $this->trxModel->checkExpiredOrder($_SESSION['user']['id']);
         $data = [
             'page' => 'My Orders - CenPI',
             'error' => '',
@@ -179,13 +180,12 @@ class User extends Controller {
 
         if (isset($_SESSION['user'])) {
             $user = $_SESSION['user'];
+            $this->trxModel->checkExpiredOrder($user['id']);
             $data['cart'] = $this->cartModel->getCartUser($user['id']); 
-        } else {
-            header('Location: /Home/menu');
+            $data['orders'] = $this->trxModel->getTransactionByUserId($user['id']);
         }
 
         $this->view('templates/init', $data);
-        $data['orders'] = $this->trxModel->getTransactionByUserId($_SESSION['user']['id']);
         $this->view('templates/header', $data);
         $this->view('user/order', $data);
         $this->view('templates/footer');

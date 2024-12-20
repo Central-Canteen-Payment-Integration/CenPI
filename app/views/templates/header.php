@@ -1,29 +1,14 @@
-<body>
-	<header class="mb-4 md:mb-10">
-		<div class="navbar px-4 py-2 md:px-8 md:py-4 mt-1 md:mt-2">
+<body class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) ? 'overflow-hidden' : ''; ?>">
+	<header class="mb-4 md:mb-10 shadow">
+		<div class="navbar px-4 py-2 mt-1">
 			<div class="navbar-start">
 				<a href="<?= BASE_URL ?>/Home/menu">
-					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="h-12 md:h-16">
+					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="h-16">
 				</a>
 			</div>
-
-			<div class="navbar-end gap-2 md:gap-3">
-				<!-- Search Icon Mobile -->
-				<button class="btn btn-ghost btn-circle md:hidden" id="mobile-search-toggle">
-					<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 101 101" id="search" width="24" height="24">
-						<path d="M63.3 59.9c3.8-4.6 6.2-10.5 6.2-17 0-14.6-11.9-26.5-26.5-26.5S16.5 28.3 16.5 42.9 28.4 69.4 43 69.4c6.4 0 12.4-2.3 17-6.2l20.6 20.6c.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7.9-.9.9-2.5 0-3.4L63.3 59.9zm-20.4 4.7c-12 0-21.7-9.7-21.7-21.7s9.7-21.7 21.7-21.7 21.7 9.7 21.7 21.7-9.7 21.7-21.7 21.7z"></path>
-					</svg>
-				</button>
-				<script>
-					document.getElementById('mobile-search-toggle').addEventListener('click', () => {
-						const searchBar = document.getElementById('mobile-search-bar');
-						searchBar.classList.toggle('hidden');
-					});
-				</script>
-
-
+			<div class="navbar-end gap-2 max-md:hidden">
 				<?php if (!isset($_SESSION['user'])) { ?>
-					<a href="<?= BASE_URL ?>/User/login" onclick="handleRedirect(event, '<?= BASE_URL ?>/User/login')">
+					<a class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) || (strpos($_SERVER['REQUEST_URI'], 'register') !== false) ? 'hidden' : ''; ?>" href="<?= BASE_URL ?>/User/login" onclick="handleRedirect(event, '<?= BASE_URL ?>/User/login')">
 						<button
 							class="group/button relative inline-flex items-center justify-center overflow-hidden rounded-md bg-red-500 backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-red-600/50 border border-white/20">
 							<span class="text-md">Login</span>
@@ -33,9 +18,9 @@
 							</div>
 						</button>
 					</a>
-
+					<?php /*
 					<!-- Tombol Register -->
-					<a href="<?= BASE_URL ?>/User/register"
+					<a href="<?= BASE_URL ?>/User/register" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) || (strpos($_SERVER['REQUEST_URI'], 'register') !== false) ? 'hidden' : ''; ?>"
 						onclick="handleRedirect(event, '<?= BASE_URL ?>/User/register')">
 						<button
 							class="group/button relative inline-flex items-center justify-center overflow-hidden rounded-md bg-[#0B3C33] backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-green-600/50 border border-white/20">
@@ -46,6 +31,7 @@
 							</div>
 						</button>
 					</a>
+					*/ ?>
 
 					<!-- Overlay dan Animasi Loading -->
 					<div id="overlay"
@@ -123,6 +109,26 @@
 					</div>
 				<?php } ?>
 			</div>
+		</div>
+		<div class="btm-nav z-10 md:hidden">
+			<button onclick="window.location.href='/Home/menu'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'menu') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+				</svg>
+				<span class="btm-nav-label">Menu</span>
+			</button>
+			<button onclick="window.location.href='/User/order'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'order') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+				</svg>
+				<span class="btm-nav-label">Order</span>
+			</button>
+			<button onclick="window.location.href='/User/profile'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'profile') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+				</svg>
+				<span class="btm-nav-label">Profile</span>
+			</button>
 		</div>
 	</header>
 	<script>
