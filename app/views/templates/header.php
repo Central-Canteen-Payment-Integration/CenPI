@@ -1,9 +1,10 @@
+</head>
 <body class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) ? 'overflow-hidden' : ''; ?>">
 	<header class="mb-4 md:mb-10 shadow">
 		<div class="navbar px-4 py-2 mt-1">
 			<div class="navbar-start">
 				<a href="<?= BASE_URL ?>/Home/menu">
-					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="h-16">
+					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="max-md:h-12 h-16">
 				</a>
 			</div>
 			<div class="navbar-end gap-2 max-md:hidden">

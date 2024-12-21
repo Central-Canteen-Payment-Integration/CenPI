@@ -24,7 +24,8 @@ CREATE TABLE TENANT (
     location_name VARCHAR2(20),
     location_booth VARCHAR2(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL,
+    is_open NUMBER(1) DEFAULT 0 CHECK (is_open IN (0, 1))
 );
 
 CREATE TABLE MENU (
@@ -60,7 +61,7 @@ CREATE TABLE TRANSACTION_DETAIL (
     qty_price INT,
     pkg_price INT,
     notes VARCHAR2(100),
-    status VARCHAR2(50) CHECK (status IN ('Cancelled', 'Pending', 'Accept', 'Completed')),
+    status VARCHAR2(50) CHECK (status IN ('Cancelled', 'Pending', 'Accept', 'Pickup', 'Completed')),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );

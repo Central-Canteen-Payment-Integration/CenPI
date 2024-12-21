@@ -31,6 +31,18 @@ class TrxModel extends Model
         }
     }
 
+    public function checkClosedTenantsorMenu($userId) {
+        $sql = "SELECT c.id_menu, t.id_tenant, t.is_open, m.active
+                  FROM CART c
+                  JOIN MENU m ON c.id_menu = m.id_menu
+                  JOIN TENANT t ON m.id_tenant = t.id_tenant
+                  WHERE t.is_open = 0 OR m.active = 0
+                    AND c.id_user = :id_user";
+        $this->db->query($sql);
+        $this->db->bind(':id_user', $userId);
+        return $this->db->resultSet();
+    }
+
     public function getTransaction($id_transaction) {
         $sql = "SELECT * FROM TRANSACTION WHERE id_transaction = :id_transaction";
         $this->db->query($sql);
@@ -132,7 +144,6 @@ class TrxModel extends Model
     
         return $transactions;
     }
-    
 
     public function updateMidtransToken($transactionId, $snapToken) {
         try {
@@ -221,6 +232,68 @@ class TrxModel extends Model
             return $this->db->resultSet();
         } catch (Exception $e) {
             throw new Exception("Failed to update expired orders: " . $e->getMessage());
+        }
+    }
+
+    public function getTransactionsByTenant($id_tenant) {
+        $query = "SELECT * FROM TRANSACTION_DETAIL td
+                    JOIN TRANSACTION t ON td.ID_TRANSACTION = t.ID_TRANSACTION
+                    JOIN MENU m ON td.ID_MENU = m.ID_MENU
+                    WHERE m.ID_TENANT = :id_tenant
+                    AND t.TRX_STATUS != 'Unpaid'
+                    AND td.STATUS != 'Cancelled'
+                    AND td.STATUS != 'Completed'";
+    
+        $this->db->query($query);
+        $this->db->bind(':id_tenant', $id_tenant);
+    
+        return $this->db->resultSet();
+    }
+
+    public function getTransactionsByTenantandDate($id_tenant, $start_date = null, $end_date = null) {
+        if (strtotime($start_date) !== false && strtotime($end_date) !== false) {
+            $start_date = date('d-m-Y 00:00:00', strtotime($start_date));
+            $end_date = date('d-m-Y 23:59:59', strtotime($end_date));
+        } else {
+            $start_date = null;
+            $end_date = null;
+        }
+
+        error_log("Start Date: " . $start_date);
+        error_log("End Date: " . $end_date);
+
+        $query = "SELECT * FROM TRANSACTION_DETAIL td
+                    JOIN TRANSACTION t ON td.ID_TRANSACTION = t.ID_TRANSACTION
+                    JOIN MENU m ON td.ID_MENU = m.ID_MENU
+                    WHERE m.ID_TENANT = :id_tenant
+                    AND td.STATUS = 'Completed'";
+    
+        if ($start_date != null) {
+            $query .= "AND t.trx_datetime BETWEEN TO_DATE(:start_date, 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE(:end_date, 'DD-MM-YYYY HH24:MI:SS')";
+        }
+    
+        $this->db->query($query);
+        $this->db->bind(':id_tenant', $id_tenant);
+        if ($start_date != null) {
+            $this->db->bind(':start_date', $start_date);
+            $this->db->bind(':end_date', $end_date);
+        }
+
+        return $this->db->resultSet();
+    }
+
+    public function updateTransactionStatus($id_transaction, $newStatus) {
+        $query = "UPDATE TRANSACTION_DETAIL 
+                  SET STATUS = :new_status
+                  WHERE ID_TRANSACTION = :id_transaction";
+    
+        $this->db->query($query);
+        $this->db->bind(':new_status', $newStatus);
+        $this->db->bind(':id_transaction', $id_transaction);
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

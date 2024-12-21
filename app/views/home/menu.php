@@ -1,14 +1,3 @@
-<!-- Search Bar -->
-<div class="block bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto p-4">
-    <div class="flex items-center space-x-4">
-        <div class="flex-1">
-            <input id="search-input"
-                class="input input-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search" />
-        </div>
-    </div>
-</div>
-
 <div class="bg-white">
   <div>
 
@@ -66,8 +55,18 @@
     ?>
 
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-4">
+      <div class="flex items-center justify-between border-b border-gray-200 pb-6">
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Menu</h1>
+
+        <div class="block bg-gray-100 rounded-lg shadow-md w-[60%] max-md:w-[40%] mx-auto">
+            <div class="flex items-center">
+                <div class="flex-1">
+                    <input id="search-input"
+                        class="input input-bordered w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search" />
+                </div>
+            </div>
+        </div>
 
         <div class="flex items-center">
             <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
@@ -216,14 +215,14 @@
       if (paginatedMenus.length > 0) {
           paginatedMenus.forEach(menu => {
               const menuCard = `
-                  <div class="relative bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                  <div class="relative max-h-[270px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
                       <figure class="h-40 overflow-hidden">
                           <img class="w-full h-full object-cover"
                               src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
                               alt="${menu.NAME}" />
                       </figure>
                       <div class="description p-3">
-                          <h2 class="text-lg font-semibold text-gray-800 max-md:text-sm">${menu.NAME}</h2>
+                          <h2 class="text-lg font-semibold text-gray-800 max-md:text-sm truncate">${menu.NAME}</h2>
                           <div class="flex justify-between items-center mt-2">
                               <div class="text-lg font-bold text-gray-900 max-md:text-sm">
                                   Rp. ${menu.PRICE.toLocaleString('id-ID')}
