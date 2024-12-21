@@ -157,6 +157,63 @@ class TrxModel extends Model
         }
     }
 
+    public function updateCashPayment($transactionId) {
+        try {
+            $this->db->beginTransaction();
+    
+            $sql = "UPDATE TRANSACTION SET trx_status = 'Unpaid' WHERE id_transaction = :id_transaction";
+            $this->db->query($sql);
+            $this->db->bind(':id_transaction', $transactionId);
+    
+            if ($this->db->execute()) {
+                $this->db->commit();
+                return true;
+            } else {
+                $this->db->rollBack();
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw new Exception("Failed to update transaction status: " . $e->getMessage());
+        }
+    }
+    
+
+    public function hasUnpaidCashTransactions($userId) {
+        try {
+            $sql = "SELECT COUNT(*) AS count
+                    FROM transaction
+                    WHERE trx_status = 'Unpaid' AND id_user = :id_user";
+            $this->db->query($sql);
+            $this->db->bind(':id_user', $userId);
+            $result = $this->db->single();
+    
+            return $result['COUNT'] > 0;
+        } catch (Exception $e) {
+            error_log("Exception in hasUnpaidCashTransactions: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function getActiveTransaction($userId) {
+        $this->db->query("
+            SELECT * 
+            FROM (
+                SELECT * 
+                FROM transaction 
+                WHERE id_user = :id_user AND (trx_status = 'Unpaid' OR trx_status = 'Completed')
+                ORDER BY trx_datetime DESC
+            ) 
+            WHERE ROWNUM = 1
+        ");
+        $this->db->bind(':id_user', $userId);
+        
+        $result = $this->db->single();
+        error_log("Transaction result: " . print_r($result, true));
+        
+        return $result;
+    }
+
     public function checkExpiredOrder($userId) {
         try {
             $this->db->beginTransaction();
