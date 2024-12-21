@@ -5,11 +5,34 @@ class Tenant extends Controller
     private $tenantModel;
     private $menuModel;
     private $categoryModel;
+    private $trxModel;
 
     public function __construct() {
         $this->tenantModel = $this->model('TenantModel');
         $this->menuModel = $this->model('MenuModel');
         $this->categoryModel = $this->model('CategoryModel');
+        $this->trxModel = $this->model('TrxModel');
+    }
+
+    public function toggleIsOpen() {
+        $this->checkLoggedIn();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['id_tenant'])) {
+                $id_tenant = $_POST['id_tenant'];
+    
+                $result = $this->tenantModel->toggleIsOpen($id_tenant);
+
+                if ($result !== false) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Unable to toggle status.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Invalid input: id_tenant is required.']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+        }
     }
 
     private function checkLoggedIn() {
@@ -18,6 +41,9 @@ class Tenant extends Controller
             $this->view('templates/init');
             $this->view('tenant/login_register', $data);
             exit;
+        }
+        if (!isset($_SESSION['is_open'])) {
+            $_SESSION['is_open'] = $this->tenantModel->getTenantStatus($_SESSION['tenant']['id']);
         }
     }
 
@@ -116,9 +142,8 @@ class Tenant extends Controller
 
         $data = $this->tenantModel->getDashboardData($tenantId, $startDate, $endDate);
 
-
         $this->view('templates/init');
-        $this->view('templates/tenant_header');
+        $this->view('templates/tenant_header', $data);
         $this->view('tenant/index', $data);
     }
 
@@ -129,27 +154,12 @@ class Tenant extends Controller
         $endDate = $endDate ?? date('d-m-Y');
 
         $data = $this->tenantModel->getDashboardData($tenantId, $startDate, $endDate);
-
         echo json_encode([
             'totalOrders' => $data['totalOrders'] ?? 0,
             'totalRevenue' => $data['totalRevenue'] ?? 0,
             'chartLabels' => $data['chartLabels'] ?? [],
             'chartData' => $data['chartData'] ?? [],
         ]);
-    }
-
-    public function orderlist() {
-        $this->checkLoggedIn();
-        $this->view('templates/init');
-        $this->view('templates/tenant_header');
-        $this->view('tenant/orderlist');
-    }
-    
-    public function historytransaction() {
-        $this->checkLoggedIn();
-        $this->view('templates/init');
-        $this->view('templates/tenant_header');
-        $this->view('tenant/historytransaction');
     }
 
     public function report() {
@@ -161,10 +171,7 @@ class Tenant extends Controller
 
     public function settings() {
         $this->checkLoggedIn();
-
         $tenantId = $_SESSION['tenant']['id'];
-
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tenantName = htmlspecialchars($_POST['tenant_name'] ?? '');
             $currentPassword = $_POST['current_password'] ?? '';
@@ -174,15 +181,12 @@ class Tenant extends Controller
 
             if (empty($tenantName)) {
                 $data['error'] = 'Nama Tenant tidak boleh kosong.';
-                var_dump($data['error']);
             } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
                 $data['error'] = 'Password baru dan konfirmasi tidak cocok.';
-                var_dump($data['error']);
             } else {
                 $tenant = $this->tenantModel->getTenantById($tenantId);
                 if (!password_verify($currentPassword, $tenant['PASSWORD'])) {
                     $data['error'] = 'Password saat ini salah.';
-                    var_dump($data['error']);
                 } else {
                     $hashedPassword = !empty($newPassword) ? password_hash($newPassword, PASSWORD_BCRYPT) : null;
 
@@ -190,10 +194,8 @@ class Tenant extends Controller
 
                     if ($isUpdated) {
                         $data['success'] = 'Profil berhasil diperbarui.';
-                        var_dump($data['error']);
                     } else {
                         $data['error'] = 'Gagal memperbarui profil.';
-                        var_dump($data['error']);
                     }
                 }
             }
@@ -210,12 +212,124 @@ class Tenant extends Controller
         ];
 
         $this->view('templates/init');
-        $this->view('templates/tenant_header');
+        $this->view('templates/tenant_header', $data);
         $this->view('tenant/settings', $data);
     }
 
+    public function order($action = 'view') {
+        $this->checkLoggedIn();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action !== 'view'  && $action !== 'history') {
+            header('Location: /Tenant/order');
+        }
+
+        switch ($action) {
+            case 'accept':
+                $this->updateOrder('Accept');
+                break;
+            case 'complete':
+                $this->updateOrder('Completed');
+                break;
+            case 'pickup':
+                $this->updateOrder('Pickup');
+                break;
+            case 'history':
+                $this->orderHistory();
+                break;    
+            default:
+                $this->viewOrders();
+                break;
+        }
+    }
+
+    private function viewOrders() {
+        $transactions = $this->trxModel->getTransactionsByTenant($_SESSION['tenant']['id']);
+    
+        $data['transactions'] = $this->groupTransactions($transactions);
+        $this->view('templates/init');
+        $this->view('templates/tenant_header');
+        $this->view('tenant/order', $data);
+    }
+
+    private function updateOrder($action) {
+        if ($action != 'Accept' && $action != 'Completed' && $action != 'Pickup') {
+            return false;
+        }
+
+        $id_transaction = isset($_POST['id_transaction']) ? $_POST['id_transaction'] : null;
+
+        if (empty($id_transaction)) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid id Transaction!']);
+        }
+    
+        $updated = $this->trxModel->updateTransactionStatus($id_transaction, $action);
+
+        if ($updated) {
+            echo json_encode(['status' => 'success', 'message' => 'Transaction updated successfully!']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update transaction status.']);
+        }
+    }
+
+    private function orderHistory() {
+        $this->checkLoggedIn();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $start_date = isset($_POST['startDate']) ? $_POST['startDate'] : null;
+            $end_date = isset($_POST['endDate']) ? $_POST['endDate'] : null;
+            $transactions = $this->trxModel->getTransactionsByTenantandDate($_SESSION['tenant']['id'], $start_date, $end_date);
+            echo json_encode($this->groupTransactions($transactions));
+            exit;
+        }
+
+        $transactions = $this->trxModel->getTransactionsByTenant($_SESSION['tenant']['id']);
+
+        $data['transactions'] = $this->groupTransactions($transactions);
+        $this->view('templates/init');
+        $this->view('templates/tenant_header');
+        $this->view('tenant/history', $data);
+    }
+
+    private function groupTransactions($transactions) {
+        $groupedTransactions = [];
+        foreach ($transactions as $transaction) {
+            $id_transaction = $transaction['ID_TRANSACTION'];
+            if (!isset($groupedTransactions[$id_transaction])) {
+                $date = DateTime::createFromFormat('d-M-y h.i.s.u A', $transaction['TRX_DATETIME']);
+                $formattedDate = $date ? $date->format('d M Y, h:i A') : 'Invalid date';
+                $groupedTransactions[$id_transaction] = [
+                    'ID_TRANSACTION' => $id_transaction,
+                    'TRX_DATETIME' => $formattedDate,
+                    'TRX_PRICE' => $transaction['TRX_PRICE'],
+                    'TRX_METHOD' => $transaction['TRX_METHOD'],
+                    'TRX_STATUS' => $transaction['TRX_STATUS'],
+                    'details' => []
+                ];
+            }
+            $groupedTransactions[$id_transaction]['details'][] = [
+                'ID_MENU' => $transaction['ID_MENU'],
+                'QTY' => $transaction['QTY'],
+                'QTY_PRICE' => $transaction['QTY_PRICE'],
+                'PKG_PRICE' => $transaction['PKG_PRICE'],
+                'NOTES' => $transaction['NOTES'],
+                'STATUS' => $transaction['STATUS'],
+                'NAME' => $transaction['NAME'],
+                'PRICE' => $transaction['PRICE'],
+                'IMAGE_PATH' => $transaction['IMAGE_PATH'],
+                'MENU_TYPE' => $transaction['MENU_TYPE']
+            ];
+        }
+
+        return array_values($groupedTransactions);
+    }
+
+    // Menu functions
     public function menu($action = 'view') {
         $this->checkLoggedIn();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action !== 'view') {
+            header('Location: /Tenant/menu');
+        }
 
         switch ($action) {
             case 'add':
@@ -252,7 +366,7 @@ class Tenant extends Controller
             'categories' => $this->categoryModel->getCategory()
         ];
 
-        $this->view('templates/tenant_header');
+        $this->view('templates/tenant_header', $data);
         $this->view('templates/init', $data);
         $this->view('tenant/menu', $data);
     }
@@ -367,7 +481,6 @@ class Tenant extends Controller
     
         $newStatus = $currentStatus == '1' ? 0 : 1;
         $updated = $this->menuModel->updateMenuStatus($menuId, $newStatus);
-        var_dump($updated);
         if ($updated) {
             return json_encode(['status' => 'success', 'message' => 'Menu status updated successfully!']);
         } else {
@@ -375,6 +488,7 @@ class Tenant extends Controller
         }
     }
     
+    // logout functions
     public function logout() {
         $this->checkLoggedIn();
         session_destroy();

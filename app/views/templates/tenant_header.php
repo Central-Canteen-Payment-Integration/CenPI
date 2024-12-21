@@ -1,3 +1,8 @@
+<?php
+$is_open = $_SESSION['is_open'];
+?>
+<link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+</head>
 <body class="bg-gray-100">
     <div class="flex">
         <aside class="w-64 bg-white h-screen shadow-lg flex flex-col">
@@ -22,7 +27,7 @@
                     <!-- Order List -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-shopping-cart text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/orderList" class="flex-1">Order List</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/order" class="flex-1">Order List</a>
                     </li>
 
                     <!-- Menu -->
@@ -34,13 +39,7 @@
                     <!-- History Transaksi -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-history text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/historytransaction" class="flex-1">History Transaksi</a>
-                    </li>
-
-                    <!-- Report -->
-                    <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
-                        <i class="ti ti-report text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/report" class="flex-1">Report</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/order/history" class="flex-1">History Transaksi</a>
                     </li>
 
                     <li class="text-gray-600 font-medium px-6 py-3 flex flex-col space-y-1">
@@ -79,46 +78,46 @@
                 <p id="statusText" class="text-sm text-red-500 mt-2 font-medium">Status: <span>Closed</span></p>
             </div>
             <script>
-                // DOM Elements
                 const toggle = document.getElementById('tenantToggle');
                 const statusText = document.getElementById('statusText');
+                const data = <?= json_encode($is_open) ?>;
+                let isOpen = data.IS_OPEN === "1" ? true : false;
 
-                // Load status from localStorage
-                const loadStatus = () => {
-                    const savedStatus = localStorage.getItem('tenantStatus');
-                    if (savedStatus === 'open') {
-                        setToggleState(true);
-                    } else {
-                        setToggleState(false);
-                    }
-                };
-
-                // Update UI and save to localStorage
                 const setToggleState = (isOpen) => {
-                    const toggleKnob = toggle.querySelector('div');
                     if (isOpen) {
                         toggle.classList.add('bg-green-500');
                         toggle.classList.remove('bg-red-500');
-                        toggleKnob.style.transform = 'translateX(24px)';
-                        statusText.classList.replace('text-red-500', 'text-green-500');
-                        statusText.querySelector('span').textContent = 'Open';
-                        localStorage.setItem('tenantStatus', 'open');
+                        toggle.querySelector('div').classList.add('translate-x-full');
+                        statusText.textContent = 'Open';
                     } else {
                         toggle.classList.add('bg-red-500');
                         toggle.classList.remove('bg-green-500');
-                        toggleKnob.style.transform = 'translateX(0)';
-                        statusText.classList.replace('text-green-500', 'text-red-500');
-                        statusText.querySelector('span').textContent = 'Closed';
-                        localStorage.setItem('tenantStatus', 'closed');
+                        toggle.querySelector('div').classList.remove('translate-x-full');
+                        statusText.textContent = 'Closed';
                     }
                 };
 
-                toggle.addEventListener('click', () => {
-                    const isOpen = toggle.classList.contains('bg-red-500');
-                    setToggleState(isOpen);
-                });
+                const toggleStatus = () => {
+                    $.ajax({
+                        url: '/Tenant/toggleIsOpen',
+                        type: 'POST',
+                        data: { id_tenant: '<?= $_SESSION['tenant']['id'] ?>' },
+                        success: function(data) {
+                            let res = JSON.parse(data);
+                            if (res.success == true) {
+                                setToggleState(isOpen = !isOpen);
+                            } else {
+                                console.error('Failed to toggle status:', res.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                };
 
-                loadStatus();
+                toggle.addEventListener('click', toggleStatus);
+                document.addEventListener('DOMContentLoaded', () => setToggleState(isOpen));
 
                 const reconnectInterval = 2000;
                 const maxReconnectAttempts = 5;

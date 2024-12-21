@@ -53,7 +53,13 @@ class Checkout extends Controller
             header('Location: /Checkout');
             return;
         }
-
+        $inactive = $this->trxModel->checkClosedTenantsorMenu($userId);
+        if (count($inactive) > 0) {
+            $_SESSION['show_modal'] = true;
+            $_SESSION['inactive'] = $inactive;
+            header('Location: /Checkout');
+            return;
+        }
         $transactionId = $this->trxModel->createTransactionWithDetails($userId, $orderType, $paymentOption);
         $data['transaction'] = $this->trxModel->getTransaction($transactionId);
 
