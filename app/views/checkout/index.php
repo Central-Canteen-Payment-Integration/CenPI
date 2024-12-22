@@ -126,7 +126,7 @@ if (isset($_SESSION['error'])) {
                     </div>
                     <p class="font-medium ml-4 text-sm">Rp ${itemPrice.toLocaleString('id-ID')}</p>
                 </div>
-                <textarea class="textarea textarea-bordered mt-3 w-full text-xs" placeholder="Tambah catatan untuk pesanan ini"></textarea>
+                <textarea class="notes textarea textarea-bordered mt-3 w-full text-xs" data-id="${item.ID_CART}" placeholder="Tambah catatan untuk pesanan ini">${item.NOTES ? item.NOTES : ''}</textarea>
             `;
 
             orderListContainer.appendChild(orderItem);
@@ -134,6 +134,32 @@ if (isset($_SESSION['error'])) {
 
         renderOrderDetail(cartItems)
     }
+
+    $(document).on('click', '.notes', function() {
+        $('#pay-button').prop('disabled', true);
+    });
+
+    $(document).on('blur', '.notes', function() {
+        const cart = $(this).data();
+        const text = $(this).val();
+        $('#pay-button').prop('disabled', false);
+
+        $.ajax({
+            url: '/Cart/updateNote',
+            method: 'POST',
+            data: {
+                id_cart: cart.id,
+                notes: text
+            },
+            success: function(response) {
+                let res = JSON.parse(response);
+                swalert('success', res.message);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating note:', error);
+            }
+        });
+    });
 
     function renderOrderDetail(cartItems) {
         let subtotal = 0;

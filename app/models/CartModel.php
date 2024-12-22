@@ -118,4 +118,24 @@ class CartModel extends Model
             throw new Exception("Failed to create transaction: " . $e->getMessage());
         }
     }
+
+    public function updateNote($id_cart, $notes) {
+        try {
+            $this->db->beginTransaction();
+            $this->db->query("UPDATE CART SET notes = :notes WHERE id_cart = :id_cart");
+            
+            $this->db->bind(':notes', $notes);
+            $this->db->bind(':id_cart', $id_cart);
+
+            if ($this->db->execute()) {
+                $this->db->commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw new Exception("Failed to create transaction: " . $e->getMessage());
+        }
+    }
 }

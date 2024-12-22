@@ -168,4 +168,33 @@ class Cart extends Controller {
             exit;
         }
     }
+
+    public function updateNote() {
+        if (!isset($_SESSION['user']['id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not logged in.'
+            ]);
+            exit;
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id_cart = isset($_POST['id_cart']) ? $_POST['id_cart'] : "";
+            $notes = isset($_POST['notes']) ? $_POST['notes'] : "";
+            $res = $this->cartModel->updateNote($id_cart, $notes);
+
+            if ($res) {
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Notes updated.'
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Failed to update Notes.',
+                ]);
+            }
+            exit;
+        }
+    }
 }
