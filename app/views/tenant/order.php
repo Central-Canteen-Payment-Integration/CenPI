@@ -22,7 +22,7 @@
           }
         }
       ?>
-      <div class="order-card flex flex-col justify-between relative bg-white border-4 border-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Accept' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 rounded-lg shadow-lg p-6" data-id="<?= $transaction['ID_TRANSACTION'] ?>">
+      <div class="order-card flex flex-col justify-between relative bg-white border-4 border-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Cooking' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 rounded-lg shadow-lg p-6" data-id="<?= $transaction['ID_TRANSACTION'] ?>">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-800">Order #<?= substr($transaction['ID_TRANSACTION'], 31) ?></h2>
           <span class="text-sm text-gray-500"><?= $transaction['TRX_DATETIME'] ?></span>
@@ -41,12 +41,12 @@
           </ul>
         </div>
         <div class="flex flex-col items-end">
-          <span class="text-sm text-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Accept' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 status">Status: <?= $overallStatus === 'Pending' ? 'Pending' : ($overallStatus === 'Accept' ? 'Cooking' : ($overallStatus === 'Ready to Pickup' ? 'Ready to Pickup' : 'Completed')) ?></span>
+          <span class="text-sm text-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Cooking' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 status">Status: <?= $overallStatus === 'Pending' ? 'Pending' : ($overallStatus === 'Cooking' ? 'Cooking' : ($overallStatus === 'Ready to Pickup' ? 'Ready to Pickup' : 'Completed')) ?></span>
           <?php if ($overallStatus === 'Pending'): ?>
             <button class="status bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 shadow-md" onclick="acceptOrder(this)">
               Accept Order
             </button>
-          <?php elseif ($overallStatus === 'Accept'): ?>
+          <?php elseif ($overallStatus === 'Cooking'): ?>
             <button class="status bg-yellow-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-600 shadow-md" onclick="readyToPickupOrder(this)">
               Ready to Pickup
             </button>

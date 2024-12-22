@@ -1,9 +1,39 @@
+<?php
+    echo '<pre>' . var_export($data, true) . '</pre>';
+?>
 <div class="section max-w-md mx-auto mt-4">
     <h2 class="text-center text-xl font-bold">My Orders</h2>
     <div class="mt-6">
         <div class="grid gap-6">
             <?php if (isset($data['orders']) && count($data['orders']) > 0): ?>
                 <?php foreach ($data['orders'] as $order): ?>
+                    <?php
+                        $statuses = [
+                            'Pending' => 0,
+                            'Accept' => 0,
+                            'Pickup' => 0
+                        ];
+                        
+                        foreach ($order['DETAILS'] as $detail) {
+                            if (isset($statuses[$detail['TRANSACTION_DETAIL_STATUS']])) {
+                                $statuses[$detail['TRANSACTION_DETAIL_STATUS']]++;
+                            }
+                        }
+                        if (array_sum($statuses) == 0) {
+                            $overallStatus = $order['TRX_STATUS'];
+                        } else {
+                            $overallStatus = array_search(max($statuses), $statuses);
+                        }
+                        $statusDisplayMap = [
+                            'Pending' => 'Pending',
+                            'Accept' => 'Cooking',
+                            'Pickup' => 'Ready to Pickup',
+                            'Completed' => 'Completed',
+                            'Cancelled' => 'Cancelled'
+                        ];
+
+                        $overallStatusDisplay = $statusDisplayMap[$overallStatus];
+                    ?>
                     <div data-id=<?= $order['ID_TRANSACTION'] ?> class="details cursor-pointer bg-white p-6 rounded-lg shadow-md">
                         <div class="flex justify-between items-center">
                             <div>
@@ -12,7 +42,7 @@
                                 </h2>
                                 <p class="text-gray-500"><?= $order['TRX_DATETIME']; ?></p>
                             </div>
-                            <p class="text-gray-500"><?= $order['TRX_STATUS']; ?></p>
+                            <p class="text-gray-500"><?= $overallStatusDisplay; ?></p>
                         </div>
                         <div class="flex mt-6 gap-4 items-start justify-between">
                             <div class="flex gap-4">
@@ -43,7 +73,7 @@
                         <div class="flex justify-end items-end w-full mt-2">
                             <?php
                                 switch ($order['TRX_STATUS']) {
-                                    case 'Cooked':
+                                    case 'Pending':
                                         echo '<span class="border rounded-full bg-white text-black font-medium py-2 px-4 flex items-center justify-center">Pending</span>';
                                         break;
                                     case 'Unpaid':
