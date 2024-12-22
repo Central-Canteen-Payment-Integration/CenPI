@@ -19,16 +19,10 @@
                         <a href="<?= BASE_URL; ?>/Admin/index" class="flex-1">List Tenant</a>
                     </li>
 
-                    <!-- Order List -->
-                    <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
-                        <i class="ti ti-shopping-cart text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/category" class="flex-1">Category Selector</a>
-                    </li>
-
-                    <!-- Menu -->
+                    <!-- Cash Management -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-list text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/money" class="flex-1">Money Management</a>
+                        <a href="<?= BASE_URL; ?>/Admin/cash" class="flex-1">Cash Management</a>
                     </li>
 
                     <li class="text-gray-600 font-medium px-6 py-3 flex flex-col space-y-1">

@@ -5,8 +5,6 @@ CREATE TABLE USERS (
     password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     token_activation VARCHAR2(36),
-    forgot_password_token VARCHAR2(36),
-    token_expiry TIMESTAMP DEFAULT NULL,
     image_path VARCHAR2(36)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -18,13 +16,11 @@ CREATE TABLE TENANT (
     username VARCHAR2(30) NOT NULL UNIQUE,
     password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
-    forgot_password_token VARCHAR2(36),
-    token_expiry TIMESTAMP DEFAULT NULL,
-    image_path VARCHAR2(36),
     location_name VARCHAR2(20),
     location_booth VARCHAR2(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL,
+    is_open NUMBER(1) DEFAULT 0 CHECK (is_open IN (0, 1))
 );
 
 CREATE TABLE MENU (
@@ -33,7 +29,6 @@ CREATE TABLE MENU (
     name VARCHAR2(100) NOT NULL,
     price INT NOT NULL CHECK (price > 0),
     pkg_price INT,
-    image_path VARCHAR2(36),
     menu_type VARCHAR2(7) CHECK (menu_type IN ('makanan', 'minuman')),
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -60,7 +55,7 @@ CREATE TABLE TRANSACTION_DETAIL (
     qty_price INT,
     pkg_price INT,
     notes VARCHAR2(100),
-    status VARCHAR2(50) CHECK (status IN ('Cancelled', 'Pending', 'Accept', 'Completed')),
+    status VARCHAR2(50) CHECK (status IN ('Cancelled', 'Pending', 'Accept', 'Pickup', 'Completed')),
     FOREIGN KEY (id_transaction) REFERENCES TRANSACTION(id_transaction),
     FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );

@@ -7,7 +7,6 @@ class MenuModel extends Model
         $query = "SELECT 
                 t.tenant_name, 
                 t.active AS tenant_active, 
-                t.image_path AS tenant_image_path, 
                 t.location_name, 
                 t.location_booth, 
                 m.id_menu, 

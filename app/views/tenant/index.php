@@ -1,9 +1,4 @@
-<head>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Filter Periode -->
 <div class="bg-white p-3 rounded-md flex items-center space-x-3 cursor-pointer shadow-md relative hover:shadow-lg transition-shadow duration-300" id="filter-period">
   <i class="ti ti-calendar text-blue-500 text-lg"></i>
@@ -26,7 +21,7 @@
 <button id="applyButton" class="hidden text-blue-500 mt-2 p-2 rounded border" onclick="applyDateFilter()">Apply</button>
 
 <!-- Card Stats -->
-<div class="grid grid-cols-4 gap-6">
+<div class="grid grid-cols-4 gap-6 mt-2">
   <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
     <div class="p-3 bg-blue-100 rounded-full">
       <i class="ti ti-file-invoice text-blue-500 text-2xl"></i>
@@ -49,9 +44,11 @@
 </div>
 
 <!-- Chart Section for Revenue -->
-<div class="bg-white p-6 rounded-lg shadow-md mt-6 mb-6">
+<div class="bg-white w-1/2 p-6 rounded-lg shadow-md mt-6 mb-6">
   <h2 class="text-lg font-semibold mb-4">Revenue Trend</h2>
-  <canvas id="revenueChart" class="w-full"></canvas>
+  <div class="relative h-96">
+    <canvas id="revenueChart" class="w-full h-full"></canvas>
+  </div>
 </div>
 
 <script>
@@ -63,10 +60,7 @@
   const periodText = document.getElementById('period-text');
 
   filterPeriodDiv.addEventListener('click', () => {
-    // Toggle visibility of the date range picker
     dateRangePicker.classList.toggle('hidden');
-
-    // Rotate the chevron icon
     chevronIcon.classList.toggle('rotate-180');
   });
 
@@ -155,4 +149,14 @@
       },
     },
   });
+
+  const totalOrders = <?= $data['totalOrders'] ?>;
+  const totalRevenue = <?= $data['totalRevenue'] ?>;
+  const chartLabels = <?= json_encode($data['chartLabels']) ?>;
+  const chartData = <?= json_encode($data['chartData']) ?>;
+  $('#totalOrders').text(totalOrders);
+  $('#totalRevenue').text('Rp' + totalRevenue);
+  revenueChart.data.labels = chartLabels;
+  revenueChart.data.datasets[0].data = chartData;
+  revenueChart.update();
 </script>

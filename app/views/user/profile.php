@@ -4,21 +4,6 @@
             <!-- Title and Profile Picture -->
             <div class="flex flex-col md:flex-row justify-between mb-8 items-start">
                 <h2 class="mb-5 text-4xl font-extrabold text-primary md:mb-0">My Profile</h2>
-                <div class="text-center">
-                    <img src="https://i.pravatar.cc/300" alt="Profile Picture"
-                        class="rounded-full w-32 h-32 mx-auto border-4 border-secondary mb-4 transition-transform duration-300 hover:scale-110 shadow-lg">
-                    <label for="upload_profile" class="cursor-pointer inline-flex items-center bg-accent px-3 py-1 rounded-lg text-secondary text-sm font-semibold hover:bg-primary hover:text-white transition-all">
-                        <input type="file" name="profile" id="upload_profile" hidden required>
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"></path>
-                        </svg>
-                        Change Picture
-                    </label>
-                </div>
             </div>
 
             <!-- Feedback Messages -->
@@ -72,9 +57,6 @@
                 <div class="flex justify-end space-x-4">
                     <button id="editButton" type="button" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary" onclick="toggleEdit()">Edit Profile</button>
                     <button id="saveButton" type="submit" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary hidden">Save Changes</button>
-                    <a href="/home" class="w-full px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-neutral text-center block">
-                        Back To Home
-                    </a>
                 </div>
             </form>
 
@@ -104,4 +86,8 @@
             </script>
         </div>
     </div>
+    
+</div>
+<div class="flex item-center justify-center mt-4 md:hidden">
+    <button type="button" class="px-6 py-2 bg-[#ff0505] text-white font-semibold rounded-lg hover:bg-[#9b2424]" onclick="window.location.href='<?= BASE_URL ?>/User/logout'">Logout</button>
 </div>

@@ -1,18 +1,5 @@
-<!-- Search Bar -->
-<div class="block bg-gray-100 rounded-lg shadow-md max-w-3xl w-full mx-auto p-4">
-    <div class="flex items-center space-x-4">
-        <div class="flex-1">
-            <input id="search-input"
-                class="input input-bordered w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search" />
-        </div>
-    </div>
-</div>
-
 <div class="bg-white">
   <div>
-
-  <?php /*
     <!-- Mobile filter dialog -->
     <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-black/25" aria-hidden="true"></div>
@@ -62,12 +49,21 @@
           </form>
         </div>
       </div>
-    </div>*/
-    ?>
+    </div>
 
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-4">
+      <div class="flex items-center justify-between border-b border-gray-200 pb-6">
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Menu</h1>
+
+        <div class="block bg-gray-100 rounded-lg shadow-md w-[60%] max-md:w-[40%] mx-auto">
+            <div class="flex items-center">
+                <div class="flex-1">
+                    <input id="search-input"
+                        class="input input-bordered w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search" />
+                </div>
+            </div>
+        </div>
 
         <div class="flex items-center">
             <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
@@ -81,7 +77,7 @@
       <section aria-labelledby="products-heading" class="pb-24 pt-6">
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           <!-- Filters -->
-          <form class="hidden lg:block">
+          <form class="hidden categories lg:block">
             <div class="border-b border-gray-200 py-6">
               <h3 class="-my-3 flow-root">
                 <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
@@ -90,14 +86,15 @@
               </h3>
               <div class="pt-6" id="filter-section-0">
                 <div class="space-y-4">
-                  <div class="flex gap-3">
-                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
-                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
-                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
-                  </div>
+                  <?php
+                    $locations = array_unique(array_column($data['menus'], 'LOCATION_NAME'));
+                    foreach ($locations as $location) {
+                      echo '<div class="flex gap-3">';
+                      echo '<input id="filter-location-' . htmlspecialchars($location) . '" name="location[]" value="' . htmlspecialchars($location) . '" type="checkbox" class="checkbox">';
+                      echo '<label for="filter-location-' . htmlspecialchars($location) . '" class="text-gray-500">' . htmlspecialchars($location) . '</label>';
+                      echo '</div>';
+                    }
+                  ?>
                 </div>
               </div>
             </div>
@@ -109,18 +106,17 @@
               </h3>
               <div class="pt-6" id="filter-section-0">
                 <div class="space-y-4">
-                  <div class="flex gap-3">
-                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
-                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
-                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
-                    <label for="filter-color-2" class="text-sm text-gray-600">Blue</label>
-                  </div>
+                  <?php
+                      $subcategories = array_unique(array_column(array_filter($data['menus'], function($menu) {
+                        return $menu['MAIN_CATEGORY'] === 'makanan';
+                      }), 'SUBCATEGORY_NAME'));
+                      foreach ($subcategories as $subcategory) {
+                        echo '<div class="flex gap-3">';
+                        echo '<input id="filter-food-subcategory-' . htmlspecialchars($subcategory) . '" name="subcategory[]" value="' . htmlspecialchars($subcategory) . '" type="checkbox" class="checkbox">';
+                        echo '<label for="filter-food-subcategory-' . htmlspecialchars($subcategory) . '" class="text-gray-500">' . htmlspecialchars($subcategory) . '</label>';
+                        echo '</div>';
+                      }
+                    ?>
                 </div>
               </div>
             </div>
@@ -132,18 +128,17 @@
               </h3>
               <div class="pt-6" id="filter-section-0">
                 <div class="space-y-4">
-                  <div class="flex gap-3">
-                    <input id="filter-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
-                    <label for="filter-color-0" class="text-sm text-gray-600">White</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
-                    <label for="filter-color-1" class="text-sm text-gray-600">Beige</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
-                    <label for="filter-color-2" class="text-sm text-gray-600">Blue</label>
-                  </div>
+                    <?php
+                      $subcategories = array_unique(array_column(array_filter($data['menus'], function($menu) {
+                        return $menu['MAIN_CATEGORY'] === 'minuman';
+                      }), 'SUBCATEGORY_NAME'));
+                      foreach ($subcategories as $subcategory) {
+                        echo '<div class="flex gap-3">';
+                        echo '<input class"minuman" id="filter-drinks-subcategory-' . htmlspecialchars($subcategory) . '" name="subcategory[]" value="' . htmlspecialchars($subcategory) . '" type="checkbox" class="checkbox">';
+                        echo '<label for="filter-drinks-subcategory-' . htmlspecialchars($subcategory) . '" class="text-gray-500">' . htmlspecialchars($subcategory) . '</label>';
+                        echo '</div>';
+                      }
+                    ?>
                 </div>
               </div>
             </div>
@@ -199,6 +194,20 @@
         useExtendedSearch: true,
     });
 
+    function applyFilters() {
+        const selectedLocations = Array.from(document.querySelectorAll('input[name="location[]"]:checked')).map(cb => cb.value);
+        const selectedSubcategories = Array.from(document.querySelectorAll('input[name="subcategory[]"]:checked')).map(cb => cb.value);
+
+        filteredMenus = allMenus.filter(menu => {
+            const locationMatch = selectedLocations.length === 0 || selectedLocations.includes(menu.LOCATION_NAME);
+            console.log(locationMatch);
+            const subcategoryMatch = selectedSubcategories.length === 0 || selectedSubcategories.includes(menu.SUBCATEGORY_NAME);
+            return locationMatch && subcategoryMatch;
+        });
+
+        renderMenus(filteredMenus);
+    }
+
     function renderMenus(menus, append = false) {
       const menuContainer = document.getElementById('menu-container');
       const paginationControls = document.getElementById('pagination-controls');
@@ -216,14 +225,14 @@
       if (paginatedMenus.length > 0) {
           paginatedMenus.forEach(menu => {
               const menuCard = `
-                  <div class="relative bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                  <div class="relative max-h-[270px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
                       <figure class="h-40 overflow-hidden">
                           <img class="w-full h-full object-cover"
                               src="<?= MENU_URL ?>${menu.MENU_IMAGE_PATH || 'placeholder.jpg'}"
                               alt="${menu.NAME}" />
                       </figure>
                       <div class="description p-3">
-                          <h2 class="text-lg font-semibold text-gray-800 max-md:text-sm">${menu.NAME}</h2>
+                          <h2 class="text-lg font-semibold text-gray-800 max-md:text-sm truncate">${menu.NAME}</h2>
                           <div class="flex justify-between items-center mt-2">
                               <div class="text-lg font-bold text-gray-900 max-md:text-sm">
                                   Rp. ${menu.PRICE.toLocaleString('id-ID')}
@@ -282,6 +291,11 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         renderMenus(allMenus);
+
+        const filterCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', applyFilters);
+        });
 
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', (e) => {

@@ -3,8 +3,7 @@ use Ramsey\Uuid\Uuid;
 
 class TenantModel extends Model
 {
-    public function register($tenant_name, $username, $password, $email, $location_name, $location_booth)
-    {
+    public function register($tenant_name, $username, $password, $email, $location_name, $location_booth) {
         try {
             $this->db->beginTransaction();
 
@@ -34,8 +33,7 @@ class TenantModel extends Model
         }
     }
 
-    public function login($username, $password)
-    {
+    public function login($username, $password) {
         try {
             $sql = "SELECT * FROM TENANT WHERE username = :username";
             $this->db->query($sql);
@@ -53,8 +51,8 @@ class TenantModel extends Model
             return false;
         }
     }
-    public function getTenantById($tenantId)
-    {
+    
+    public function getTenantById($tenantId) {
         $sql = "SELECT * FROM TENANT WHERE id_tenant = :id_tenant";
         $this->db->query($sql);
         $this->db->bind(':id_tenant', $tenantId);
@@ -76,9 +74,8 @@ class TenantModel extends Model
             return false;
         }
     }
-    
-    public function verifyPassword($tenantId, $password)
-    {
+
+    public function verifyPassword($tenantId, $password) {
         $sql = "SELECT password FROM TENANT WHERE id_tenant = :id_tenant";
         $this->db->query($sql);
         $this->db->bind(':id_tenant', $tenantId);
@@ -92,11 +89,8 @@ class TenantModel extends Model
     
         return password_verify($password, $result['password']);
     }
-    
-    
 
-    public function findTenantByUsernameOrEmail($username, $email)
-    {
+    public function findTenantByUsernameOrEmail($username, $email) {
         try {
             $sql = "SELECT * FROM TENANT WHERE username = :username OR email = :email";
             $this->db->query($sql);
@@ -111,8 +105,7 @@ class TenantModel extends Model
         }
     }
 
-    public function getDashboardData($tenantId, $startDate, $endDate)
-    {
+    public function getDashboardData($tenantId, $startDate, $endDate) {
         if (strtotime($startDate) === false || strtotime($endDate) === false) {
             error_log("Invalid date format for startDate or endDate");
             return false;
@@ -177,5 +170,31 @@ class TenantModel extends Model
             'startDate' => $startDate,
             'endDate' => $endDate,
         ];
+    }
+
+    public function toggleIsOpen($id_tenant) {
+        try {
+            $this->db->query("CALL toggle_tenant(:id_tenant)");        
+            
+            $this->db->bind(':id_tenant', $id_tenant);
+            
+            return $this->db->execute();
+        } catch (Exception $e) {
+            error_log("Error toggling tenant status: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getTenantStatus($id_tenant) {
+        try {
+            $sql = "SELECT is_open FROM TENANT WHERE id_tenant = :id_tenant";
+            $this->db->query($sql);
+            $this->db->bind(':id_tenant', $id_tenant);
+            
+            return $this->db->single();
+        } catch (Exception $e) {
+            error_log("Error toggle: " . $e->getMessage());
+            return false;
+        }
     }
 }

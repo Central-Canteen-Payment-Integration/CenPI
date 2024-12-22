@@ -15,7 +15,7 @@ if (isset($_SESSION['error'])) {
     <form action="<?= BASE_URL . '/Checkout/initialize'; ?>" method="POST" id="formtest">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Tampilan Kiri (Profil Pembeli & Pesanan) -->
-            <div class="col-span-2 bg-white p-4 rounded-lg shadow sm:ml-5 sm:mr-6">
+            <div class="col-span-2 bg-white p-4 rounded-lg shadow ml-2 max-md:mr-6">
                 <!-- Profil Pembeli -->
                 <div class="mb-4">
                     <h2 class="text-base font-semibold mb-2">Tipe Pesanan</h2>
@@ -31,7 +31,7 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
             <!-- Tampilan Kanan Ringkasan Pesanan -->
-            <div class="bg-white p-4 rounded-lg shadow h-fit mr-6 sm:ml-5 sm:mr-2">
+            <div class="bg-white p-4 rounded-lg shadow h-fit mr-2 max-md:ml-2">
                 <h2 class="text-base font-semibold mb-3">Ringkasan Pesanan</h2>
                 <div class="detail-order">
                     <div class="flex justify-between text-sm mb-3">
@@ -62,6 +62,40 @@ if (isset($_SESSION['error'])) {
         </div>
     </form>
 </div>
+<?php if (isset($_SESSION['show_modal']) && $_SESSION['show_modal']): ?>
+    <div id="closedTenantsModal" class="modal modal-open">
+        <div class="modal-box translate-y-[50%]">
+            <h2 class="font-bold text-lg">Info</h2>
+            <p class="py-4">The following menus are from menu that not available or tenant closed:</p>
+            <div class="grid grid-cols-1 gap-4">
+                <?php foreach ($_SESSION['inactive'] as $inactive): ?>
+                    <?php foreach ($data['cart'] as $item): ?>
+                        <?php if ($item['ID_MENU'] == $inactive['ID_MENU']): ?>
+                            <div class="card bg-base-100 shadow-xl">
+                                <figure><img src="<?= MENU_URL . $item['IMAGE_PATH'] ?>" alt="<?= $item['NAME'] ?>" class="w-full h-32 object-cover"></figure>
+                                <div class="card-body">
+                                    <h2 class="card-title"><?= $item['NAME'] ?></h2>
+                                    <p><?= $item['TENANT_NAME'] ?></p>
+                                    <?php if ($inactive['ACTIVE'] == 0): ?>
+                                        <p class="text-red-500">This menu is not available</p>
+                                    <?php endif; ?>
+                                    <?php if ($inactive['IS_OPEN'] == 0): ?>
+                                        <p class="text-red-500">Tenant is closed</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+            <div class="modal-action">
+                <button class="btn" onclick="document.getElementById('closedTenantsModal').style.display='none'">Close</button>
+            </div>
+        </div>
+    </div>
+    <?php unset($_SESSION['show_modal']); ?>
+    <?php unset($_SESSION['closed_tenants']); ?>
+<?php endif; ?>
 
 <script>
     let cartItems = <?php echo json_encode($cartItems); ?>;
