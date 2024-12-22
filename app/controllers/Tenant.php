@@ -159,61 +159,66 @@ class Tenant extends Controller
         $this->view('tenant/report');
     }
 
-    public function settings() {
+    public function settings()
+    {
         $this->checkLoggedIn();
-
+    
         $tenantId = $_SESSION['tenant']['id'];
-
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $tenantName = htmlspecialchars($_POST['tenant_name'] ?? '');
-            $currentPassword = $_POST['current_password'] ?? '';
-            $newPassword = $_POST['new_password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
-
-
-            if (empty($tenantName)) {
-                $data['error'] = 'Nama Tenant tidak boleh kosong.';
-                var_dump($data['error']);
-            } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
-                $data['error'] = 'Password baru dan konfirmasi tidak cocok.';
-                var_dump($data['error']);
-            } else {
-                $tenant = $this->tenantModel->getTenantById($tenantId);
-                if (!password_verify($currentPassword, $tenant['PASSWORD'])) {
-                    $data['error'] = 'Password saat ini salah.';
-                    var_dump($data['error']);
-                } else {
-                    $hashedPassword = !empty($newPassword) ? password_hash($newPassword, PASSWORD_BCRYPT) : null;
-
-                    $isUpdated = $this->tenantModel->updateTenantProfile($tenantId, $tenantName, $hashedPassword);
-
-                    if ($isUpdated) {
-                        $data['success'] = 'Profil berhasil diperbarui.';
-                        var_dump($data['error']);
-                    } else {
-                        $data['error'] = 'Gagal memperbarui profil.';
-                        var_dump($data['error']);
-                    }
-                }
-            }
-        }
-
         $tenantData = $this->tenantModel->getTenantById($tenantId);
-
+    
         $data = [
             'tenant_name' => $tenantData['TENANT_NAME'] ?? '',
             'username' => $tenantData['USERNAME'] ?? '',
             'email' => $tenantData['EMAIL'] ?? '',
             'location_name' => $tenantData['LOCATION_NAME'] ?? '',
             'location_booth' => $tenantData['LOCATION_BOOTH'] ?? '',
+            'current_password_error' => '',
+            'new_password_error' => '',
+            'confirm_password_error' => '',
+            'success_message' => '',
         ];
-
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $currentPassword = trim($_POST['current_password'] ?? '');
+            $newPassword = trim($_POST['new_password'] ?? '');
+            $confirmPassword = trim($_POST['confirm_password'] ?? '');
+    
+            if (empty($currentPassword)) {
+                $data['current_password_error'] = 'Password saat ini tidak boleh kosong.';
+            } elseif (!$this->tenantModel->verifyPassword($tenantId, $currentPassword)) {
+                $data['current_password_error'] = 'Password saat ini salah.';
+            }
+    
+            if (empty($newPassword)) {
+                $data['new_password_error'] = 'Password baru tidak boleh kosong.';
+            } elseif (strlen($newPassword) < 8) {
+                $data['new_password_error'] = 'Password baru harus memiliki minimal 8 karakter.';
+            }
+    
+            if (empty($confirmPassword)) {
+                $data['confirm_password_error'] = 'Konfirmasi password tidak boleh kosong.';
+            } elseif ($newPassword !== $confirmPassword) {
+                $data['confirm_password_error'] = 'Password baru dan konfirmasi tidak cocok.';
+            }
+    
+            if (empty($data['current_password_error']) && empty($data['new_password_error']) && empty($data['confirm_password_error'])) {
+                $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+    
+                if ($this->tenantModel->updatePassword($tenantId, $hashedPassword)) {
+                    $data['success_message'] = 'Password berhasil diperbarui.';
+                } else {
+                    $data['current_password_error'] = 'Gagal memperbarui password. Silakan coba lagi.';
+                }
+            }
+        }
+    
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/settings', $data);
     }
-
+    
+    
+    
     public function menu($action = 'view') {
         $this->checkLoggedIn();
 

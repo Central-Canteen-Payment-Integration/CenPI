@@ -3,9 +3,9 @@
     <div class="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-10">
         <!-- Profile Image -->
         <div class="absolute -top-14 left-1/2 transform -translate-x-1/2">
-            <div class="w-28 h-28 rounded-full bg-red-500 p-1">
-                <img src="https://via.placeholder.com/100" alt="Profile Image"
-                    class="w-full h-full object-cover rounded-full bg-white">
+            <div class="w-28 h-28 rounded-full p-1">
+                <img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Profile Image"
+                    class="w-full h-full fill-cover rounded-full bg-white">
             </div>
         </div>
         <!-- Profile Title -->
@@ -13,7 +13,7 @@
             <?= htmlspecialchars($data['tenant_name']); ?>
         </h1>
         <p class="text-center text-gray-500 text-sm mt-2">
-            Welcome to your dashboard
+            Welcome to your profile
         </p>
         <!-- Profile Details -->
         <div class="mt-10 grid grid-cols-2 gap-6">
@@ -46,7 +46,7 @@
         <div class="mt-8 text-center">
             <button id="openModalBtn"
                 class="px-6 py-3 bg-red-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-red-600 transition">
-                Update Profile
+                Changes Password
             </button>
         </div>
     </div>
@@ -65,42 +65,53 @@
                 <?= htmlspecialchars($data['success']); ?>
             </div>
         <?php endif; ?>
-        <form id="editProfileForm"method="POST" action="/Tenant/settings">
-        <!-- Tenant Name -->
-        <div class="mb-4">
-            <label for="tenantName" class="block text-sm font-medium text-gray-700">Nama Tenant</label>
-            <input id="tenantName" name="tenant_name" type="text" placeholder="Masukkan Nama Tenant"
-                value="<?= htmlspecialchars($data['tenant_name'] ?? ''); ?>"
-                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <!-- Current Password -->
-        <div class="mb-4">
-            <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
-            <input id="currentPassword" name="current_password" type="password" placeholder="Masukkan Password Saat Ini"
-                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <!-- New Password -->
-        <div class="mb-4">
-            <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-            <input id="newPassword" name="new_password" type="password" placeholder="Masukkan Password Baru"
-                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <!-- Confirm New Password -->
-        <div class="mb-4">
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-            <input id="confirmPassword" name="confirm_password" type="password" placeholder="Konfirmasi Password Baru"
-                class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <!-- Submit Button -->
-        <div class="flex justify-end space-x-4">
+<form id="changePasswordForm" method="POST" action="/Tenant/settings">
+    <!-- Current Password -->
+    <div class="mb-4">
+        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+        <input id="currentPassword" name="current_password" type="password" placeholder="Enter Current Password" required
+            class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <p class="text-red-500 text-sm mt-1">
+            <?= $data['current_password_error'] ?? '' ?>
+        </p>
+    </div>
+    <!-- New Password -->
+    <div class="mb-4">
+        <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+        <input id="newPassword" name="new_password" type="password" placeholder="Enter New Password" required
+            class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <p class="text-red-500 text-sm mt-1">
+            <?= $data['new_password_error'] ?? '' ?>
+        </p>
+    </div>
+    <!-- Confirm New Password -->
+    <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+        <input id="confirmPassword" name="confirm_password" type="password" placeholder="Confirm New Password" required
+            class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <p class="text-red-500 text-sm mt-1">
+            <?= $data['confirm_password_error'] ?? '' ?>
+        </p>
+    </div>
+    <!-- Submit Button -->
+    <div class="flex justify-end space-x-4">
         <button type="button" id="closeModalBtn"
-        class="px-6 py-3 bg-gray-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-gray-600 transition">Cancel</button>
-            <button type="submit"
-                class="px-6 py-3 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition">
-                Save Changes
-            </button>
+            class="px-6 py-3 bg-gray-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-gray-600 transition">
+            Cancel
+        </button>
+        <button type="submit"
+            class="px-6 py-3 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+            Save Changes
+        </button>
+    </div>
+    <!-- Success Message -->
+    <?php if (!empty($data['success_message'])): ?>
+        <div class="text-green-500 mt-4 text-sm">
+            <?= $data['success_message'] ?>
         </div>
-    </form>
+    <?php endif; ?>
+</form>
+
 
     </div>
 </div>

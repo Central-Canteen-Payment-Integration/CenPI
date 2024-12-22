@@ -62,48 +62,38 @@ class TenantModel extends Model
         return $this->db->single();
     }
 
-    public function updateTenantProfile($tenantId, $tenantName, $hashedPassword = null)
+    public function updatePassword($tenantId, $hashedPassword)
     {
         try {
-            $this->db->beginTransaction();
-
-            $sql = "UPDATE TENANT SET tenant_name = :tenant_name";
-
-            if ($hashedPassword) {
-                $sql .= ", password = :password";
-            }
-
-            $sql .= " WHERE id_tenant = :id_tenant";
-
+            $sql = "UPDATE TENANT SET password = :password WHERE id_tenant = :id_tenant";
             $this->db->query($sql);
-            $this->db->bind(':tenant_name', $tenantName);
+            $this->db->bind(':password', $hashedPassword);
             $this->db->bind(':id_tenant', $tenantId);
-
-            if ($hashedPassword) {
-                $this->db->bind(':password', $hashedPassword);
-            }
-
-            $this->db->execute();
-            $this->db->commit();
-
-            return true;
+    
+            return $this->db->execute();
         } catch (Exception $e) {
-            $this->db->rollBack();
-            error_log("Update Tenant Profile Error: " . $e->getMessage());
+            error_log("Update Password Error: " . $e->getMessage());
             return false;
         }
     }
-
+    
     public function verifyPassword($tenantId, $password)
     {
         $sql = "SELECT password FROM TENANT WHERE id_tenant = :id_tenant";
         $this->db->query($sql);
         $this->db->bind(':id_tenant', $tenantId);
-
+    
         $result = $this->db->single();
-
+    
+        if (!$result || !isset($result['password'])) {
+            error_log("Password tidak ditemukan untuk Tenant ID: $tenantId.");
+            return false;
+        }
+    
         return password_verify($password, $result['password']);
     }
+    
+    
 
     public function findTenantByUsernameOrEmail($username, $email)
     {
