@@ -246,7 +246,7 @@
             <div class="mt-6 bg-neutral-50 p-4 rounded-lg">
                 <div class="text-sm flex justify-between">
                     <span>Order Number</span>
-                    <span>${order.ID_TRANSACTION}</span>
+                    <span>#${order.ID_TRANSACTION.substring(order.ID_TRANSACTION.length - 5)}</span>
                 </div>
                 <div class="text-sm flex justify-between mt-1">
                     <span>Order Time</span>
