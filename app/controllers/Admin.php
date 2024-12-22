@@ -120,4 +120,10 @@ class Admin extends Controller
 
         $client->close();
     }
+
+    public function logout() {
+        unset($_SESSION['admin']);
+        header("Location: /Home/menu");
+        exit();
+    }
 }
