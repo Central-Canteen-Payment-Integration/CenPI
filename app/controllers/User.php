@@ -64,9 +64,13 @@ class User extends Controller {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-        
+    
             if (empty($username) || empty($password) || empty($email)) {
                 $data['error'] = 'All fields must be filled.';
+            } elseif (strlen($password) < 8) {
+                $data['error'] = 'Password must be at least 8 characters.';
+            } elseif (strlen($username) < 5) {
+                $data['error'] = 'Username must be at least 5 characters.';
             } else {
                 $existingUsers = $this->userModel->findUserByUsernameOrEmail($username, $email);
                 $userCount = count($existingUsers);
@@ -94,11 +98,12 @@ class User extends Controller {
                 }
             }
         }
-
+    
         $this->view('templates/init', $data);
         $this->view('templates/header', $data);
         $this->view('user/login', $data);
     }
+    
 
     public function verify($token) {
         $verificationMessage = $this->userModel->verifyUser ($token);

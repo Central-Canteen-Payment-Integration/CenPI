@@ -88,11 +88,11 @@ class Tenant extends Controller
             header('Location: /Tenant/index');
             exit;
         }
-
+    
         $data = [
             'error' => ''
         ];
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
@@ -100,9 +100,15 @@ class Tenant extends Controller
             $location_name = $_POST['tenant_location'];
             $location_booth = $_POST['tenant_number'];
             $tenant_name = $_POST['tenant_name'];
-
+    
             if (empty($username) || empty($password) || empty($email) || empty($location_name) || empty($location_booth) || empty($tenant_name)) {
                 $data['error'] = 'All fields must be filled.';
+            } elseif (strlen($password) < 8) {
+                $data['error'] = 'Password must be at least 8 characters.';
+            } elseif (strlen($username) < 5) {
+                $data['error'] = 'Username must be at least 5 characters.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $data['error'] = 'Invalid email format.';
             } else {
                 $existingUsers = $this->tenantModel->findTenantByUsernameOrEmail($username, $email);
                 $userCount = count($existingUsers);
@@ -130,7 +136,10 @@ class Tenant extends Controller
                 }
             }
         }
+        $this->view('templates/init', $data);
+        $this->view('tenant/login_register', $data);
     }
+    
 
     public function index() {
         $this->checkLoggedIn();
