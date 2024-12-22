@@ -1,56 +1,5 @@
 <div class="bg-white">
   <div>
-    <!-- Mobile filter dialog -->
-    <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
-      <div class="fixed inset-0 bg-black/25" aria-hidden="true"></div>
-      <div class="fixed inset-0 z-40 flex">
-        <div class="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-          <div class="flex items-center justify-between px-4">
-            <h2 class="text-lg font-medium text-gray-900">Filters</h2>
-            <button type="button" class="btn btn-ghost">
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Filters -->
-          <form class="mt-4 border-t border-gray-200">
-
-            <div class="border-t border-gray-200 px-4 py-6">
-              <h3 class="-mx-2 -my-3 flow-root">
-                <button type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false">
-                  <span class="font-medium text-gray-900">Color</span>
-                  <span class="ml-6 flex items-center">
-                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-                    </svg>
-                  </span>
-                </button>
-              </h3>
-              <div class="pt-6" id="filter-section-mobile-0">
-                <div class="space-y-6">
-                  <!-- Color options -->
-                  <div class="flex gap-3">
-                    <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox" class="checkbox">
-                    <label for="filter-mobile-color-0" class="text-gray-500">White</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-mobile-color-1" name="color[]" value="beige" type="checkbox" class="checkbox">
-                    <label for="filter-mobile-color-1" class="text-gray-500">Beige</label>
-                  </div>
-                  <div class="flex gap-3">
-                    <input id="filter-mobile-color-2" name="color[]" value="blue" type="checkbox" class="checkbox">
-                    <label for="filter-mobile-color-2" class="text-gray-500">Blue</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between border-b border-gray-200 pb-6">
         <h1 class="text-4xl font-bold tracking-tight text-gray-900">Menu</h1>
@@ -145,7 +94,7 @@
           </form>
 
           <!-- Product grid -->
-          <div class="lg:col-span-3 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="menu-container">
+          <div class="lg:col-span-3 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="menu-container">
           </div>
         </div>
         <div class="flex justify-center mt-4" id="pagination-controls">
