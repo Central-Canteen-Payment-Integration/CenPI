@@ -5,11 +5,12 @@ class Home extends Controller {
     private $cartModel;
 
     public function index() {
-        $data = [
-            'page' => 'Home - CenPI',
-        ];
-        $this->view('templates/init', $data);
-        $this->view('home/index');
+        // $data = [
+        //     'page' => 'Home - CenPI',
+        // ];
+        // $this->view('templates/init', $data);
+        // $this->view('home/index');
+        header('Location: ' . BASE_URL . '/Home/menu');
     }
 
     public function menu() {

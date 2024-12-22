@@ -32,15 +32,6 @@
                             class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                     </div>
                 </div>
-
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="text-sm leading-5">
-                        <a href="#"
-                            class="font-medium text-red-500 hover:text-red-700 focus:outline-none focus:underline transition ease-in-out duration-150">Forgot
-                            your password?</a>
-                    </div>
-                </div>
-
                 <div class="mt-6">
                     <span class="block w-full rounded-md shadow-sm">
                         <button type="submit"
