@@ -241,12 +241,12 @@
                         updateCartDisplay(res.cart);
                         swalert('success', 'Item removed from cart.');
                     } else {
-                        swalert('error', 'Error removing item: ' + res.message);
+                        swalert('error', 'Error removing item from cart: ' + res.message, {timer: 2500});
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + error);
-                    swalert('error', 'An error occurred while removing the item.');
+                    swalert('error', 'An error occurred while removing the item.', {timer: 2500});
                 }
             });
         });
@@ -261,16 +261,16 @@
                         updateCartDisplay(res.cart);
                         swalert('success', 'Cart cleared successfully.');
                     } else {
-                        swalert('error', 'Error clearing cart: ' + res.message);
+                        swalert('error', 'Error clearing cart: ' + res.message, {timer: 2500});
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + error);
-                    swalert('error', 'An error occurred while clearing the cart.');
+                    swalert('error', 'An error occurred while clearing the cart.', {timer: 2500});
                 }
             });
         });
 
-        const cart = <?= json_encode($data['cart']); ?>;
+        const cart = <?= isset($data['cart']) ? json_encode($data['cart']) : "''"; ?>;
         updateCartDisplay(cart);
 	</script>

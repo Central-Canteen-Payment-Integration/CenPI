@@ -138,12 +138,12 @@
                         swalert('success', 'Items added to cart successfully!');
                         updateCartDisplay(res.cart);
                     } else {
-                        swalert('error', 'Failed to add items to cart.');
+                        swalert('error', 'Failed to add items to cart.', {timer: 2500});
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
-                    swalert('error', 'An error occurred while adding items to the cart.');
+                    swalert('error', 'An error occurred while adding items to the cart.', {timer: 2500});
                 }
             });
         });

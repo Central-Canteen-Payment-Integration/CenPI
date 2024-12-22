@@ -7,13 +7,13 @@
 
     snap.pay(snapToken, {
         onSuccess: function(result) {
-            swalert('success', 'Success Payment, You will be redirected to My Orders!', { position: "top-start" });
+            swalert('success', 'Success Payment, You will be redirected to My Orders!', { timer: 2500 });
             setTimeout(function() {
                 window.location.href = baseUrl + '/User/order'; 
             }, 3000);
         },
         onPending: function(result) {
-            swalert('info', 'You will be redirected to My Orders!', { position: "top-start" });
+            swalert('info', 'You will be redirected to My Orders!', { timer: 2500 });
             setTimeout(function() {
                 window.location.href = baseUrl + '/User/order'; 
             }, 3000);
@@ -22,7 +22,7 @@
             console.log(result);
         },
         onClose: function() {
-            swalert('info', 'You will be redirected to My Orders!', { position: "top-start" });
+            swalert('info', 'You will be redirected to My Orders!', { timer: 2500 });
             setTimeout(function() {
                 window.location.href = baseUrl + '/User/order'; 
             }, 3000);

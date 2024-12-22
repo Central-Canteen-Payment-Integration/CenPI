@@ -5,7 +5,7 @@ if (isset($_SESSION['error'])) {
     unset($_SESSION['error']);
 ?>
     <script>
-        swalert('error', '<?php echo $errorMessage; ?>', {position: "top-end"});
+        swalert('error', '<?php echo $errorMessage; ?>', { timer: 2500 });
     </script>
 <?php
 }
@@ -208,12 +208,12 @@ if (isset($_SESSION['error'])) {
                     cartItems = res.cart;
                     swalert('success', 'Cart updated.');
                 } else {
-                    swalert('error', 'Error updating item: ' + res.message);
+                    swalert('error', 'Error updating item: ' + res.message, { timer: 2500 });
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error: ' + error);
-                swalert('error', 'An error occurred while updating the item.');
+                swalert('error', 'An error occurred while updating the item.', { timer: 2500 });
             }
         });
     }
@@ -231,7 +231,7 @@ if (isset($_SESSION['error'])) {
         
         if (paymentOption.value === "Select Payment") {
             event.preventDefault();
-            swalert("error" ,"Please select a payment option.", {position: "top-end"});
+            swalert("error" ,"Please select a payment option.", { timer: 2500 });
         }
     });
 

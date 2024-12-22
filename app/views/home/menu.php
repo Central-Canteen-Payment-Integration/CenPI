@@ -266,12 +266,12 @@
                     updateCartDisplay(res.cart);
                     swalert('success', 'Item added to cart.');
                 } else {
-                    swalert('error', 'Error updating cart: ' + res.message);
+                    swalert('error', 'Error updating cart: ' + res.message, {timer: 2500});
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error: ' + error);
-                swalert('error', 'An error occurred while adding the item.');
+                swalert('error', 'An error occurred while adding the item.', {timer: 2500});
             }
         });
     });

@@ -97,10 +97,13 @@
             }
         });
 
-        const errorMessage = "<?php echo addslashes($data['error']); ?>";
+        const errorMessage = "<?php echo isset($data['error']) ? addslashes($data['error']) : ''; ?>";
+        const message = "<?php echo isset($data['message']) ? addslashes($data['message']) : ''; ?>";
 
         if (errorMessage) {
-            swalert('error', errorMessage);
+            swalert('error', errorMessage, {timer: 2500});
+        } else if (message) {
+            swalert('info', message, {timer: 2500});
         }
     });
 

@@ -90,8 +90,7 @@ class User extends Controller {
                     }
                 } else {
                     if ($this->userModel->register($username, $password, $email)) {
-                        header('Location: /User /login');
-                        exit;
+                        $data['message'] = 'Registration successful. Please verify your account.';
                     } else {
                         $data['error'] = 'Registration failed. Please try again.';
                     }

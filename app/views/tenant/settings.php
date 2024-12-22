@@ -49,42 +49,24 @@
 <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-8">
         <h2 class="text-2xl font-bold text-gray-700 mb-6">Edit Profile</h2>
-        <?php if (!empty($data['error'])): ?>
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-                <?= htmlspecialchars($data['error']); ?>
-            </div>
-        <?php elseif (!empty($data['success'])): ?>
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
-                <?= htmlspecialchars($data['success']); ?>
-            </div>
-        <?php endif; ?>
 <form id="changePasswordForm" method="POST" action="/Tenant/settings">
     <!-- Current Password -->
     <div class="mb-4">
         <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
         <input id="currentPassword" name="current_password" type="password" placeholder="Enter Current Password" required
             class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-red-500 text-sm mt-1">
-            <?= $data['current_password_error'] ?? '' ?>
-        </p>
     </div>
     <!-- New Password -->
     <div class="mb-4">
         <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
         <input id="newPassword" name="new_password" type="password" placeholder="Enter New Password" required
             class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-red-500 text-sm mt-1">
-            <?= $data['new_password_error'] ?? '' ?>
-        </p>
     </div>
     <!-- Confirm New Password -->
     <div class="mb-4">
         <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
         <input id="confirmPassword" name="confirm_password" type="password" placeholder="Confirm New Password" required
             class="mt-1 p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-red-500 text-sm mt-1">
-            <?= $data['confirm_password_error'] ?? '' ?>
-        </p>
     </div>
     <!-- Submit Button -->
     <div class="flex justify-end space-x-4">
@@ -97,12 +79,6 @@
             Save Changes
         </button>
     </div>
-    <!-- Success Message -->
-    <?php if (!empty($data['success_message'])): ?>
-        <div class="text-green-500 mt-4 text-sm">
-            <?= $data['success_message'] ?>
-        </div>
-    <?php endif; ?>
 </form>
 
 
@@ -123,5 +99,16 @@
 
     closeModalBtn.addEventListener('click', () => {
         modal.classList.add('hidden');
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const errorMessage = "<?php echo isset($data['error']) ? addslashes($data['error']) : ''; ?>";
+        const message = "<?php echo isset($data['message']) ? addslashes($data['message']) : ''; ?>";
+
+        if (errorMessage) {
+            swalert('error', errorMessage, {timer: 2500});
+        } else if (message) {
+            swalert('info', message, {timer: 2500});
+        }
     });
 </script>

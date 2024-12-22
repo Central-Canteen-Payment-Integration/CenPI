@@ -164,7 +164,7 @@
         console.log(errorMessage);
 
         if (errorMessage) {
-            swalert('error', errorMessage);
+            swalert('error', errorMessage, {timer: 2500});
             window.history.replaceState(null, null, '<?php echo BASE_URL; ?>/Tenant/login');
         }
     });
