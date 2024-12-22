@@ -20,7 +20,7 @@ class AdminModel extends Model
 
     public function getAllTenants($search = '')
     {
-        $sql = "SELECT ID_TENANT, TENANT_NAME, LOCATION_NAME, LOCATION_BOOTH, ACTIVE, IMAGE_PATH 
+        $sql = "SELECT ID_TENANT, TENANT_NAME, LOCATION_NAME, LOCATION_BOOTH, ACTIVE 
             FROM TENANT 
             WHERE DELETED_AT IS NULL";
 
@@ -78,7 +78,7 @@ class AdminModel extends Model
 
     public function getTenantById($tenantId)
     {
-        $sql = "SELECT ID_TENANT, TENANT_NAME, LOCATION_NAME, LOCATION_BOOTH, ACTIVE, IMAGE_PATH 
+        $sql = "SELECT ID_TENANT, TENANT_NAME, LOCATION_NAME, LOCATION_BOOTH, ACTIVE 
             FROM TENANT 
             WHERE ID_TENANT = :tenantId AND DELETED_AT IS NULL";
 
@@ -98,8 +98,7 @@ class AdminModel extends Model
         return $this->db->resultSet();
     }
 
-    public function updateTransactionStatus($transactionId)
-    {
+    public function updateTransactionStatus($transactionId) {
         $this->db->beginTransaction();
 
         try {

@@ -1,13 +1,6 @@
 <!-- Body Section -->
 <div class="flex items-center justify-center min-h-screen">
     <div class="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-10">
-        <!-- Profile Image -->
-        <div class="absolute -top-14 left-1/2 transform -translate-x-1/2">
-            <div class="w-28 h-28 rounded-full bg-red-500 p-1">
-                <img src="https://via.placeholder.com/100" alt="Profile Image"
-                    class="w-full h-full object-cover rounded-full bg-white">
-            </div>
-        </div>
         <!-- Profile Title -->
         <h1 class="text-3xl font-extrabold text-gray-800 text-center mt-16">
             <?= htmlspecialchars($data['tenant_name']); ?>

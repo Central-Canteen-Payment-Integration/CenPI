@@ -109,9 +109,14 @@ class Checkout extends Controller
                 exit();
             }
         }
+
+        $data = [
+            'userId' => $userId,
+            'transaction' => $transaction
+        ];
     
         $this->view('templates/init');
-        $this->view('checkout/cashpay', ['userId' => $userId]);
+        $this->view('checkout/cashpay', $data);
     }
     public function checkUnpaidCashTransactions()
     {

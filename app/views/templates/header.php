@@ -87,19 +87,12 @@
 					</div>
 					<div class="dropdown dropdown-end">
 						<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-							<?php if (isset($_SESSION['user_image'])) { ?>
-								<div class="w-10 rounded-full flex items-center justify-center">
-									<img src="<?= $_SESSION['user_image']; ?>" alt="User  Image"
-										class="rounded-full w-full h-full object-cover">
-								</div>
-							<?php } else { ?>
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-									stroke-width="1.5" fill="none" stroke="currentColor" class="object-cover">
-									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-									<path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
-									<path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" />
-								</svg>
-							<?php } ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								stroke-width="1.5" fill="none" stroke="currentColor" class="object-cover">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
+								<path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" />
+							</svg>
 						</div>
 						<ul tabindex="0"
 							class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">

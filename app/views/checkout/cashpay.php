@@ -32,8 +32,8 @@
             <h3 class="text-lg font-bold">Show Them Your Unique Code!</h3>
             <?php
             if (isset($_SESSION['user']['id'])) {
-                $userId = $_SESSION['user']['id'];
-                echo "<p class='py-4' style='font-size: 2rem; font-family: \"Courier New\", monospace; color: #ff6600; font-weight: bold;'>" . substr($userId, 0, 6) . "</p>";
+                $id_transaction = $data['transaction']['ID_TRANSACTION'];
+                echo "<p class='py-4' style='font-size: 2rem; font-family: \"Courier New\", monospace; color: #ff6600; font-weight: bold;'>" . substr($id_transaction, 31) . "</p>";
             } else {
                 echo "<p class='py-4'>User ID is not available</p>";
             }

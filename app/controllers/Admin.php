@@ -3,10 +3,12 @@
 class Admin extends Controller
 {
     private $adminModel;
+    private $trxModel;
 
     public function __construct()
     {
         $this->adminModel = $this->model('AdminModel');
+        $this->trxModel = $this->model('TrxModel');
     }
 
     private function checkLoggedIn()
@@ -93,10 +95,29 @@ class Admin extends Controller
     public function terimaUang($transactionId)
     {
         if ($this->adminModel->updateTransactionStatus($transactionId)) {
+            $this->alertTenant($transactionId);
             header('Location: /admin/cash');
             exit;
         } else {
             echo "Failed to update the transaction status.";
         }
+    }
+
+    private function alertTenant($id_transaction) {
+        $tenant = $this->trxModel->getTenant($id_transaction);
+
+        $webSocketUrl = "wss://websocket.cenpi.my.id/?client_id=" . rand();
+        $client = new WebSocket\Client($webSocketUrl);
+    
+        foreach ($tenant as $x) {
+            $message = json_encode([
+                'client_id' => $x['ID_TENANT'],
+                'message' => 'New Orders.'
+            ]);
+    
+            $client->send($message);
+        }
+
+        $client->close();
     }
 }

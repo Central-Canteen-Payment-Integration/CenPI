@@ -23,7 +23,6 @@
     <table class="min-w-full divide-y divide-gray-200" id="orders-table">
       <thead class="bg-red-500">
         <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Image</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Tenant Name</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Location Name</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Location Booth</th>
@@ -33,9 +32,6 @@
       <tbody class="bg-white divide-y divide-gray-200">
         <?php foreach ($data['tenants'] as $tenant): ?>
           <tr class="hover:bg-gray-100">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              <img src="<?= MENU_URL . $tenant['IMAGE_PATH'] ?>" alt="Tenant Image" class="w-12 h-12 rounded-full">
-            </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= $tenant['TENANT_NAME']; ?></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= $tenant['LOCATION_NAME']; ?></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= $tenant['LOCATION_BOOTH']; ?></td>

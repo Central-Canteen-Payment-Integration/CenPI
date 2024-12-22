@@ -86,7 +86,6 @@ class TrxModel extends Model
                     m.name AS menu_name,
                     m.image_path AS menu_image_path,
                     tn.tenant_name,
-                    tn.image_path AS tenant_image_path,
                     tn.location_name,
                     tn.location_booth
                 FROM 
@@ -136,7 +135,6 @@ class TrxModel extends Model
                 'MENU_NAME' => $row['MENU_NAME'],
                 'MENU_IMAGE_PATH' => $row['MENU_IMAGE_PATH'],
                 'TENANT_NAME' => $row['TENANT_NAME'],
-                'TENANT_IMAGE_PATH' => $row['TENANT_IMAGE_PATH'],
                 'LOCATION_NAME' => $row['LOCATION_NAME'],
                 'LOCATION_BOOTH' => $row['LOCATION_BOOTH']
             ];
