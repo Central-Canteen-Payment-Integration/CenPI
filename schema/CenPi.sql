@@ -5,8 +5,6 @@ CREATE TABLE USERS (
     password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
     token_activation VARCHAR2(36),
-    forgot_password_token VARCHAR2(36),
-    token_expiry TIMESTAMP DEFAULT NULL,
     image_path VARCHAR2(36)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -18,8 +16,6 @@ CREATE TABLE TENANT (
     username VARCHAR2(30) NOT NULL UNIQUE,
     password VARCHAR2(60) NOT NULL,
     active NUMBER(1) DEFAULT 0 CHECK (active IN (0, 1)),
-    forgot_password_token VARCHAR2(36),
-    token_expiry TIMESTAMP DEFAULT NULL,
     location_name VARCHAR2(20),
     location_booth VARCHAR2(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
