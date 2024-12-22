@@ -491,7 +491,7 @@ class Tenant extends Controller
     // logout functions
     public function logout() {
         $this->checkLoggedIn();
-        session_destroy();
+        unset($_SESSION['tenant']);
         header("Location: /Tenant");
         exit();
     }

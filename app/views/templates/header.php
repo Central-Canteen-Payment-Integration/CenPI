@@ -7,9 +7,9 @@
 					<img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="Cenπ Logo" class="max-md:h-12 h-16">
 				</a>
 			</div>
-			<div class="navbar-end gap-2 max-md:hidden">
+			<div class="navbar-end gap-2">
 				<?php if (!isset($_SESSION['user'])) { ?>
-					<a class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) || (strpos($_SERVER['REQUEST_URI'], 'register') !== false) ? 'hidden' : ''; ?>" href="<?= BASE_URL ?>/User/login" onclick="handleRedirect(event, '<?= BASE_URL ?>/User/login')">
+					<a class="max-md:hidden <?php echo (strpos($_SERVER['REQUEST_URI'], 'login') !== false) || (strpos($_SERVER['REQUEST_URI'], 'register') !== false) ? 'hidden' : ''; ?>" href="<?= BASE_URL ?>/User/login" onclick="handleRedirect(event, '<?= BASE_URL ?>/User/login')">
 						<button
 							class="group/button relative inline-flex items-center justify-center overflow-hidden rounded-md bg-red-500 backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-red-600/50 border border-white/20">
 							<span class="text-md">Login</span>
@@ -45,8 +45,8 @@
 					</div>
 
 				<?php } else { ?>
-					<div class="dropdown dropdown-end hidden md:inline">
-						<div class="drawer drawer-end hidden md:block">
+					<div class="dropdown dropdown-end">
+						<div class="drawer drawer-end">
 							<input id="cart-drawer" type="checkbox" class="drawer-toggle" />
 							<div class="drawer-content">
 								<label for="cart-drawer" class="drawer-button btn btn-ghost btn-circle">
@@ -61,7 +61,7 @@
 
 							<div class="drawer-side z-50">
 								<label for="cart-drawer" class="drawer-overlay"></label>
-								<div class="bg-white text-base-content min-h-full w-3/12 p-4 pr-6">
+								<div class="bg-white text-base-content min-h-full w-2/3 md:w-3/12 p-4 pr-6">
 									<div class="flex justify-between items-center">
 										<h2 class="text-lg font-medium text-secondary">Food Cart</h2>
 										<button type="button" class="text-gray-500 hover:text-gray-700"
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="dropdown dropdown-end">
+					<div class="dropdown dropdown-end max-md:hidden">
 						<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
 								stroke-width="1.5" fill="none" stroke="currentColor" class="object-cover">
@@ -106,21 +106,20 @@
 		</div>
 		<div class="btm-nav z-10 md:hidden">
 			<button onclick="window.location.href='/Home/menu'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'menu') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-				</svg>
+			<svg  xmlns="http://www.w3.org/2000/svg"  class="h-5 w-5"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-tools-kitchen-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3" /></svg>
 				<span class="btm-nav-label">Menu</span>
 			</button>
 			<button onclick="window.location.href='/User/order'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'order') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-				</svg>
+			<svg  xmlns="http://www.w3.org/2000/svg"  class="h-5 w-5"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M11.5 17h-5.5v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /><path d="M15 19l2 2l4 -4" /></svg>
 				<span class="btm-nav-label">Order</span>
 			</button>
 			<button onclick="window.location.href='/User/profile'" class="<?php echo (strpos($_SERVER['REQUEST_URI'], 'profile') !== false) ? 'text-primary active' : 'text-secondary'; ?>">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"
+								stroke-width="2" fill="none" stroke="currentColor">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
+								<path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" />
+							</svg>
 				<span class="btm-nav-label">Profile</span>
 			</button>
 		</div>

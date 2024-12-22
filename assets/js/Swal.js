@@ -7,10 +7,10 @@ function swalert(icon, title, options = {}) {
     const defaultOptions = {
         title: title,
         icon: icon,
-        position: 'bottom-start', // Set position to bottom left
+        position: 'top-end', // Set position to bottom left
         toast: true,
         showConfirmButton: false,
-        timer: 3000,
+        timer: 1000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;

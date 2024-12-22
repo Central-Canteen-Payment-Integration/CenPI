@@ -15,7 +15,7 @@ if (isset($_SESSION['error'])) {
     <form action="<?= BASE_URL . '/Checkout/initialize'; ?>" method="POST" id="formtest">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Tampilan Kiri (Profil Pembeli & Pesanan) -->
-            <div class="col-span-2 bg-white p-4 rounded-lg shadow sm:ml-5 sm:mr-6">
+            <div class="col-span-2 bg-white p-4 rounded-lg shadow ml-2 max-md:mr-6">
                 <!-- Profil Pembeli -->
                 <div class="mb-4">
                     <h2 class="text-base font-semibold mb-2">Tipe Pesanan</h2>
@@ -31,7 +31,7 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
             <!-- Tampilan Kanan Ringkasan Pesanan -->
-            <div class="bg-white p-4 rounded-lg shadow h-fit mr-6 sm:ml-5 sm:mr-2">
+            <div class="bg-white p-4 rounded-lg shadow h-fit mr-2 max-md:ml-2">
                 <h2 class="text-base font-semibold mb-3">Ringkasan Pesanan</h2>
                 <div class="detail-order">
                     <div class="flex justify-between text-sm mb-3">

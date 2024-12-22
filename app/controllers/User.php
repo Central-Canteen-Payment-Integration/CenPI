@@ -166,7 +166,7 @@ class User extends Controller {
     }
 
     public function logout() {
-        session_destroy();
+        unset($_SESSION['user']);
         header("Location: /Home/menu");
         exit();
     }

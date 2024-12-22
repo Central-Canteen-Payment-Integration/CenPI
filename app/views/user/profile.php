@@ -57,9 +57,6 @@
                 <div class="flex justify-end space-x-4">
                     <button id="editButton" type="button" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary" onclick="toggleEdit()">Edit Profile</button>
                     <button id="saveButton" type="submit" class="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-secondary hidden">Save Changes</button>
-                    <a href="/home" class="w-full px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-neutral text-center block">
-                        Back To Home
-                    </a>
                 </div>
             </form>
 
@@ -89,4 +86,8 @@
             </script>
         </div>
     </div>
+    
+</div>
+<div class="flex item-center justify-center mt-4 md:hidden">
+    <button type="button" class="px-6 py-2 bg-[#ff0505] text-white font-semibold rounded-lg hover:bg-[#9b2424]" onclick="window.location.href='<?= BASE_URL ?>/User/logout'">Logout</button>
 </div>
