@@ -164,7 +164,7 @@
             console.error('Order not found:', orderId);
             return;
         }
-
+        console.log(order);
         const modalContent = `
         <div class="w-[400px] bg-white shadow-lg rounded-lg p-4 text-neutral-950">
             <div class="flex items-center mb-4">
@@ -222,7 +222,7 @@
                         <span class="font-semibold">Rp ${order.TRX_PRICE}</span>
                     </div>
 
-                    ${order.TAKEAWAY === 1 ? 
+                    ${order.TAKEAWAY === "1" ? 
                         `<div class="flex justify-between text-sm">
                             <span>Takeaway Fee</span>
                             <span class="text-red-500 font-semibold">+ Rp ${order.DETAILS.reduce((total, item) => total + (item.QTY * 1000), 0)} </span>
@@ -231,6 +231,12 @@
                             <span>Method</span>
                             <span class="text-primary-500 font-semibold">Dine In</span>
                         </div>`}
+                    ${order.TRX_METHOD === 'qris' ? 
+                    `<div class="flex justify-between text-sm">
+                        <span>Admin Fee</span>
+                        <span class="text-red-500 font-semibold">+ Rp ${order.TRX_ADMIN} </span>
+                    </div>` : 
+                    ''}
                 </div>
 
             <div class="mt-4 pt-2 border-t border-dashed">

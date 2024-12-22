@@ -78,6 +78,7 @@ class TrxModel extends Model
                     t.trx_method,
                     t.midtrans_token,
                     t.trx_status,
+                    t.trx_admin,
                     td.qty,
                     td.qty_price,
                     td.pkg_price,
@@ -117,6 +118,7 @@ class TrxModel extends Model
                 $transactions[$transactionId] = [
                     'ID_TRANSACTION' => $row['ID_TRANSACTION'],
                     'TRX_PRICE' => $row['TRX_PRICE'],
+                    'TRX_ADMIN' => $row['TRX_ADMIN'],
                     'TRX_DATETIME' => $formattedDateTime,
                     'TAKEAWAY' => $row['TAKEAWAY'],
                     'TRX_METHOD' => $row['TRX_METHOD'],

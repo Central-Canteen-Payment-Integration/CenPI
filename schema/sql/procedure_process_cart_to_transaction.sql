@@ -26,6 +26,10 @@ BEGIN
     JOIN MENU m ON c.id_menu = m.id_menu 
     WHERE c.id_user = p_id_user;
 
+    IF p_trx_method = 'qris' THEN
+        v_trx_price := v_trx_price + 2000;
+    END IF;
+
     INSERT INTO TRANSACTION (
         id_transaction, 
         id_user, 
@@ -33,7 +37,8 @@ BEGIN
         trx_datetime, 
         takeaway, 
         trx_method, 
-        trx_status
+        trx_status,
+        trx_admin
     ) 
     VALUES (
         p_id_transaction, 
@@ -42,7 +47,8 @@ BEGIN
         SYSDATE, 
         p_takeaway, 
         p_trx_method, 
-        'Unpaid'
+        'Unpaid',
+        2000
     );
 
     FOR cart_item IN (

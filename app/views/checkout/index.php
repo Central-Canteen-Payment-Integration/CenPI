@@ -42,6 +42,10 @@ if (isset($_SESSION['error'])) {
                         <p>Takeaway</p>
                         <p id="takeaway-price">Rp X.XXX</p>
                     </div>
+                    <div class="flex justify-between text-sm mb-3">
+                        <p>Total</p>
+                        <p id="admin-price">Rp X.XXXX</p>
+                    </div>
                     <!-- Total Harga -->
                     <div class="flex justify-between font-semibold text-sm">
                         <p>Total</p>
@@ -161,7 +165,7 @@ if (isset($_SESSION['error'])) {
         });
     });
 
-    function renderOrderDetail(cartItems) {
+    function renderOrderDetail(cartItems, paymentOption) {
         let subtotal = 0;
         let takeaway = 0;
         const orderType = document.querySelector('input[name="order-type"]:checked');
@@ -178,7 +182,13 @@ if (isset($_SESSION['error'])) {
         }
         document.getElementById('subtotal-price').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
         document.getElementById('takeaway-price').innerText = `Rp ${takeaway.toLocaleString('id-ID')}`;
-        const total = subtotal + takeaway;
+        let total = subtotal + takeaway;
+        if (paymentOption === "QRIS") {
+            total += 2000;
+            document.getElementById('admin-price').innerText = `Rp ${(2000).toLocaleString('id-ID')}`;
+        } else {
+            document.getElementById('admin-price').innerText = `Rp ${(0).toLocaleString('id-ID')}`;
+        }
         document.getElementById('total-price').innerText = `Rp ${total.toLocaleString('id-ID')}`;
     }
 
@@ -219,11 +229,16 @@ if (isset($_SESSION['error'])) {
     }
 
     const orderTypeButtons = document.querySelectorAll('input[name="order-type"]');
+    const paymentOption = document.querySelector('select[name="payment-option"]');
     
     orderTypeButtons.forEach(button => {
         button.addEventListener('change', () => {
-            renderOrderDetail(cartItems);
+            renderOrderDetail(cartItems, paymentOption.value);
         });
+    });
+
+    paymentOption.addEventListener('change', item => {
+        renderOrderDetail(cartItems, paymentOption.value);
     });
 
     document.getElementById('pay-button').addEventListener('click', function(event) {
