@@ -22,19 +22,9 @@
             <!-- Form -->
             <form id="profileForm" class="space-y-6" method="POST" action="<?= BASE_URL ?>/User/profile">
                 <div>
-                    <label for="name" class="block text-sm font-semibold text-secondary">Name</label>
-                    <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
+                    <label for="name" class="block text-sm font-semibold text-secondary">Username</label>
+                    <input type="text" id="name" name="username" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none"
                         value="<?= htmlspecialchars($data['username']); ?>" readonly>
-                </div>
-                <div>
-                    <label for="birthdate" class="block text-sm font-semibold text-secondary">Birthdate</label>
-                    <input type="date" id="birthdate" name="birthdate" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?= htmlspecialchars($data['birthday'] ?? ''); ?>" readonly>
-                </div>
-                <div>
-                    <label for="phone" class="block text-sm font-semibold text-secondary">Phone</label>
-                    <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:ring focus:ring-accent"
-                        value="<?= htmlspecialchars($data['phone_number'] ?? ''); ?>" readonly>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-semibold text-secondary">Email</label>

@@ -134,6 +134,8 @@ $is_open = $_SESSION['is_open'];
                     socket.addEventListener('message', function (event) {
                         let data = JSON.parse(event.data);
                         swalert('info', data.message);
+                        const audio = new Audio('<?= BASE_URL; ?>/assets/audio/notification.mp3');
+                        audio.play();
                     });
 
                     socket.addEventListener('error', function (event) {

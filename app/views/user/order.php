@@ -10,7 +10,6 @@
                 <?php foreach ($data['orders'] as $order): ?>
                     <?php
                     $statuses = [
-                        'Pending' => 0,
                         'Accept' => 0,
                         'Pickup' => 0
                     ];
@@ -30,7 +29,8 @@
                         'Accept' => 'Cooking',
                         'Pickup' => 'Ready to Pickup',
                         'Completed' => 'Completed',
-                        'Cancelled' => 'Cancelled'
+                        'Cancelled' => 'Cancelled',
+                        'Unpaid' => 'Unpaid'
                     ];
 
                     $overallStatusDisplay = $statusDisplayMap[$overallStatus];
@@ -200,9 +200,6 @@
                         <div class="mt-6 flex border-t border-dashed pt-4"> 
                             <img src="<?= MENU_URL ?>${item.MENU_IMAGE_PATH || 'placeholder.jpg'}" alt="Product" class="rounded-md object-cover" style="width: 120px; height: 120px;" />
                             <div class="ml-6 flex-1">
-                                <div class="flex justify-between">
-                                    <span class="text-primary-500 text-xs font-bold">${order.TRX_STATUS === 'Completed' ? 'New!' : 'Cancelled'}</span>
-                                </div>
                                 <h4 class="font-semibold">${item.MENU_NAME}</h4>
                                 <p class="text-sm text-neutral-500">${item.NOTES || 'No notes'}</p>
                                 <div class="mt-4 flex flex-col"> <!-- Increased margin-top for more space -->

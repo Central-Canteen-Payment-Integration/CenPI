@@ -210,7 +210,7 @@
                     <h2 class="text-lg font-medium text-red-600 mb-2">Your cart is empty</h2>
                     <p class="text-center text-sm text-gray-500 mb-6">Looks like you have not added anything to your cart. Go ahead & explore our menu.</p>
                     <div class="mt-4">
-                        <button type="button" onclick="document.getElementById('cart-drawer').checked = false" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
+                        <button type="button" onclick="goToMenu()" class="w-full flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 text-base font-medium text-red-600 hover:bg-red-100">
                             Go to Menu
                         </button>
                     </div>
@@ -273,4 +273,13 @@
 
         const cart = <?= isset($data['cart']) ? json_encode($data['cart']) : "''"; ?>;
         updateCartDisplay(cart);
+
+		function goToMenu() {
+			const currentUrl = window.location.pathname;
+			if (currentUrl !== '/Home/menu') {
+				window.location.href = '/Home/menu';
+			} else {
+				document.getElementById('cart-drawer').checked = false;
+			}
+		}
 	</script>

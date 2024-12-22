@@ -14,12 +14,6 @@ class NotificationServer implements MessageComponentInterface
         $id = $queryArray['client_id'] ?? null;
     
         if ($id) {
-            if (isset($this->clients[$id]) && $this->clients[$id]->count() > 0) {
-                $conn->send(json_encode(['error' => 'A connection for this client already exists.']));
-                $conn->close();
-                return;
-            }
-    
             $this->clients[$id] = new \SplObjectStorage;
             $this->clients[$id]->attach($conn);
             echo "Connection established for client {$id}\n";

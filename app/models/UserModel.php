@@ -99,32 +99,16 @@ class UserModel extends Model {
         return $this->db->single();
     }
 
-    public function updateUserProfile($userId, $username, $birthdate, $phone_number, $hashedNewPassword = null) {
+    public function updateUserProfile($userId, $hashedNewPassword) {
         $this->db->beginTransaction();
 
         try {
-            if ($hashedNewPassword !== null) {
-                $sql = "UPDATE USERS 
-                        SET username = :username, 
-                            birthdate = TO_DATE(:birthdate, 'YYYY-MM-DD'), 
-                            phone_number = :phone_number, 
-                            PASSWORD = :PASSWORD 
-                        WHERE id_user = :id_user";
+            $sql = "UPDATE USERS 
+                    SET password = :password 
+                    WHERE id_user = :id_user";
 
-                $this->db->query($sql);
-                $this->db->bind(':PASSWORD', $hashedNewPassword);
-            } else {
-                $sql = "UPDATE USERS 
-                        SET username = :username, 
-                            birthdate = TO_DATE(:birthdate, 'YYYY-MM-DD'), 
-                            phone_number = :phone_number, 
-                        WHERE id_user = :id_user";
-                $this->db->query($sql);
-            }
-
-            $this->db->bind(':username', $username);
-            $this->db->bind(':birthdate', $birthdate);
-            $this->db->bind(':phone_number', $phone_number);
+            $this->db->query($sql);
+            $this->db->bind(':password', $hashedNewPassword);
             $this->db->bind(':id_user', $userId);
 
             $this->db->execute();
@@ -135,6 +119,15 @@ class UserModel extends Model {
             $this->db->rollBack();
             throw $e;
         }
+    }
+
+    public function verifyPassword($userId, $password) {
+        $sql = "SELECT password FROM USERS WHERE id_user = :id_user";
+        $this->db->query($sql);
+        $this->db->bind(':id_user', $userId);
+        
+        $user = $this->db->single();
+        return password_verify($password, $user['PASSWORD']);
     }
 
     public function findUserByUsernameOrEmail($username, $email) {
