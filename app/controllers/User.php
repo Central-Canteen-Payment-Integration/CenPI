@@ -181,6 +181,7 @@ class User extends Controller {
         if (isset($_SESSION['user'])) {
             $user = $_SESSION['user'];
             $this->trxModel->checkExpiredOrder($user['id']);
+            $this->trxModel->checkCompletedOrder($user['id']);
             $data['cart'] = $this->cartModel->getCartUser($user['id']); 
             $data['orders'] = $this->trxModel->getTransactionByUserId($user['id']);
         }

@@ -232,7 +232,7 @@ class TrxModel extends Model
                     WHERE id_user = :id_user
                     AND trx_status = 'Unpaid'
                     AND trx_datetime <= SYSTIMESTAMP - INTERVAL '30' MINUTE";
-            
+
             $this->db->query($sql);
             $this->db->bind(':id_user', $userId);
             
@@ -246,6 +246,55 @@ class TrxModel extends Model
         } catch (Exception $e) {
             $this->db->rollBack();
             throw new Exception("Failed to update expired orders: " . $e->getMessage());
+        }
+    }
+
+    public function checkCompletedOrder($userId) {
+        try {
+            $this->db->beginTransaction();
+    
+            $getTransactionsSql = "SELECT id_transaction
+                                   FROM TRANSACTION
+                                   WHERE id_user = :id_user
+                                   AND trx_status != 'Unpaid'
+                                   AND trx_status != 'Completed'";
+            
+            $this->db->query($getTransactionsSql);
+            $this->db->bind(':id_user', $userId);
+            $transactions = $this->db->resultSet();
+    
+            foreach ($transactions as $transaction) {
+                $transactionId = $transaction['ID_TRANSACTION'];
+    
+                $checkSql = "SELECT COUNT(*) AS incomplete_count
+                             FROM TRANSACTION_DETAIL
+                             WHERE id_transaction = :id_transaction
+                             AND status != 'Completed'";
+    
+                $this->db->query($checkSql);
+                $this->db->bind(':id_transaction', $transactionId);
+                $result = $this->db->single();
+    
+                if ($result['INCOMPLETE_COUNT'] == 0) {
+                    $updateSql = "UPDATE TRANSACTION
+                                  SET trx_status = 'Completed'
+                                  WHERE id_transaction = :id_transaction";
+                    
+                    $this->db->query($updateSql);
+                    $this->db->bind(':id_transaction', $transactionId);
+                    
+                    if (!$this->db->execute()) {
+                        $this->db->rollBack();
+                        return false;
+                    }
+                }
+            }
+    
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw new Exception("Failed to update completed orders: " . $e->getMessage());
         }
     }
 

@@ -26,7 +26,7 @@
         <?php foreach ($data['transactions'] as $transaction): ?>
           <tr class="hover:bg-gray-50">
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              <?= substr($transaction['ID_USER'], 0, 6); ?>
+              <?= substr($transaction['ID_TRANSACTION'], 31); ?>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= $transaction['USERNAME']; ?></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= number_format($transaction['TRX_PRICE'], 0, ',', '.'); ?></td>
