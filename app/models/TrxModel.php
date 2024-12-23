@@ -388,13 +388,19 @@ class TrxModel extends Model
         return $this->db->resultSet();
     }
 
-    public function updateTransactionStatus($id_transaction, $newStatus) {
-        $query = "UPDATE TRANSACTION_DETAIL 
-                  SET STATUS = :new_status
-                  WHERE ID_TRANSACTION = :id_transaction";
+    public function updateTransactionStatus($id_transaction, $id_tenant, $newStatus) {
+        $query = "UPDATE TRANSACTION_DETAIL
+              SET STATUS = :new_status
+              WHERE ID_TRANSACTION = :id_transaction
+              AND ID_MENU IN (
+                  SELECT ID_MENU
+                  FROM MENU
+                  WHERE MENU.ID_TENANT = :id_tenant
+              )";
     
         $this->db->query($query);
         $this->db->bind(':new_status', $newStatus);
+        $this->db->bind(':id_tenant', $id_tenant);
         $this->db->bind(':id_transaction', $id_transaction);
         if($this->db->execute()) {
             return true;

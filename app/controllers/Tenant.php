@@ -261,6 +261,7 @@ class Tenant extends Controller
 
     private function viewOrders() {
         $transactions = $this->trxModel->getTransactionsByTenant($_SESSION['tenant']['id']);
+        $data['tenant'] = $_SESSION['tenant'];
     
         $data['transactions'] = $this->groupTransactions($transactions);
         $this->view('templates/init');
@@ -274,12 +275,13 @@ class Tenant extends Controller
         }
 
         $id_transaction = isset($_POST['id_transaction']) ? $_POST['id_transaction'] : null;
+        $id_menu = isset($_POST['id_menu']) ? $_POST['id_menu'] : null;
 
         if (empty($id_transaction)) {
             echo json_encode(['status' => 'error', 'message' => 'Invalid id Transaction!']);
         }
     
-        $updated = $this->trxModel->updateTransactionStatus($id_transaction, $action);
+        $updated = $this->trxModel->updateTransactionStatus($id_transaction, $id_menu, $action);
 
         if ($updated) {
             echo json_encode(['status' => 'success', 'message' => 'Transaction updated successfully!']);

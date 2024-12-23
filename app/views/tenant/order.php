@@ -22,7 +22,7 @@
           }
         }
       ?>
-      <div class="order-card flex flex-col justify-between relative bg-white border-4 border-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Cooking' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 rounded-lg shadow-lg p-6" data-id="<?= $transaction['ID_TRANSACTION'] ?>">
+      <div class="order-card flex flex-col justify-between relative bg-white border-4 border-<?= $overallStatus === 'Pending' ? 'red' : ($overallStatus === 'Cooking' ? 'yellow' : ($overallStatus === 'Ready to Pickup' ? 'blue' : 'green')) ?>-500 rounded-lg shadow-lg p-6" data-id="<?=$transaction['ID_TRANSACTION'] ?>" data-id-menu="<?=$data['tenant']['id'] ?>">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-800">Order #<?= substr($transaction['ID_TRANSACTION'], 31) ?></h2>
           <span class="text-sm text-gray-500"><?= $transaction['TRX_DATETIME'] ?></span>
@@ -66,6 +66,7 @@
     const card = button.closest('.order-card');
     const statusElement = card.querySelector('.status');
     const idTransaction = card.getAttribute('data-id');
+    const idMenu = card.getAttribute('data-id-menu');
 
     // SweetAlert confirmation
     Swal.fire({
@@ -79,7 +80,7 @@
         $.ajax({
           url: '/Tenant/order/accept',
           type: 'POST',
-          data: { id_transaction: idTransaction },
+          data: { id_transaction: idTransaction, id_menu: idMenu },
           success: function(response) {
             const data = JSON.parse(response);  
             if (data.status === 'success') {
@@ -109,6 +110,7 @@
     const card = button.closest('.order-card');
     const statusElement = card.querySelector('.status');
     const idTransaction = card.getAttribute('data-id');
+    const idMenu = card.getAttribute('data-id-menu');
 
     Swal.fire({
       title: 'Ready to Pickup?',
@@ -121,7 +123,7 @@
         $.ajax({
           url: '/Tenant/order/pickup',
           type: 'POST',
-          data: { id_transaction: idTransaction },
+          data: { id_transaction: idTransaction, id_menu: idMenu },
           success: function(response) {
             const data = JSON.parse(response);
             if (data.status === 'success') {
@@ -151,6 +153,7 @@
     const card = button.closest('.order-card');
     const statusElement = card.querySelector('.status');
     const idTransaction = card.getAttribute('data-id');
+    const idMenu = card.getAttribute('data-id-menu');
 
     Swal.fire({
       title: 'Complete Order?',
@@ -163,7 +166,7 @@
         $.ajax({
           url: '/Tenant/order/complete',
           type: 'POST',
-          data: { id_transaction: idTransaction },
+          data: { id_transaction: idTransaction, id_menu: idMenu },
           success: function(response) {
             const data = JSON.parse(response);
             if (data.status === 'success') {
