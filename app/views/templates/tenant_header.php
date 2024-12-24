@@ -39,7 +39,7 @@ $is_open = $_SESSION['is_open'];
                     <!-- History Transaksi -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-history text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Tenant/order/history" class="flex-1">History Transaksi</a>
+                        <a href="<?= BASE_URL; ?>/Tenant/order/history" class="flex-1">Transaction History</a>
                     </li>
 
                     <li class="text-gray-600 font-medium px-6 py-3 flex flex-col space-y-1">

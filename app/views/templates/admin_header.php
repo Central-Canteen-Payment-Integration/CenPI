@@ -16,7 +16,7 @@
                     <!-- Dashboard -->
                     <li class="text-gray-600 font-medium px-6 py-3 flex items-center space-x-3 hover:bg-red-100">
                         <i class="ti ti-home text-gray-500"></i>
-                        <a href="<?= BASE_URL; ?>/Admin/index" class="flex-1">List Tenant</a>
+                        <a href="<?= BASE_URL; ?>/Admin/index" class="flex-1">Tenant List</a>
                     </li>
 
                     <!-- Cash Management -->

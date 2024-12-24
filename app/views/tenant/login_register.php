@@ -78,8 +78,8 @@
 
                     <!-- Nama Tenant -->
                     <div class="w-full md:w-1/2 px-2 mt-4 md:mt-0">
-                        <label for="tenant-name" class="block text-sm font-medium leading-5 text-gray-700">Nama
-                            Tenant</label>
+                        <label for="tenant-name" class="block text-sm font-medium leading-5 text-gray-700">Tenant
+                            Name</label>
                         <div class="mt-1 rounded-md shadow-sm">
                             <input id="tenant-name" name="tenant_name" type="text" required=""
                                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
@@ -90,12 +90,12 @@
                 <div class="flex flex-wrap -mx-2 mt-4">
                     <!-- Location Tenant -->
                     <div class="w-full md:w-1/2 px-2">
-                        <label for="tenant-location" class="block text-sm font-medium leading-5 text-gray-700">Location
-                            Tenant</label>
+                        <label for="tenant-location" class="block text-sm font-medium leading-5 text-gray-700">Tenant
+                            Location</label>
                         <div class="mt-1 rounded-md shadow-sm">
                             <select id="tenant-location" name="tenant_location" required=""
                                 class="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                                <option value="" disabled selected>Pilih Lokasi</option>
+                                <option value="" disabled selected>Pick Your Location</option>
                                 <option value="Kantin Bawah">Kantin Bawah</option>
                                 <option value="Kantin Teknik">Kantin Teknik</option>
                             </select>
@@ -104,8 +104,8 @@
 
                     <!-- No Tenant -->
                     <div class="w-full md:w-1/2 px-2 mt-4 md:mt-0">
-                        <label for="tenant-number" class="block text-sm font-medium leading-5 text-gray-700">No
-                            Tenant</label>
+                        <label for="tenant-number" class="block text-sm font-medium leading-5 text-gray-700">Tenant
+                            Number</label>
                         <div class="mt-1 rounded-md shadow-sm">
                             <input id="tenant-number" name="tenant_number" type="number" required=""
                                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">

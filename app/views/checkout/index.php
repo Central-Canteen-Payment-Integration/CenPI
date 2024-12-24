@@ -18,7 +18,7 @@ if (isset($_SESSION['error'])) {
             <div class="col-span-2 bg-white p-4 rounded-lg shadow ml-2 max-md:mr-6">
                 <!-- Profil Pembeli -->
                 <div class="mb-4">
-                    <h2 class="text-base font-semibold mb-2">Tipe Pesanan</h2>
+                    <h2 class="text-base font-semibold mb-2">Order Type</h2>
                     <div class="join">
                         <input class="join-item btn" type="radio" name="order-type" value="Dine In" aria-label="Dine In" checked/>
                         <input class="join-item btn" type="radio" name="order-type" value="Takeaway" aria-label="Takeaway" />
@@ -26,13 +26,13 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <!-- Pesanan -->
                 <div>
-                    <h2 class="text-base font-semibold mb-2">Pesanan Anda</h2>
+                    <h2 class="text-base font-semibold mb-2">Your Order</h2>
                     <div id="order-list"></div>
                 </div>
             </div>
             <!-- Tampilan Kanan Ringkasan Pesanan -->
             <div class="bg-white p-4 rounded-lg shadow h-fit mr-2 max-md:ml-2">
-                <h2 class="text-base font-semibold mb-3">Ringkasan Pesanan</h2>
+                <h2 class="text-base font-semibold mb-3">Order Summary</h2>
                 <div class="detail-order">
                     <div class="flex justify-between text-sm mb-3">
                         <p>Subtotal</p>
@@ -54,14 +54,14 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <!-- Metode Pembayaran -->
                 <div class="mb-2 mt-3">
-                    <label class="block font-medium mb-2">Metode Pembayaran</label>
+                    <label class="block font-medium mb-2">Payment Method</label>
                     <select class="select select-bordered w-full max-w-xs" name="payment-option">
                         <option disabled selected>Select Payment</option>
                         <option>Cash</option>
                         <option>QRIS</option>
                     </select>
                 </div>
-                <button id="pay-button" class="btn btn-primary mt-4 w-full text-white bg-red-600 hover:bg-red-700 text-sm">Proses Sekarang!</button>
+                <button id="pay-button" class="btn btn-primary mt-4 w-full text-white bg-red-600 hover:bg-red-700 text-sm">Process Now!</button>
             </div>
         </div>
     </form>
@@ -130,7 +130,7 @@ if (isset($_SESSION['error'])) {
                     </div>
                     <p class="font-medium ml-4 text-sm">Rp ${itemPrice.toLocaleString('id-ID')}</p>
                 </div>
-                <textarea class="notes textarea textarea-bordered mt-3 w-full text-xs" data-id="${item.ID_CART}" placeholder="Tambah catatan untuk pesanan ini">${item.NOTES ? item.NOTES : ''}</textarea>
+                <textarea class="notes textarea textarea-bordered mt-3 w-full text-xs" data-id="${item.ID_CART}" placeholder="Add Notes For this Order">${item.NOTES ? item.NOTES : ''}</textarea>
             `;
 
             orderListContainer.appendChild(orderItem);

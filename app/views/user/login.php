@@ -26,7 +26,7 @@
           </div>
         </div>
         <p class="text-center mt-4 text-sm text-gray-600">
-          Belum punya akun? <a href="#" class="text-cyan-500 font-semibold swap-link">Klik disini</a>
+          Belum punya akun? <a href="#" class="text-cyan-500 font-semibold swap-link">Click Here</a>
         </p>
       </div>
     </form>
@@ -57,7 +57,7 @@
           </div>
         </div>
         <p class="text-center mt-4 text-sm text-gray-600">
-          Sudah punya akun? <a href="#" class="text-cyan-500 font-semibold swap-link">Login disini</a>
+          Already Registered? <a href="#" class="text-cyan-500 font-semibold swap-link">Login Here</a>
         </p>
       </div>
     </form>

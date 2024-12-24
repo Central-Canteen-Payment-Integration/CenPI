@@ -22,7 +22,7 @@
             <div class="border-b border-gray-200 py-6">
               <h3 class="-my-3 flow-root">
                 <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
-                  <span class="font-medium text-gray-900">Kantin</span>
+                  <span class="font-medium text-gray-900">Canteen</span>
                 </div>
               </h3>
               <div class="pt-6" id="filter-section-0">
@@ -64,7 +64,7 @@
             <div class="border-b border-gray-200 py-6">
               <h3 class="-my-3 flow-root">
                 <div class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
-                  <span class="font-medium text-gray-900">Drinks</span>
+                  <span class="font-medium text-gray-900">Beverage</span>
                 </div>
               </h3>
               <div class="pt-6" id="filter-section-0">
@@ -101,8 +101,8 @@
 <div class="modal">
     <div class="modal-box relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
         <label for="login-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-        <h3 class="text-lg font-bold text-center">Please Login Dulu.</h3>
-        <p class="py-4 text-center">Login Dulu Kalau Ingin Beli Makanan!</p>
+        <h3 class="text-lg font-bold text-center">Please Login First!.</h3>
+        <p class="py-4 text-center">Login First If You Want to Buy Some Food!</p>
 
         <!-- button login -->
         <div class="modal-action flex justify-center w-full">
