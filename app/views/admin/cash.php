@@ -16,10 +16,10 @@
     <table class="min-w-full divide-y divide-gray-200" id="orders-table">
       <thead class="bg-gray-800 text-white">
         <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Angka Unik</th>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nama Pembeli</th>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total Bayar</th>
-          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Terima Uang</th>
+          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unique Number</th>
+          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Customer Name</th>
+          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total Price</th>
+          <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Accept Payment</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
@@ -35,7 +35,7 @@
               <?php if ($transaction['TRX_STATUS'] = 'Unpaid'): ?>
                 <form action="<?= BASE_URL; ?>/admin/terimaUang/<?= $transaction['ID_TRANSACTION']; ?>" method="POST">
                   <button type="submit" class="px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    Terima Uang
+                    Accept
                   </button>
                 </form>
               <?php else: ?>
@@ -63,12 +63,12 @@
       "paging": true,
       "ordering": true,
       "language": {
-        "search": "Cari:",
-        "lengthMenu": "Tampilkan _MENU_ data per halaman",
-        "zeroRecords": "Tidak ada data yang cocok",
-        "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-        "infoEmpty": "Tidak ada data yang tersedia",
-        "infoFiltered": "(disaring dari _MAX_ total data)"
+        "search": "Search:",
+        "lengthMenu": "Showing _MENU_ data per pages",
+        "zeroRecords": "No Available Data",
+        "info": "Showing _PAGE_ page from _PAGES_",
+        "infoEmpty": "No Available Data",
+        "infoFiltered": "(Filtered from _MAX_ total data)"
       }
     });
   });

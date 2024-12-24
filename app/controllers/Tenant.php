@@ -7,19 +7,21 @@ class Tenant extends Controller
     private $categoryModel;
     private $trxModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->tenantModel = $this->model('TenantModel');
         $this->menuModel = $this->model('MenuModel');
         $this->categoryModel = $this->model('CategoryModel');
         $this->trxModel = $this->model('TrxModel');
     }
 
-    public function toggleIsOpen() {
+    public function toggleIsOpen()
+    {
         $this->checkLoggedIn();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['id_tenant'])) {
                 $id_tenant = $_POST['id_tenant'];
-    
+
                 $result = $this->tenantModel->toggleIsOpen($id_tenant);
 
                 if ($result !== false) {
@@ -35,7 +37,8 @@ class Tenant extends Controller
         }
     }
 
-    private function checkLoggedIn() {
+    private function checkLoggedIn()
+    {
         if (!isset($_SESSION['tenant'])) {
             $data['error'] = "Please login First!";
             $this->view('templates/init');
@@ -47,7 +50,8 @@ class Tenant extends Controller
         }
     }
 
-    public function login() {
+    public function login()
+    {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
@@ -83,16 +87,17 @@ class Tenant extends Controller
         $this->view('tenant/login_register', $data);
     }
 
-    public function register() {
+    public function register()
+    {
         if (isset($_SESSION['tenant'])) {
             header('Location: /Tenant/index');
             exit;
         }
-    
+
         $data = [
             'error' => ''
         ];
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlspecialchars($_POST['username']);
             $password = $_POST['password'];
@@ -100,7 +105,7 @@ class Tenant extends Controller
             $location_name = $_POST['tenant_location'];
             $location_booth = $_POST['tenant_number'];
             $tenant_name = $_POST['tenant_name'];
-    
+
             if (empty($username) || empty($password) || empty($email) || empty($location_name) || empty($location_booth) || empty($tenant_name)) {
                 $data['error'] = 'All fields must be filled.';
             } elseif (strlen($password) < 8) {
@@ -139,9 +144,10 @@ class Tenant extends Controller
         $this->view('templates/init', $data);
         $this->view('tenant/login_register', $data);
     }
-    
 
-    public function index() {
+
+    public function index()
+    {
         $this->checkLoggedIn();
 
         $tenantId = $_SESSION['tenant']['id'];
@@ -156,7 +162,8 @@ class Tenant extends Controller
         $this->view('tenant/index', $data);
     }
 
-    public function getAnalytics($startDate, $endDate) {
+    public function getAnalytics($startDate, $endDate)
+    {
         $tenantId = $_SESSION['tenant']['id'];
 
         $startDate = $startDate ?? date(format: 'd-m-Y');
@@ -171,7 +178,8 @@ class Tenant extends Controller
         ]);
     }
 
-    public function report() {
+    public function report()
+    {
         $this->checkLoggedIn();
         $this->view('templates/init');
         $this->view('templates/tenant_header');
@@ -184,7 +192,7 @@ class Tenant extends Controller
 
         $tenantId = $_SESSION['tenant']['id'];
         $tenantData = $this->tenantModel->getTenantById($tenantId);
-    
+
         $data = [
             'tenant_name' => $tenantData['TENANT_NAME'] ?? '',
             'username' => $tenantData['USERNAME'] ?? '',
@@ -192,48 +200,51 @@ class Tenant extends Controller
             'location_name' => $tenantData['LOCATION_NAME'] ?? '',
             'location_booth' => $tenantData['LOCATION_BOOTH'] ?? '',
         ];
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $currentPassword = trim($_POST['current_password'] ?? '');
             $newPassword = trim($_POST['new_password'] ?? '');
             $confirmPassword = trim($_POST['confirm_password'] ?? '');
-    
+
             if (empty($currentPassword)) {
-                $data['error'] = 'Password saat ini tidak boleh kosong.';
+                $data['error'] = 'Current password cannot be empty.';
             } elseif (!$this->tenantModel->verifyPassword($tenantId, $currentPassword)) {
-                $data['error'] = 'Password saat ini salah.';
+                $data['error'] = 'Current password is incorrect.';
             }
-    
+
             if (empty($newPassword)) {
-                $data['error'] = 'Password baru tidak boleh kosong.';
+                $data['error'] = 'New password cannot be empty.';
             } elseif (strlen($newPassword) < 8) {
-                $data['error'] = 'Password baru harus memiliki minimal 8 karakter.';
+                $data['error'] = 'New password must be at least 8 characters long.';
             }
-    
+
             if (empty($confirmPassword)) {
-                $data['error'] = 'Konfirmasi password tidak boleh kosong.';
+                $data['error'] = 'Password confirmation cannot be empty.';
             } elseif ($newPassword !== $confirmPassword) {
-                $data['error'] = 'Password baru dan konfirmasi tidak cocok.';
+                $data['error'] = 'New password and confirmation do not match.';
             }
-    
+
             if (empty($data['error'])) {
                 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-    
+
                 if ($this->tenantModel->updatePassword($tenantId, $hashedPassword)) {
-                    $data['message'] = 'Password berhasil diperbarui.';
+                    $data['message'] = 'Password updated successfully.';
                 } else {
-                    $data['error'] = 'Gagal memperbarui password. Silakan coba lagi.';
+                    $data['error'] = 'Failed to update password. Please try again.';
                 }
             }
         }
-    
+
+
+
         $this->view('templates/init');
         $this->view('templates/tenant_header', $data);
         $this->view('tenant/settings', $data);
         $data = [];
     }
 
-    public function order($action = 'view') {
+    public function order($action = 'view')
+    {
         $this->checkLoggedIn();
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action !== 'view'  && $action !== 'history') {
@@ -252,24 +263,26 @@ class Tenant extends Controller
                 break;
             case 'history':
                 $this->orderHistory();
-                break;    
+                break;
             default:
                 $this->viewOrders();
                 break;
         }
     }
 
-    private function viewOrders() {
+    private function viewOrders()
+    {
         $transactions = $this->trxModel->getTransactionsByTenant($_SESSION['tenant']['id']);
         $data['tenant'] = $_SESSION['tenant'];
-    
+
         $data['transactions'] = $this->groupTransactions($transactions);
         $this->view('templates/init');
         $this->view('templates/tenant_header');
         $this->view('tenant/order', $data);
     }
 
-    private function updateOrder($action) {
+    private function updateOrder($action)
+    {
         if ($action != 'Accept' && $action != 'Completed' && $action != 'Pickup') {
             return false;
         }
@@ -280,7 +293,7 @@ class Tenant extends Controller
         if (empty($id_transaction)) {
             echo json_encode(['status' => 'error', 'message' => 'Invalid id Transaction!']);
         }
-    
+
         $updated = $this->trxModel->updateTransactionStatus($id_transaction, $id_menu, $action);
 
         if ($updated) {
@@ -290,9 +303,10 @@ class Tenant extends Controller
         }
     }
 
-    private function orderHistory() {
+    private function orderHistory()
+    {
         $this->checkLoggedIn();
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $start_date = isset($_POST['startDate']) ? $_POST['startDate'] : null;
             $end_date = isset($_POST['endDate']) ? $_POST['endDate'] : null;
@@ -309,7 +323,8 @@ class Tenant extends Controller
         $this->view('tenant/history', $data);
     }
 
-    private function groupTransactions($transactions) {
+    private function groupTransactions($transactions)
+    {
         $groupedTransactions = [];
         foreach ($transactions as $transaction) {
             $id_transaction = $transaction['ID_TRANSACTION'];
@@ -343,7 +358,8 @@ class Tenant extends Controller
     }
 
     // Menu functions
-    public function menu($action = 'view') {
+    public function menu($action = 'view')
+    {
         $this->checkLoggedIn();
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action !== 'view') {
@@ -369,7 +385,8 @@ class Tenant extends Controller
         }
     }
 
-    private function viewMenus() {
+    private function viewMenus()
+    {
         $tenant_id = $_SESSION['tenant']['id'] ?? null;
         if (!$tenant_id) {
             throw new Exception("Tenant ID not found in session.");
@@ -390,7 +407,8 @@ class Tenant extends Controller
         $this->view('tenant/menu', $data);
     }
 
-    private function addMenu() {
+    private function addMenu()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_tenant = $_SESSION['tenant']['id'];
             $name = $_POST['name'];
@@ -425,7 +443,8 @@ class Tenant extends Controller
         }
     }
 
-    private function updateMenu() {
+    private function updateMenu()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_menu = $_POST['id_menu'];
             $name = $_POST['name'];
@@ -459,7 +478,8 @@ class Tenant extends Controller
         }
     }
 
-    private function deleteMenu() {
+    private function deleteMenu()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $menuId = $_POST['id_menu'] ?? null;
 
@@ -478,7 +498,8 @@ class Tenant extends Controller
         }
     }
 
-    private function uploadImage($image) {
+    private function uploadImage($image)
+    {
         if ($image['error'] == 0) {
             $targetDir = "./assets/img/menu/";
             $nameFile = uniqid() . "-" . basename($image["name"]);
@@ -490,14 +511,15 @@ class Tenant extends Controller
         return null;
     }
 
-    private function updateMenuStatus() {
+    private function updateMenuStatus()
+    {
         $menuId = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
         $currentStatus = isset($_POST['current_status']) ? $_POST['current_status'] : null;
-    
+
         if (empty($menuId) || !in_array($currentStatus, ['0', '1'])) {
             return json_encode(['status' => 'error', 'message' => 'Invalid data!']);
         }
-    
+
         $newStatus = $currentStatus == '1' ? 0 : 1;
         $updated = $this->menuModel->updateMenuStatus($menuId, $newStatus);
         if ($updated) {
@@ -506,9 +528,10 @@ class Tenant extends Controller
             return json_encode(['status' => 'error', 'message' => 'Failed to update menu status.']);
         }
     }
-    
+
     // logout functions
-    public function logout() {
+    public function logout()
+    {
         $this->checkLoggedIn();
         unset($_SESSION['tenant']);
         header("Location: /Tenant");

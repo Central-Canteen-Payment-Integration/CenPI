@@ -2,7 +2,7 @@
 <!-- Filter Periode -->
 <div class="bg-white p-3 rounded-md flex items-center space-x-3 cursor-pointer shadow-md relative hover:shadow-lg transition-shadow duration-300" id="filter-period">
   <i class="ti ti-calendar text-blue-500 text-lg"></i>
-  <span class="text-gray-800">Filter Periode</span>
+  <span class="text-gray-800">Filter By Period</span>
   <span class="text-gray-500" id="period-text">
     <?= isset($data['startDate']) && isset($data['endDate']) ? $data['startDate'] . ' - ' . $data['endDate'] : 'DD-MM-YYYY - DD-MM-YYYY'; ?>
   </span>

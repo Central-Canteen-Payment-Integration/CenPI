@@ -68,14 +68,14 @@
   </style>
 </head>
 
-<body class="bg-red-500 flex items-center justify-start pl-12 min-h-screen"> <!-- Menambahkan padding kiri dengan Tailwind -->
+<body class="bg-red-500 flex items-center justify-start pl-12 min-h-screen"> 
   <div class="text-left max-w-lg">
     <h1 class="text-5xl font-bold text-white mb-2">CenPI</h1>
     <div class="slider-container mb-6">
       <p id="slider1" class="slider-text active text-lg text-white">Seamless Canteen Payments at Your Fingertips</p>
-      <p id="slider2" class="slider-text text-lg text-white">Bayar dengan Mudah dan Cepat</p>
-      <p id="slider3" class="slider-text text-lg text-white">Pesan Makanan Praktis Online</p>
-      <p id="slider4" class="slider-text text-lg text-white">Transaksi Kantin Tanpa Tunai</p>
+      <p id="slider2" class="slider-text text-lg text-white">Fast and Easy Payment Method</p>
+      <p id="slider3" class="slider-text text-lg text-white">Order Food Online Easily</p>
+      <p id="slider4" class="slider-text text-lg text-white">Transaction With Flexible Payment</p>
     </div>
     <button id="orderButton" class="btn-donate mt-6 py-2 px-6 bg-white text-red-500 font-semibold rounded-lg hover:bg-gray-200 transition">
       Lets Make an Order
