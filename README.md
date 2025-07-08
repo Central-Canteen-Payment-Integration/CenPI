@@ -32,6 +32,7 @@ Aplikasi ini ditujukan untuk menciptakan ekosistem kantin yang lebih **efisien**
   </tr>
   <tr>
     <td><img src="screenshot/crud-menu.png" width="180" alt="CRUD Menu Tenant"/></td>
+    <td><img src="screenshot/dashboard-tenant.png" width="180" alt="CRUD Menu Tenant"/></td>
   </tr>
 </table>
 
